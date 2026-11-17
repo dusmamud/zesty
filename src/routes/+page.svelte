@@ -191,7 +191,7 @@
 	</div>
 
 	<div class="relative mx-auto w-full max-w-lg" use:parallax={{ speed: 0.08, max: 80 }}>
-		<div class="hero-blob absolute -inset-3 -z-10 rounded-full sm:-inset-4"></div>
+		<div class="hero-blob absolute -z-10 rounded-full" aria-hidden="true"></div>
 		<img
 			src="/images/hero-woman.jpg"
 			alt="Smiling woman holding a fresh salad bowl"

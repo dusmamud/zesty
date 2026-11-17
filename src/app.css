@@ -77,7 +77,7 @@ body {
 
 .hero-photo {
 	opacity: 0;
-	animation: hero-photo-in 0.7s ease-out 0.15s forwards;
+	animation: hero-photo-in 0.5s ease-out 0.1s forwards;
 }
 
 /* Floating cards: rise in, then a gentle infinite bob. */
@@ -185,10 +185,13 @@ button:focus-visible {
 	outline-offset: 2px;
 }
 
-/* 6. Hero peach blob — a real radial peach gradient, clearly visible on cream. */
+/* 6. Hero peach blob — big, deep and offset so a wide peach ring shows around
+   the photo (a thin pale ring is invisible against the cream background). */
 .hero-blob {
-	background: radial-gradient(circle at 50% 42%, #ffe9cf 0%, #ffddb6 55%, #ffd2a8 100%);
-	box-shadow: 0 0 0 8px rgb(255 233 207 / 0.55);
+	inset: -9%;
+	transform: translate(-14px, -18px);
+	background: radial-gradient(circle at 50% 42%, #ffe3b3 0%, #ffcf8e 55%, #ffbc72 100%);
+	box-shadow: 0 0 0 10px rgb(255 201 138 / 0.5);
 }
 
 /* 7. Signature cuisine marquee — infinite ticker, transform only, pauses on hover. */
