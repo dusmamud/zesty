@@ -191,11 +191,11 @@
 	</div>
 
 	<div class="relative mx-auto w-full max-w-lg" use:parallax={{ speed: 0.08, max: 80 }}>
-		<div class="hero-blob absolute -z-10 rounded-full" aria-hidden="true"></div>
+		<div class="hero-blob absolute z-0 rounded-full" aria-hidden="true"></div>
 		<img
 			src="/images/hero-woman.jpg"
 			alt="Smiling woman holding a fresh salad bowl"
-			class="hero-photo aspect-square w-full rounded-full object-cover shadow-xl"
+			class="hero-photo relative z-10 aspect-square w-full rounded-full object-cover shadow-xl"
 		/>
 		<div
 			class="hero-float absolute top-8 -left-2 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-lg sm:-left-8"
