@@ -3,6 +3,8 @@
 Real SvelteKit build of the Zesty food-delivery app. Burgers, pizza, Asian, desserts
 and drinks, hot and fresh in 20–30 minutes.
 
+Live: https://zeesty.pages.dev
+
 ## Stack (locked, exact)
 
 | Package | Version |
