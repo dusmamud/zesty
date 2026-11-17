@@ -1,0 +1,29 @@
+# Zesty — deploy SvelteKit static build to Cloudflare Pages.
+# Trigger: push to main ya manual dispatch.
+# Locked pattern (Kumbuild deploy-web.yml jaisa): GitHub Actions only,
+# Wrangler Direct Upload, Cloudflare Git integration nahi.
+# Repo secrets chahiye: CLOUDFLARE_API_TOKEN + CLOUDFLARE_ACCOUNT_ID.
+# Bina inke pehla run fail hoga — secrets add karke hi push karna.
+name: Deploy zesty
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy-zesty:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run build
+      - run: npx wrangler@4 pages deploy build --project-name=zeesty
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
