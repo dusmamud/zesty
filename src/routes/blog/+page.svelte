@@ -1,4 +1,7 @@
 <script lang="ts">
+	import FadeImage from '#lib/components/FadeImage.svelte';
+	import { reveal } from '#lib/actions/reveal.ts';
+
 	const POSTS = [
 		{
 			title: 'Why your burger arrives hot (and how we keep it that way)',
@@ -42,14 +45,16 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">Blog</p>
-	<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">From Our Kitchen</h1>
-	<p class="mt-2 max-w-xl text-muted">Short notes on food, delivery and the dishes you love.</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">Blog</p>
+		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">From Our Kitchen</h1>
+		<p class="mt-2 max-w-xl text-muted">Short notes on food, delivery and the dishes you love.</p>
+	</div>
 
 	<div class="mt-8 grid gap-6 lg:grid-cols-3">
-		{#each POSTS as post (post.title)}
-			<article class="overflow-hidden rounded-3xl bg-white shadow-sm">
-				<img src={post.image} alt={post.alt} loading="lazy" class="h-52 w-full object-cover" />
+		{#each POSTS as post, i (post.title)}
+			<article class="overflow-hidden rounded-3xl bg-white shadow-sm" use:reveal={{ delay: i * 100 }}>
+				<FadeImage src={post.image} alt={post.alt} class="h-52 w-full object-cover" />
 				<div class="p-6">
 					<p class="text-xs font-bold tracking-wide text-brand uppercase">{post.date}</p>
 					<h2 class="mt-2 font-display text-xl leading-snug font-bold">{post.title}</h2>

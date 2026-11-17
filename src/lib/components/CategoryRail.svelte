@@ -38,7 +38,7 @@
 			role="tab"
 			aria-selected={active === cat}
 			onclick={() => onSelect(cat)}
-			class="flex shrink-0 items-center gap-3 rounded-full px-4 py-2.5 text-sm font-bold whitespace-nowrap lg:rounded-2xl lg:px-4 {active ===
+			class="flex shrink-0 items-center gap-3 rounded-full px-4 py-2.5 text-sm font-bold whitespace-nowrap transition-all duration-200 active:scale-95 lg:rounded-2xl lg:px-4 {active ===
 			cat
 				? 'bg-brand text-white shadow'
 				: 'bg-white text-stone-700 shadow-sm hover:text-brand'}"

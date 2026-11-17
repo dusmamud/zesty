@@ -1,3 +1,7 @@
+<script lang="ts">
+	import { reveal } from '#lib/actions/reveal.ts';
+</script>
+
 <svelte:head>
 	<title>Terms of Service — Zesty</title>
 	<meta
@@ -7,9 +11,11 @@
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">Legal</p>
-	<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Terms of Service</h1>
-	<p class="mt-2 text-sm text-muted">Last updated: 17 November 2026</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">Legal</p>
+		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Terms of Service</h1>
+		<p class="mt-2 text-sm text-muted">Last updated: 17 November 2026</p>
+	</div>
 
 	<div class="mt-6 space-y-6 leading-relaxed text-stone-700">
 		<section>

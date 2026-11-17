@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade, fly } from 'svelte/transition';
 	import { Minus, Plus, ShoppingBag, Trash2, X } from '@lucide/svelte';
 	import { applyPromo, changeQty, removeFromCart, store, totals } from '#lib/store.svelte.ts';
 	import { FREEDEL_CODE, FREE_DELIVERY_OVER, formatPrice, promoRate } from '#lib/data.ts';
@@ -13,8 +14,17 @@
 </script>
 
 <div class="fixed inset-0 z-50 flex justify-end" role="dialog" aria-label="Your cart">
-	<button type="button" aria-label="Close cart" onclick={() => (store.cartOpen = false)} class="absolute inset-0 bg-black/40"></button>
-	<aside class="relative flex h-full w-full max-w-md flex-col bg-white shadow-2xl">
+	<button
+		type="button"
+		aria-label="Close cart"
+		onclick={() => (store.cartOpen = false)}
+		transition:fade={{ duration: 200 }}
+		class="absolute inset-0 bg-black/40"
+	></button>
+	<aside
+		transition:fly={{ x: 320, duration: 250 }}
+		class="relative flex h-full w-full max-w-md flex-col bg-white shadow-2xl"
+	>
 		<div class="flex items-center justify-between border-b px-5 py-4">
 			<h2 class="font-display text-xl font-bold">Your Cart</h2>
 			<button type="button" aria-label="Close cart" onclick={() => (store.cartOpen = false)} class="rounded-full p-2 hover:bg-stone-100">
@@ -154,7 +164,7 @@
 						store.cartOpen = false;
 						store.checkoutOpen = true;
 					}}
-					class="mt-4 w-full rounded-full bg-brand py-3.5 font-bold text-white hover:bg-brand-dark"
+					class="mt-4 w-full rounded-full bg-brand py-3.5 font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					Checkout • {formatPrice(t.total)}
 				</button>

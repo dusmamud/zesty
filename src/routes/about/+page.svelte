@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Bike, Heart, Leaf, Star, Users } from '@lucide/svelte';
+	import CountUp from '#lib/components/CountUp.svelte';
+	import { reveal } from '#lib/actions/reveal.ts';
 </script>
 
 <svelte:head>
@@ -11,31 +13,35 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">About Us</p>
-	<h1 class="mt-1 max-w-2xl font-display text-3xl font-extrabold sm:text-4xl">
-		Good Food. Fast Delivery. Every Time You Order.
-	</h1>
-	<p class="mt-4 max-w-2xl leading-relaxed text-muted">
-		Zesty started with a simple frustration: food that arrived late, cold, or nothing like the photo.
-		So we built a small delivery kitchen around one promise — your favourite meals, cooked fresh when
-		you order, and at your door hot in 20–30 minutes. No dark patterns, no hidden fees, no
-		account required to order.
-	</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">About Us</p>
+		<h1 class="mt-1 max-w-2xl font-display text-3xl font-extrabold sm:text-4xl">
+			Good Food. Fast Delivery. Every Time You Order.
+		</h1>
+		<p class="mt-4 max-w-2xl leading-relaxed text-muted">
+			Zesty started with a simple frustration: food that arrived late, cold, or nothing like the photo.
+			So we built a small delivery kitchen around one promise — your favourite meals, cooked fresh when
+			you order, and at your door hot in 20–30 minutes. No dark patterns, no hidden fees, no
+			account required to order.
+		</p>
+	</div>
 
 	<div class="mt-10 grid gap-4 text-center sm:grid-cols-4">
-		{#each [{ value: '10K+', label: 'Happy customers' }, { value: '4.8', label: 'Average rating' }, { value: '20–30', label: 'Minutes delivery' }, { value: '50+', label: 'Dishes on the menu' }] as s (s.label)}
-			<div class="rounded-3xl bg-white p-6 shadow-sm">
-				<p class="font-display text-3xl font-extrabold text-brand">{s.value}</p>
+		{#each [{ value: 10, decimals: 0, suffix: 'K+', label: 'Happy customers' }, { value: 4.8, decimals: 1, suffix: '', label: 'Average rating' }, { value: 20, decimals: 0, suffix: '–30', label: 'Minutes delivery' }, { value: 50, decimals: 0, suffix: '+', label: 'Dishes on the menu' }] as s, i (s.label)}
+			<div class="rounded-3xl bg-white p-6 shadow-sm" use:reveal={{ delay: i * 100 }}>
+				<p class="font-display text-3xl font-extrabold text-brand">
+					<CountUp value={s.value} decimals={s.decimals} suffix={s.suffix} />
+				</p>
 				<p class="mt-1 text-sm text-muted">{s.label}</p>
 			</div>
 		{/each}
 	</div>
 
-	<h2 class="mt-12 font-display text-2xl font-extrabold">What we stand for</h2>
+	<h2 class="mt-12 font-display text-2xl font-extrabold" use:reveal>What we stand for</h2>
 	<div class="mt-4 grid gap-4 sm:grid-cols-3">
-		{#each [{ icon: Bike, title: 'Fast', text: 'Riders on the road in minutes, not hours. If we are late, we tell you — we do not hide it.' }, { icon: Leaf, title: 'Fresh', text: 'Cooked to order with fresh ingredients, every single time. Nothing sits under a heat lamp.' }, { icon: Heart, title: 'Quality', text: 'Every dish is tasted by our own team before it makes the menu. If we would not eat it, we do not serve it.' }] as v (v.title)}
+		{#each [{ icon: Bike, title: 'Fast', text: 'Riders on the road in minutes, not hours. If we are late, we tell you — we do not hide it.' }, { icon: Leaf, title: 'Fresh', text: 'Cooked to order with fresh ingredients, every single time. Nothing sits under a heat lamp.' }, { icon: Heart, title: 'Quality', text: 'Every dish is tasted by our own team before it makes the menu. If we would not eat it, we do not serve it.' }] as v, i (v.title)}
 			{@const Icon = v.icon}
-			<div class="rounded-3xl bg-white p-7 shadow-sm">
+			<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal={{ delay: i * 100 }}>
 				<span class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-brand">
 					<Icon class="h-7 w-7" />
 				</span>
@@ -46,7 +52,7 @@
 	</div>
 
 	<div class="mt-12 grid gap-6 lg:grid-cols-2">
-		<div class="rounded-3xl bg-white p-7 shadow-sm">
+		<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal>
 			<h2 class="flex items-center gap-2 font-display text-xl font-bold">
 				<Users class="h-5 w-5 text-brand" /> The team behind the food
 			</h2>
@@ -59,7 +65,7 @@
 				Our kitchen is at 123 Food Street, Flavortown. Come say hi — the coffee is on us.
 			</p>
 		</div>
-		<div class="rounded-3xl bg-ink p-7 text-white shadow-sm">
+		<div class="rounded-3xl bg-ink p-7 text-white shadow-sm" use:reveal={{ delay: 100 }}>
 			<h2 class="flex items-center gap-2 font-display text-xl font-bold">
 				<Star class="h-5 w-5 text-amber-400" /> Rated 4.8 by 10,000+ customers
 			</h2>
@@ -69,7 +75,7 @@
 			</p>
 			<a
 				href="/menu"
-				class="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-bold text-white hover:bg-brand-dark"
+				class="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 			>
 				Order Now →
 			</a>

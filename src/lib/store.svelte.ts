@@ -41,8 +41,25 @@ export const store = $state({
 	checkoutOpen: false,
 	orderPlaced: null as { id: string; payment: string } | null,
 	promoCode: '',
-	promoApplied: null as string | null
+	promoApplied: null as string | null,
+	toast: null as { id: number; message: string; actionLabel?: string } | null
 });
+
+/** One toast at a time; auto-dismisses after 2.5s. */
+let toastTimer: ReturnType<typeof setTimeout> | undefined;
+
+export function showToast(message: string, actionLabel?: string) {
+	if (toastTimer) clearTimeout(toastTimer);
+	store.toast = { id: Date.now(), message, actionLabel };
+	toastTimer = setTimeout(() => {
+		store.toast = null;
+	}, 2500);
+}
+
+export function dismissToast() {
+	if (toastTimer) clearTimeout(toastTimer);
+	store.toast = null;
+}
 
 /** One cart line: qty plus the per-unit price at add time (dish price + add-ons). */
 export interface CartEntry {
@@ -146,7 +163,8 @@ export function addToCart(dish: Dish, qty = 1, unitPrice: number = dish.price) {
 		[dish.id]: { qty: (existing?.qty ?? 0) + qty, unitPrice }
 	};
 	persist();
-	store.cartOpen = true;
+	// No auto-open drawer — a toast with a View Cart action confirms the add.
+	showToast(`Added ${dish.name} to cart`, 'View Cart');
 }
 
 export function changeQty(dishId: string, delta: number) {
@@ -161,10 +179,12 @@ export function changeQty(dishId: string, delta: number) {
 }
 
 export function removeFromCart(dishId: string) {
+	const dish = DISHES.find((d) => d.id === dishId);
 	const next = { ...store.cart };
 	delete next[dishId];
 	store.cart = next;
 	persist();
+	if (dish) showToast(`Removed ${dish.name} from cart`);
 }
 
 export function toggleFavourite(id: string) {
@@ -185,6 +205,7 @@ export function applyPromo(code: string): string | null {
 	if (isValidPromo(c)) {
 		store.promoApplied = c;
 		store.promoCode = c;
+		showToast(`Promo ${c} applied`);
 		return null;
 	}
 	store.promoApplied = null;
@@ -232,6 +253,7 @@ export function reorder(order: Order) {
 export function signIn(user: User) {
 	store.user = user;
 	persist();
+	showToast(`Signed in as ${user.name.split(' ')[0]}`);
 }
 
 export function signOut() {
@@ -242,6 +264,7 @@ export function signOut() {
 export function subscribeNewsletter() {
 	store.newsletterSubscribed = true;
 	persist();
+	showToast('Subscribed — tasty offers are on the way!');
 }
 
 /** Tracking step index from placedAt: 0 Placed, 1 Preparing (2 min), 2 Out for delivery (10 min), 3 Delivered (25 min). */

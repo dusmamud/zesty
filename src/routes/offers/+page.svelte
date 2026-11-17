@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { CheckCircle2, Copy, Tag } from '@lucide/svelte';
+	import { reveal } from '#lib/actions/reveal.ts';
 
 	let copiedCode = $state<string | null>(null);
 	async function copyCode(code: string) {
@@ -43,15 +44,17 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">Offers</p>
-	<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Deals Worth Ordering For</h1>
-	<p class="mt-2 max-w-xl text-muted">
-		Copy a code and paste it in the cart at checkout. One code per order.
-	</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">Offers</p>
+		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Deals Worth Ordering For</h1>
+		<p class="mt-2 max-w-xl text-muted">
+			Copy a code and paste it in the cart at checkout. One code per order.
+		</p>
+	</div>
 
 	<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-		{#each OFFERS as offer (offer.code)}
-			<article class="flex flex-col rounded-3xl bg-ink p-7 text-white shadow-sm">
+		{#each OFFERS as offer, i (offer.code)}
+			<article class="flex flex-col rounded-3xl bg-ink p-7 text-white shadow-sm" use:reveal={{ delay: i * 100 }}>
 				<span class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
 					<Tag class="h-6 w-6 text-brand-light" />
 				</span>
@@ -62,7 +65,7 @@
 				<button
 					type="button"
 					onclick={() => copyCode(offer.code)}
-					class="mt-4 flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-ink hover:bg-orange-100"
+					class="mt-4 flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-ink transition-transform duration-150 hover:bg-orange-100 active:scale-95"
 				>
 					{#if copiedCode === offer.code}
 						<CheckCircle2 class="h-4 w-4 text-green-600" /> Copied!
@@ -74,7 +77,7 @@
 		{/each}
 	</div>
 
-	<div class="mt-8 rounded-3xl bg-white p-7 shadow-sm">
+	<div class="mt-8 rounded-3xl bg-white p-7 shadow-sm" use:reveal>
 		<h2 class="font-display text-xl font-bold">How promo codes work</h2>
 		<ol class="mt-3 list-decimal space-y-1 pl-5 text-sm text-muted">
 			<li>Add dishes to your cart from the menu.</li>

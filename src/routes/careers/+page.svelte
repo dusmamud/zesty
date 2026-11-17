@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Bike, ChefHat, Headphones, MapPin } from '@lucide/svelte';
+	import { reveal } from '#lib/actions/reveal.ts';
 
 	const ROLES = [
 		{
@@ -35,17 +36,19 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">Careers</p>
-	<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Come Work With Us</h1>
-	<p class="mt-2 max-w-xl text-muted">
-		We're a small team that takes food seriously and ourselves lightly. If you like feeding people,
-		there's a seat for you here.
-	</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">Careers</p>
+		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Come Work With Us</h1>
+		<p class="mt-2 max-w-xl text-muted">
+			We're a small team that takes food seriously and ourselves lightly. If you like feeding people,
+			there's a seat for you here.
+		</p>
+	</div>
 
 	<div class="mt-8 grid gap-6 lg:grid-cols-3">
-		{#each ROLES as role (role.title)}
+		{#each ROLES as role, i (role.title)}
 			{@const Icon = role.icon}
-			<article class="flex flex-col rounded-3xl bg-white p-7 shadow-sm">
+			<article class="flex flex-col rounded-3xl bg-white p-7 shadow-sm" use:reveal={{ delay: i * 100 }}>
 				<span class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-brand">
 					<Icon class="h-7 w-7" />
 				</span>
@@ -61,7 +64,7 @@
 				</ul>
 				<a
 					href="/contact"
-					class="mt-5 rounded-full bg-brand px-5 py-3 text-center text-sm font-bold text-white hover:bg-brand-dark"
+					class="mt-5 rounded-full bg-brand px-5 py-3 text-center text-sm font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					Apply for this role
 				</a>
@@ -69,7 +72,7 @@
 		{/each}
 	</div>
 
-	<p class="mt-8 rounded-3xl bg-white p-6 text-center text-sm text-muted shadow-sm">
+	<p class="mt-8 rounded-3xl bg-white p-6 text-center text-sm text-muted shadow-sm" use:reveal>
 		Don't see your role? Write to
 		<a href="mailto:hello@zesty.example" class="font-bold text-brand hover:underline">hello@zesty.example</a>
 		with what you do best — we always read every email.

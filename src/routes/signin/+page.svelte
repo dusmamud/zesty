@@ -2,6 +2,7 @@
 	import { CheckCircle2, LogOut, ShieldCheck, User } from '@lucide/svelte';
 	import { goto } from '$app/navigation';
 	import { signIn, signOut, store } from '#lib/store.svelte.ts';
+	import { reveal } from '#lib/actions/reveal.ts';
 
 	let step = $state<'details' | 'code'>('details');
 	let name = $state('');
@@ -57,7 +58,7 @@
 
 <div class="mx-auto max-w-lg px-4 py-12 sm:px-6">
 	{#if store.user}
-		<div class="rounded-3xl bg-white p-7 shadow-sm">
+		<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal>
 			<div class="flex items-center gap-3">
 				<span class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-brand">
 					<User class="h-7 w-7" />
@@ -108,7 +109,7 @@
 			</div>
 		</div>
 	{:else if step === 'details'}
-		<div class="rounded-3xl bg-white p-7 shadow-sm">
+		<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal>
 			<h1 class="font-display text-2xl font-extrabold">Welcome back</h1>
 			<p class="mt-1 text-sm text-muted">Sign in to save your address and keep your order history.</p>
 			<div class="mt-5 space-y-3">
@@ -130,7 +131,7 @@
 				<button
 					type="button"
 					onclick={submitDetails}
-					class="w-full rounded-full bg-brand py-3.5 font-bold text-white hover:bg-brand-dark"
+					class="w-full rounded-full bg-brand py-3.5 font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					Continue
 				</button>
@@ -138,7 +139,7 @@
 			</div>
 		</div>
 	{:else}
-		<div class="rounded-3xl bg-white p-7 shadow-sm">
+		<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal>
 			<h1 class="font-display text-2xl font-extrabold">Enter the code</h1>
 			<p class="mt-1 text-sm text-muted">
 				We sent a 6-digit code to <span class="font-bold text-ink">{phone}</span>.
@@ -165,7 +166,7 @@
 			<button
 				type="button"
 				onclick={submitCode}
-				class="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-brand py-3.5 font-bold text-white hover:bg-brand-dark"
+				class="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-brand py-3.5 font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 			>
 				<CheckCircle2 class="h-5 w-5" /> Verify &amp; Sign In
 			</button>

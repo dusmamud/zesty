@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade, scale } from 'svelte/transition';
 	import { Banknote, CheckCircle2, CreditCard, Smartphone, X } from '@lucide/svelte';
 	import { placeOrder, store, totals } from '#lib/store.svelte.ts';
 	import { formatPrice } from '#lib/data.ts';
@@ -30,8 +31,17 @@
 </script>
 
 <div class="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-label="Checkout">
-	<button type="button" aria-label="Close checkout" onclick={() => (store.checkoutOpen = false)} class="absolute inset-0 bg-black/40"></button>
-	<div class="relative w-full max-w-lg rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl">
+	<button
+		type="button"
+		aria-label="Close checkout"
+		onclick={() => (store.checkoutOpen = false)}
+		transition:fade={{ duration: 200 }}
+		class="absolute inset-0 bg-black/40"
+	></button>
+	<div
+		transition:scale={{ start: 0.96, duration: 200 }}
+		class="relative w-full max-w-lg rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl"
+	>
 		<div class="flex items-center justify-between">
 			<h2 class="font-display text-xl font-bold">Guest Checkout</h2>
 			<button type="button" aria-label="Close checkout" onclick={() => (store.checkoutOpen = false)} class="rounded-full p-2 hover:bg-stone-100">
@@ -81,7 +91,7 @@
 			<button
 				type="button"
 				onclick={submit}
-				class="flex w-full items-center justify-center gap-2 rounded-full bg-brand py-3.5 font-bold text-white hover:bg-brand-dark"
+				class="flex w-full items-center justify-center gap-2 rounded-full bg-brand py-3.5 font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 			>
 				<CheckCircle2 class="h-5 w-5" />
 				Place Order • {formatPrice(t.total)}

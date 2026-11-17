@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Banknote, Bike, Clock, CreditCard, MapPin, ShoppingBag, Smartphone, Truck } from '@lucide/svelte';
 	import { DELIVERY_AREAS, DELIVERY_FEE, FREE_DELIVERY_OVER, formatPrice } from '#lib/data.ts';
+	import { reveal } from '#lib/actions/reveal.ts';
 </script>
 
 <svelte:head>
@@ -12,14 +13,16 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">How It Works</p>
-	<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Dinner In Three Easy Steps</h1>
-	<p class="mt-2 max-w-xl text-muted">No account, no fuss. From craving to doorstep in about half an hour.</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">How It Works</p>
+		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Dinner In Three Easy Steps</h1>
+		<p class="mt-2 max-w-xl text-muted">No account, no fuss. From craving to doorstep in about half an hour.</p>
+	</div>
 
 	<div class="mt-8 grid gap-4 sm:grid-cols-3">
-		{#each [{ icon: ShoppingBag, step: 'Step 1', title: 'Pick a dish', text: 'Browse the menu, check ratings and add your favourites to the cart.' }, { icon: Smartphone, step: 'Step 2', title: 'Checkout as guest', text: 'Add your address and pay by UPI, card or cash on delivery. No sign-up needed.' }, { icon: Bike, step: 'Step 3', title: 'Hot at your door', text: 'Track your order live and get it hot in 20–30 minutes.' }] as s (s.title)}
+		{#each [{ icon: ShoppingBag, step: 'Step 1', title: 'Pick a dish', text: 'Browse the menu, check ratings and add your favourites to the cart.' }, { icon: Smartphone, step: 'Step 2', title: 'Checkout as guest', text: 'Add your address and pay by UPI, card or cash on delivery. No sign-up needed.' }, { icon: Bike, step: 'Step 3', title: 'Hot at your door', text: 'Track your order live and get it hot in 20–30 minutes.' }] as s, i (s.title)}
 			{@const Icon = s.icon}
-			<div class="rounded-3xl bg-white p-7 text-center shadow-sm">
+			<div class="rounded-3xl bg-white p-7 text-center shadow-sm" use:reveal={{ delay: i * 100 }}>
 				<span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 text-brand">
 					<Icon class="h-8 w-8" />
 				</span>
@@ -31,7 +34,7 @@
 	</div>
 
 	<div class="mt-10 grid gap-6 lg:grid-cols-2">
-		<div class="rounded-3xl bg-white p-7 shadow-sm">
+		<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal>
 			<h2 class="flex items-center gap-2 font-display text-xl font-bold">
 				<MapPin class="h-5 w-5 text-brand" /> Areas we deliver to
 			</h2>
@@ -49,7 +52,7 @@
 		</div>
 
 		<div class="space-y-6">
-			<div class="rounded-3xl bg-white p-7 shadow-sm">
+			<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal={{ delay: 100 }}>
 				<h2 class="flex items-center gap-2 font-display text-xl font-bold">
 					<Truck class="h-5 w-5 text-brand" /> Delivery &amp; fees
 				</h2>
@@ -60,7 +63,7 @@
 					<div class="flex justify-between"><dt class="text-muted">Free delivery code</dt><dd class="font-bold">FREEDEL — any order</dd></div>
 				</dl>
 			</div>
-			<div class="rounded-3xl bg-white p-7 shadow-sm">
+			<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal={{ delay: 200 }}>
 				<h2 class="flex items-center gap-2 font-display text-xl font-bold">
 					<CreditCard class="h-5 w-5 text-brand" /> Payment methods
 				</h2>
@@ -75,7 +78,7 @@
 	</div>
 
 	<p class="mt-10 text-center">
-		<a href="/menu" class="inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 font-bold text-white hover:bg-brand-dark">
+		<a href="/menu" class="inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95">
 			Start an Order →
 		</a>
 	</p>

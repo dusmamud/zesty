@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { ArrowLeft, Clock, Heart, Minus, Plus, ShoppingCart, Star } from '@lucide/svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
+	import FadeImage from '#lib/components/FadeImage.svelte';
+	import { reveal } from '#lib/actions/reveal.ts';
 	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
 	import { DISHES, DISH_REVIEWS, formatPrice } from '#lib/data.ts';
 	import type { PageProps } from './$types';
@@ -14,6 +16,14 @@
 	let extraSauce = $state(false);
 	let spice = $state<'Mild' | 'Medium' | 'Hot'>('Medium');
 	let instructions = $state('');
+
+	// Re-trigger the heart pop on every toggle.
+	let heartPopped = $state(false);
+	function onFavourite() {
+		toggleFavourite(dish.id);
+		heartPopped = true;
+		setTimeout(() => (heartPopped = false), 350);
+	}
 
 	let unitPrice = $derived(dish.price + (extraCheese ? 0.99 : 0) + (extraSauce ? 0.49 : 0));
 	let totalPrice = $derived(unitPrice * qty);
@@ -45,7 +55,7 @@
 	<div class="mt-6 grid gap-10 lg:grid-cols-2">
 		<div>
 			<div class="relative overflow-hidden rounded-3xl shadow-sm">
-				<img src={dish.image} alt={dish.name} class="aspect-[4/3] w-full object-cover" />
+				<FadeImage src={dish.image} alt={dish.name} loading="eager" class="aspect-[4/3] w-full object-cover" />
 				{#if dish.discount}
 					<span class="absolute top-4 left-4 rounded-full bg-brand px-3 py-1 text-sm font-bold text-white">
 						{dish.discount}
@@ -57,11 +67,13 @@
 						? `Remove ${dish.name} from favourites`
 						: `Save ${dish.name} as favourite`}
 					aria-pressed={store.favourites.has(dish.id)}
-					onclick={() => toggleFavourite(dish.id)}
-					class="absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 shadow hover:scale-110"
+					onclick={onFavourite}
+					class="absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 shadow transition-transform duration-150 hover:scale-110 active:scale-95"
 				>
 					<Heart
-						class="h-5 w-5 {store.favourites.has(dish.id) ? 'fill-red-500 text-red-500' : 'text-stone-500'}"
+						class="h-5 w-5 {heartPopped ? 'animate-heart-pop' : ''} {store.favourites.has(dish.id)
+							? 'fill-red-500 text-red-500'
+							: 'text-stone-500'}"
 					/>
 				</button>
 			</div>
@@ -133,7 +145,7 @@
 							type="button"
 							aria-pressed={spice === level}
 							onclick={() => (spice = level as 'Mild' | 'Medium' | 'Hot')}
-							class="rounded-full px-5 py-2 text-sm font-bold {spice === level
+							class="rounded-full px-5 py-2 text-sm font-bold transition-all duration-200 active:scale-95 {spice === level
 								? 'bg-brand text-white shadow'
 								: 'bg-white text-stone-700 shadow-sm hover:text-brand'}"
 						>
@@ -177,7 +189,7 @@
 				<button
 					type="button"
 					onclick={() => addToCart(dish, qty, unitPrice)}
-					class="flex flex-1 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 font-bold text-white shadow hover:bg-brand-dark"
+					class="flex flex-1 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 font-bold text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					<ShoppingCart class="h-5 w-5" />
 					Add to Cart • {formatPrice(totalPrice)}
@@ -189,7 +201,7 @@
 		</div>
 	</div>
 
-	<section class="mt-14">
+	<section class="mt-14" use:reveal>
 		<h2 class="font-display text-2xl font-extrabold">What customers say</h2>
 		<div class="mt-4 grid gap-4 sm:grid-cols-3">
 			{#each dishReviews as review (review.name + review.text)}
@@ -208,7 +220,7 @@
 	</section>
 
 	{#if related.length > 0}
-		<section class="mt-14">
+		<section class="mt-14" use:reveal>
 			<h2 class="font-display text-2xl font-extrabold">You may also like</h2>
 			<div class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{#each related as rel (rel.id)}

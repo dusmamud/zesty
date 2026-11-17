@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Heart, Star } from '@lucide/svelte';
+	import FadeImage from '#lib/components/FadeImage.svelte';
 	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
 	import { formatPrice, type Dish } from '#lib/data.ts';
 
@@ -8,15 +9,22 @@
 	}
 
 	let { dish }: Props = $props();
+
+	// Re-trigger the heart pop on every toggle.
+	let heartPopped = $state(false);
+	function onFavourite() {
+		toggleFavourite(dish.id);
+		heartPopped = true;
+		setTimeout(() => (heartPopped = false), 350);
+	}
 </script>
 
-<article class="group overflow-hidden rounded-3xl bg-white shadow-sm transition hover:shadow-xl">
+<article class="group h-full overflow-hidden rounded-3xl bg-white shadow-sm transition hover:shadow-xl">
 	<div class="relative">
 		<a href="/dish/{dish.id}" aria-label="View {dish.name}">
-			<img
+			<FadeImage
 				src={dish.image}
 				alt={dish.name}
-				loading="lazy"
 				class="h-64 w-full object-cover transition duration-300 group-hover:scale-105"
 			/>
 		</a>
@@ -31,11 +39,11 @@
 				? `Remove ${dish.name} from favourites`
 				: `Save ${dish.name} as favourite`}
 			aria-pressed={store.favourites.has(dish.id)}
-			onclick={() => toggleFavourite(dish.id)}
-			class="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow hover:scale-110"
+			onclick={onFavourite}
+			class="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow transition-transform duration-150 hover:scale-110 active:scale-95"
 		>
 			<Heart
-				class="h-4.5 w-4.5 {store.favourites.has(dish.id)
+				class="h-4.5 w-4.5 {heartPopped ? 'animate-heart-pop' : ''} {store.favourites.has(dish.id)
 					? 'fill-red-500 text-red-500'
 					: 'text-stone-500'}"
 			/>
@@ -73,7 +81,7 @@
 				<button
 					type="button"
 					onclick={() => addToCart(dish)}
-					class="rounded-full bg-brand px-4 py-2 text-sm font-bold text-white shadow hover:bg-brand-dark"
+					class="rounded-full bg-brand px-4 py-2 text-sm font-bold text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					Order Now
 				</button>

@@ -1,10 +1,31 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
 	import { Menu, Search, ShoppingCart, User, UtensilsCrossed, X } from '@lucide/svelte';
 	import { page } from '$app/state';
 	import { cartCount, store } from '#lib/store.svelte.ts';
 
 	let count = $derived(cartCount());
 	let mobileOpen = $state(false);
+	let scrolled = $state(false);
+
+	// Header gains a shadow once the page scrolls (rAF-throttled, passive).
+	onMount(() => {
+		let ticking = false;
+		function update() {
+			ticking = false;
+			scrolled = window.scrollY > 8;
+		}
+		function onScroll() {
+			if (!ticking) {
+				ticking = true;
+				requestAnimationFrame(update);
+			}
+		}
+		update();
+		window.addEventListener('scroll', onScroll, { passive: true });
+		return () => window.removeEventListener('scroll', onScroll);
+	});
 
 	const LINKS = [
 		{ href: '/', label: 'Home' },
@@ -17,7 +38,11 @@
 	let firstName = $derived(store.user ? store.user.name.split(' ')[0] : '');
 </script>
 
-<header class="sticky top-0 z-40 border-b border-orange-100 bg-cream/90 backdrop-blur">
+<header
+	class="sticky top-0 z-40 border-b border-orange-100 transition-shadow duration-200 {scrolled
+		? 'bg-cream/95 shadow-md backdrop-blur-md'
+		: 'bg-cream/90 backdrop-blur'}"
+>
 	<div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
 		<a href="/" class="flex items-center gap-2">
 			<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-white">
@@ -42,7 +67,7 @@
 			<a
 				href="/menu"
 				aria-label="Search dishes"
-				class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm hover:text-brand"
+				class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm transition-transform duration-150 hover:text-brand active:scale-95"
 			>
 				<Search class="h-5 w-5" />
 			</a>
@@ -51,29 +76,31 @@
 				type="button"
 				aria-label="Open cart"
 				onclick={() => (store.cartOpen = true)}
-				class="relative flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm hover:text-brand"
+				class="relative flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm transition-transform duration-150 hover:text-brand active:scale-95"
 			>
 				<ShoppingCart class="h-5 w-5" />
 				{#if count > 0}
-					<span
-						class="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[11px] font-bold text-white"
-					>
-						{count}
-					</span>
+					{#key count}
+						<span
+							class="animate-pop absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[11px] font-bold text-white"
+						>
+							{count}
+						</span>
+					{/key}
 				{/if}
 			</button>
 
 			{#if store.user}
 				<a
 					href="/orders"
-					class="hidden items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-brand-dark sm:flex"
+					class="hidden items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-transform duration-150 hover:bg-brand-dark active:scale-95 sm:flex"
 				>
 					<User class="h-4 w-4" /> Hi, {firstName}
 				</a>
 			{:else}
 				<a
 					href="/signin"
-					class="hidden rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-brand-dark sm:block"
+					class="hidden rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-sm transition-transform duration-150 hover:bg-brand-dark active:scale-95 sm:block"
 				>
 					Sign In
 				</a>
@@ -84,7 +111,7 @@
 				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
 				aria-expanded={mobileOpen}
 				onclick={() => (mobileOpen = !mobileOpen)}
-				class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm lg:hidden"
+				class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm transition-transform duration-150 active:scale-95 lg:hidden"
 			>
 				{#if mobileOpen}<X class="h-5 w-5" />{:else}<Menu class="h-5 w-5" />{/if}
 			</button>
@@ -92,7 +119,7 @@
 	</div>
 
 	{#if mobileOpen}
-		<nav class="border-t border-orange-100 bg-cream px-4 py-3 lg:hidden">
+		<nav transition:slide={{ duration: 200 }} class="border-t border-orange-100 bg-cream px-4 py-3 lg:hidden">
 			<ul class="space-y-1 text-sm font-semibold">
 				{#each LINKS as link (link.href)}
 					<li>

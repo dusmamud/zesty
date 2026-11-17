@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { orderEtaMinutes, orderStatus, reorder, store, TRACK_STEPS } from '#lib/store.svelte.ts';
 	import { DISHES, formatPrice } from '#lib/data.ts';
+	import { reveal } from '#lib/actions/reveal.ts';
 
 	let now = $state(Date.now());
 
@@ -29,8 +30,10 @@
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">My Orders</p>
-	<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Order History &amp; Tracking</h1>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">My Orders</p>
+		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Order History &amp; Tracking</h1>
+	</div>
 
 	{#if store.orders.length === 0}
 		<div class="mt-8 rounded-3xl bg-white p-10 text-center shadow-sm">
@@ -39,7 +42,7 @@
 			<p class="mt-1 text-sm text-muted">Your orders will show up here with live tracking.</p>
 			<a
 				href="/menu"
-				class="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-bold text-white hover:bg-brand-dark"
+				class="mt-5 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 			>
 				Browse the Menu →
 			</a>

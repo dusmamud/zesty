@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
 	import {
 		Apple,
 		ArrowRight,
@@ -21,6 +23,8 @@
 	} from '@lucide/svelte';
 	import CategoryRail from '#lib/components/CategoryRail.svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
+	import { parallax } from '#lib/actions/parallax.ts';
+	import { reveal } from '#lib/actions/reveal.ts';
 	import {
 		CATEGORIES,
 		DISHES,
@@ -41,9 +45,37 @@
 		)
 	);
 
-	// --- testimonials ---
+	// --- testimonials (auto-advance every 5s, pause on hover/focus) ---
 	let testimonialIndex = $state(0);
 	let testimonial = $derived(TESTIMONIALS[testimonialIndex]);
+	let testimonialPaused = $state(false);
+	let testimonialTimer: ReturnType<typeof setInterval> | undefined;
+
+	function nextTestimonial() {
+		testimonialIndex = (testimonialIndex + 1) % TESTIMONIALS.length;
+	}
+
+	function restartTestimonialTimer() {
+		if (testimonialTimer) clearInterval(testimonialTimer);
+		if (typeof window === 'undefined') return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		testimonialTimer = setInterval(() => {
+			if (!testimonialPaused) nextTestimonial();
+		}, 5000);
+	}
+
+	function goToTestimonial(i: number) {
+		testimonialIndex = i;
+		restartTestimonialTimer();
+	}
+
+	onMount(() => {
+		restartTestimonialTimer();
+		return () => {
+			if (testimonialTimer) clearInterval(testimonialTimer);
+		};
+	});
+
 	const TESTIMONIAL_AVATARS: Record<string, string> = {
 		'Alex Morgan': '/images/avatars/alex-morgan.webp',
 		'Priya Sharma': '/images/avatars/avatar-woman-2.jpg',
@@ -103,32 +135,41 @@
 <!-- HERO -->
 <section class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:py-16">
 	<div>
-		<p class="inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-brand">
+		<p
+			class="hero-anim inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-brand"
+			style="--hero-delay: 0ms"
+		>
 			<Zap class="h-3.5 w-3.5" /> Fast • Fresh • Reliable
 		</p>
-		<h1 class="mt-4 font-display text-5xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl">
+		<h1
+			class="hero-anim mt-4 font-display text-5xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl"
+			style="--hero-delay: 80ms"
+		>
 			Delicious Food,<br />
 			<span class="text-brand">Delivered Fast</span><br />
 			To Your Door
 		</h1>
-		<p class="mt-4 max-w-md text-lg text-muted">
+		<p class="hero-anim mt-4 max-w-md text-lg text-muted" style="--hero-delay: 160ms">
 			Craving something tasty? We deliver your favorite meals hot, fresh and on time.
 		</p>
-		<div class="mt-6 flex flex-wrap items-center gap-4">
+		<div class="hero-anim mt-6 flex flex-wrap items-center gap-4" style="--hero-delay: 240ms">
 			<a
 				href="/menu"
-				class="inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 font-bold text-white shadow-lg shadow-orange-200 hover:bg-brand-dark"
+				class="inline-flex items-center gap-2 rounded-full bg-brand px-7 py-3.5 font-bold text-white shadow-lg shadow-orange-200 transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 			>
 				Order Now <ArrowRight class="h-5 w-5" />
 			</a>
-			<a href="/how-it-works" class="inline-flex items-center gap-2 font-bold hover:text-brand">
+			<a
+				href="/how-it-works"
+				class="inline-flex items-center gap-2 font-bold transition-transform duration-150 hover:text-brand active:scale-95"
+			>
 				<span class="flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink">
 					<Play class="h-4 w-4 fill-current" />
 				</span>
 				Watch Video
 			</a>
 		</div>
-		<div class="mt-8 flex items-center gap-3">
+		<div class="hero-anim mt-8 flex items-center gap-3" style="--hero-delay: 320ms">
 			<div class="flex -space-x-2">
 				<img src="/images/avatars/avatar-woman-1.jpg" alt="Happy customer" class="h-10 w-10 rounded-full border-2 border-white object-cover" />
 				<img src="/images/avatars/avatar-man.webp" alt="Happy customer" class="h-10 w-10 rounded-full border-2 border-white object-cover" />
@@ -146,14 +187,17 @@
 		</div>
 	</div>
 
-	<div class="relative mx-auto w-full max-w-lg">
+	<div class="relative mx-auto w-full max-w-lg" use:parallax={{ speed: 0.08, max: 80 }}>
 		<div class="absolute inset-0 -z-10 rounded-full bg-orange-100"></div>
 		<img
 			src="/images/hero-woman.jpg"
 			alt="Happy woman in a mustard sweater eating a fresh salad bowl"
-			class="aspect-square w-full rounded-full object-cover shadow-xl"
+			class="hero-photo aspect-square w-full rounded-full object-cover shadow-xl"
 		/>
-		<div class="absolute top-8 -left-2 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-lg sm:-left-8">
+		<div
+			class="hero-float absolute top-8 -left-2 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-lg sm:-left-8"
+			style="--hero-delay: 500ms; --bob-delay: 1.1s"
+		>
 			<img src="/images/avatars/avatar-woman-1.jpg" alt="" class="h-9 w-9 rounded-full object-cover" />
 			<div>
 				<p class="text-xs text-muted">Delivery Time</p>
@@ -161,32 +205,39 @@
 			</div>
 			<Clock class="h-5 w-5 text-brand" />
 		</div>
-		<div class="absolute right-0 bottom-10 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg">
+		<div
+			class="hero-float absolute right-0 bottom-10 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg"
+			style="--hero-delay: 600ms; --bob-delay: 1.6s"
+		>
 			<img src="/images/pizza-veggie.jpg" alt="Pizza" class="h-12 w-12 rounded-full object-cover" />
 			<div>
 				<p class="font-display text-lg font-extrabold text-brand">50% OFF</p>
 				<p class="text-xs text-muted">On Your First Order</p>
 			</div>
 		</div>
-		<div class="absolute top-2 right-6 flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-lg">
+		<div
+			class="hero-pulse absolute top-2 right-6 flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-lg"
+		>
 			<Heart class="h-5 w-5 fill-red-500 text-red-500" />
 		</div>
 	</div>
 </section>
 
 <!-- WHY CHOOSE US -->
-<section id="how-it-works" class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6">
+<section id="how-it-works" class="relative mx-auto max-w-7xl scroll-mt-24 px-4 py-12 sm:px-6">
 	<span class="absolute top-16 left-[8%] hidden h-2.5 w-2.5 rounded-full bg-brand sm:block" aria-hidden="true"></span>
 	<span class="absolute top-24 right-[6%] hidden h-2 w-2 rounded-full bg-amber-400 sm:block" aria-hidden="true"></span>
 	<span class="absolute bottom-24 left-[3%] hidden h-2 w-2 rounded-full bg-amber-400 sm:block" aria-hidden="true"></span>
-	<p class="text-center text-xs font-bold tracking-widest text-brand uppercase">• Why Choose Us •</p>
-	<h2 class="mt-2 text-center font-display text-3xl font-extrabold sm:text-4xl">
-		Your Favourite Food<br />Delivery Partner
-	</h2>
+	<div use:reveal>
+		<p class="text-center text-xs font-bold tracking-widest text-brand uppercase">• Why Choose Us •</p>
+		<h2 class="mt-2 text-center font-display text-3xl font-extrabold sm:text-4xl">
+			Your Favourite Food<br />Delivery Partner
+		</h2>
+	</div>
 	<div class="mt-10 grid gap-8 sm:grid-cols-3">
-		{#each [{ icon: Bike, title: 'Lightning Fast', text: 'Super quick delivery right to your door.' }, { icon: UtensilsCrossed, title: 'Wide Variety', text: 'Choose from a wide range of cuisines and dishes.' }, { icon: BadgeCheck, title: 'Top Quality', text: 'We use the freshest ingredients for the best taste.' }] as f (f.title)}
+		{#each [{ icon: Bike, title: 'Lightning Fast', text: 'Super quick delivery right to your door.' }, { icon: UtensilsCrossed, title: 'Wide Variety', text: 'Choose from a wide range of cuisines and dishes.' }, { icon: BadgeCheck, title: 'Top Quality', text: 'We use the freshest ingredients for the best taste.' }] as f, i (f.title)}
 			{@const Icon = f.icon}
-			<div class="relative rounded-3xl bg-white p-8 text-center shadow-sm">
+			<div class="relative rounded-3xl bg-white p-8 text-center shadow-sm" use:reveal={{ delay: i * 100 }}>
 				<span class="absolute top-4 right-5 h-2 w-2 rounded-full bg-brand/70" aria-hidden="true"></span>
 				<span class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 text-brand">
 					<Icon class="h-10 w-10" />
@@ -197,27 +248,29 @@
 		{/each}
 	</div>
 	<div class="mt-8 grid gap-4 text-center sm:grid-cols-3">
-		<div class="rounded-2xl bg-white px-4 py-4 shadow-sm"><p class="font-display text-xl font-extrabold">1. Pick a dish</p><p class="text-sm text-muted">Browse the menu and add to cart.</p></div>
-		<div class="rounded-2xl bg-white px-4 py-4 shadow-sm"><p class="font-display text-xl font-extrabold">2. Checkout as guest</p><p class="text-sm text-muted">No account needed — UPI, card or cash.</p></div>
-		<div class="rounded-2xl bg-white px-4 py-4 shadow-sm"><p class="font-display text-xl font-extrabold">3. Hot at your door</p><p class="text-sm text-muted">Tracked delivery in 20–30 minutes.</p></div>
+		<div class="rounded-2xl bg-white px-4 py-4 shadow-sm" use:reveal={{ delay: 0 }}><p class="font-display text-xl font-extrabold">1. Pick a dish</p><p class="text-sm text-muted">Browse the menu and add to cart.</p></div>
+		<div class="rounded-2xl bg-white px-4 py-4 shadow-sm" use:reveal={{ delay: 100 }}><p class="font-display text-xl font-extrabold">2. Checkout as guest</p><p class="text-sm text-muted">No account needed — UPI, card or cash.</p></div>
+		<div class="rounded-2xl bg-white px-4 py-4 shadow-sm" use:reveal={{ delay: 200 }}><p class="font-display text-xl font-extrabold">3. Hot at your door</p><p class="text-sm text-muted">Tracked delivery in 20–30 minutes.</p></div>
 	</div>
 </section>
 
 <!-- MENU -->
-<section id="menu" class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">Explore Our Menu</p>
-	<div class="mt-1 flex flex-wrap items-end justify-between gap-4">
-		<h2 class="font-display text-3xl font-extrabold sm:text-4xl">Tasty Food You'll Love</h2>
-		<div class="relative">
-			<Search class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted" />
-			<input
-				type="search"
-				value={searchQuery}
-				placeholder="Search dishes…"
-				aria-label="Search dishes in menu"
-				oninput={(e) => (searchQuery = e.currentTarget.value)}
-				class="w-64 rounded-full border border-orange-200 bg-white py-2.5 pr-4 pl-9 text-sm outline-none focus:border-brand"
-			/>
+<section id="menu" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-12 sm:px-6">
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">Explore Our Menu</p>
+		<div class="mt-1 flex flex-wrap items-end justify-between gap-4">
+			<h2 class="font-display text-3xl font-extrabold sm:text-4xl">Tasty Food You'll Love</h2>
+			<div class="relative">
+				<Search class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted" />
+				<input
+					type="search"
+					value={searchQuery}
+					placeholder="Search dishes…"
+					aria-label="Search dishes in menu"
+					oninput={(e) => (searchQuery = e.currentTarget.value)}
+					class="w-64 rounded-full border border-orange-200 bg-white py-2.5 pr-4 pl-9 text-sm outline-none focus:border-brand"
+				/>
+			</div>
 		</div>
 	</div>
 
@@ -230,14 +283,21 @@
 					No dishes match “{searchQuery}”. Try another search or category.
 				</p>
 			{:else}
-				<div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-					{#each visibleDishes as dish (dish.id)}
-						<DishCard {dish} />
-					{/each}
-				</div>
+				{#key activeCategory + searchQuery}
+					<div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+						{#each visibleDishes as dish, i (dish.id)}
+							<div use:reveal={{ delay: (i % 3) * 80 }}>
+								<DishCard {dish} />
+							</div>
+						{/each}
+					</div>
+				{/key}
 			{/if}
 			<p class="mt-6 text-center">
-				<a href="/menu" class="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-white hover:bg-stone-800">
+				<a
+					href="/menu"
+					class="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-bold text-white transition-transform duration-150 hover:bg-stone-800 active:scale-95"
+				>
 					See Full Menu <ArrowRight class="h-4 w-4" />
 				</a>
 			</p>
@@ -246,10 +306,13 @@
 </section>
 
 <!-- OFFERS -->
-<section id="offers" class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+<section id="offers" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-8 sm:px-6">
 	<div class="grid gap-4 sm:grid-cols-3">
-		{#each HOME_OFFERS as offer (offer.code)}
-			<div class="flex items-center justify-between gap-4 rounded-3xl bg-ink p-6 text-white">
+		{#each HOME_OFFERS as offer, i (offer.code)}
+			<div
+				class="flex items-center justify-between gap-4 rounded-3xl bg-ink p-6 text-white"
+				use:reveal={{ delay: i * 100 }}
+			>
 				<div>
 					<p class="font-display text-2xl font-extrabold">{offer.code}</p>
 					<p class="text-sm text-stone-300">{offer.text}</p>
@@ -257,7 +320,7 @@
 				<button
 					type="button"
 					onclick={() => copyCode(offer.code)}
-					class="flex shrink-0 items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold text-ink hover:bg-orange-100"
+					class="flex shrink-0 items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold text-ink transition-transform duration-150 hover:bg-orange-100 active:scale-95"
 				>
 					<Copy class="h-4 w-4" /> {copiedCode === offer.code ? 'Copied!' : 'Copy'}
 				</button>
@@ -271,8 +334,8 @@
 </section>
 
 <!-- TESTIMONIALS -->
-<section id="about" class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2">
-	<div class="relative mx-auto w-full max-w-md">
+<section id="about" class="mx-auto grid max-w-7xl scroll-mt-24 items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2">
+	<div class="relative mx-auto w-full max-w-md" use:reveal>
 		<div class="absolute inset-0 -z-10 rounded-full bg-brand"></div>
 		<img
 			src="/images/testimonial-man.webp"
@@ -289,56 +352,80 @@
 			<span class="text-sm text-muted">Our Happy Customers</span>
 		</div>
 	</div>
-	<div>
+	<div
+		role="region"
+		aria-label="Customer testimonials"
+		use:reveal={{ delay: 100 }}
+		onmouseenter={() => (testimonialPaused = true)}
+		onmouseleave={() => (testimonialPaused = false)}
+		onfocusin={() => (testimonialPaused = true)}
+		onfocusout={() => (testimonialPaused = false)}
+	>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">What Our Customers Say</p>
 		<h2 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">Loved By Thousands<br />Of Foodies</h2>
 		<p class="mt-2 text-muted">We're proud to serve delicious food and great service every single time.</p>
 
-		<figure class="mt-6 rounded-3xl bg-white p-6 shadow-sm">
-			<div class="flex items-center gap-1">
-				{#each Array(5) as _}
-					<Star class="h-4 w-4 fill-amber-400 text-amber-400" />
-				{/each}
-				<span class="ml-1 font-bold">{testimonial.rating.toFixed(1)}</span>
-			</div>
-			<blockquote class="mt-3 text-lg leading-relaxed">“{testimonial.text}”</blockquote>
-			<figcaption class="mt-4 flex items-center gap-3">
-				<img
-					src={TESTIMONIAL_AVATARS[testimonial.name]}
-					alt={testimonial.name}
-					class="h-11 w-11 rounded-full object-cover"
-				/>
-				<div>
-					<p class="font-bold">{testimonial.name}</p>
-					<p class="text-sm text-muted">{testimonial.role}</p>
+		{#key testimonialIndex}
+			<figure in:fly={{ y: 10, duration: 250 }} class="mt-6 rounded-3xl bg-white p-6 shadow-sm">
+				<div class="flex items-center gap-1">
+					{#each Array(5) as _}
+						<Star class="h-4 w-4 fill-amber-400 text-amber-400" />
+					{/each}
+					<span class="ml-1 font-bold">{testimonial.rating.toFixed(1)}</span>
 				</div>
-			</figcaption>
-		</figure>
+				<blockquote class="mt-3 text-lg leading-relaxed">“{testimonial.text}”</blockquote>
+				<figcaption class="mt-4 flex items-center gap-3">
+					<img
+						src={TESTIMONIAL_AVATARS[testimonial.name]}
+						alt={testimonial.name}
+						class="h-11 w-11 rounded-full object-cover"
+					/>
+					<div>
+						<p class="font-bold">{testimonial.name}</p>
+						<p class="text-sm text-muted">{testimonial.role}</p>
+					</div>
+				</figcaption>
+			</figure>
+		{/key}
 		<div class="mt-4 flex items-center gap-3">
 			<button
 				type="button"
 				aria-label="Previous testimonial"
-				onclick={() => (testimonialIndex = (testimonialIndex - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
-				class="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm hover:text-brand"
+				onclick={() => goToTestimonial((testimonialIndex - 1 + TESTIMONIALS.length) % TESTIMONIALS.length)}
+				class="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm transition-transform duration-150 hover:text-brand active:scale-95"
 			>
 				<ChevronLeft class="h-5 w-5" />
 			</button>
 			<button
 				type="button"
 				aria-label="Next testimonial"
-				onclick={() => (testimonialIndex = (testimonialIndex + 1) % TESTIMONIALS.length)}
-				class="flex h-11 w-11 items-center justify-center rounded-full bg-brand text-white shadow hover:bg-brand-dark"
+				onclick={() => goToTestimonial((testimonialIndex + 1) % TESTIMONIALS.length)}
+				class="flex h-11 w-11 items-center justify-center rounded-full bg-brand text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 			>
 				<ChevronRight class="h-5 w-5" />
 			</button>
-			<span class="ml-2 text-sm text-muted">{testimonialIndex + 1} / {TESTIMONIALS.length}</span>
+			<div class="ml-1 flex items-center gap-2" role="tablist" aria-label="Choose testimonial">
+				{#each TESTIMONIALS as _, i (i)}
+					<button
+						type="button"
+						role="tab"
+						aria-selected={i === testimonialIndex}
+						aria-label="Show testimonial {i + 1}"
+						onclick={() => goToTestimonial(i)}
+						class="h-2 rounded-full transition-all duration-200 {i === testimonialIndex
+							? 'w-6 bg-brand'
+							: 'w-2 bg-stone-300 hover:bg-stone-400'}"
+					></button>
+				{/each}
+			</div>
+			<span class="ml-1 text-sm text-muted">{testimonialIndex + 1} / {TESTIMONIALS.length}</span>
 		</div>
 	</div>
 </section>
 
 <!-- APP DOWNLOAD -->
 <section class="mx-auto max-w-7xl px-4 pb-12 sm:px-6">
-	<div class="grid items-center gap-8 rounded-[2rem] bg-cream-dark p-8 sm:p-10 lg:grid-cols-2">
+	<div class="grid items-center gap-8 rounded-[2rem] bg-cream-dark p-8 sm:p-10 lg:grid-cols-2" use:reveal>
 		<div>
 			<p class="text-xs font-bold tracking-widest text-brand uppercase">Download Our App</p>
 			<h2 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">Get Exclusive Offers<br />On The Zesty App!</h2>
@@ -346,7 +433,7 @@
 			<div class="mt-6">
 				<a
 					href="/menu"
-					class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-bold text-white hover:bg-brand-dark"
+					class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					Download App <ArrowRight class="h-4 w-4" />
 				</a>
@@ -399,9 +486,9 @@
 <!-- TRUST ROW -->
 <section class="border-t border-orange-100 bg-white">
 	<div class="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-4">
-		{#each [{ icon: Truck, title: 'Free Delivery', text: 'On orders over $20' }, { icon: RotateCcw, title: 'Easy Returns', text: 'Within 7 days' }, { icon: ShieldCheck, title: 'Secure Payment', text: '100% protected' }, { icon: Headphones, title: '24/7 Support', text: "We're here to help" }] as t (t.title)}
+		{#each [{ icon: Truck, title: 'Free Delivery', text: 'On orders over $20' }, { icon: RotateCcw, title: 'Easy Returns', text: 'Within 7 days' }, { icon: ShieldCheck, title: 'Secure Payment', text: '100% protected' }, { icon: Headphones, title: '24/7 Support', text: "We're here to help" }] as t, i (t.title)}
 			{@const Icon = t.icon}
-			<div class="flex items-start gap-3">
+			<div class="flex items-start gap-3" use:reveal={{ delay: i * 80 }}>
 				<Icon class="h-7 w-7 shrink-0 text-brand" />
 				<div><p class="font-bold">{t.title}</p><p class="text-sm text-muted">{t.text}</p></div>
 			</div>

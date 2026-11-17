@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
 	import { ChevronDown, Headphones, Mail, Phone } from '@lucide/svelte';
+	import { reveal } from '#lib/actions/reveal.ts';
 
 	let openIndex = $state(0);
 
@@ -44,13 +46,15 @@
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">Support</p>
-	<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Frequently Asked Questions</h1>
-	<p class="mt-2 text-muted">Can't find your answer? Our support team is here 24/7.</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">Support</p>
+		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Frequently Asked Questions</h1>
+		<p class="mt-2 text-muted">Can't find your answer? Our support team is here 24/7.</p>
+	</div>
 
 	<div class="mt-8 space-y-3">
 		{#each FAQS as faq, i (faq.q)}
-			<div class="overflow-hidden rounded-2xl bg-white shadow-sm">
+			<div class="overflow-hidden rounded-2xl bg-white shadow-sm" use:reveal={{ delay: Math.min(i, 3) * 60 }}>
 				<button
 					type="button"
 					aria-expanded={openIndex === i}
@@ -61,13 +65,13 @@
 					<ChevronDown class="h-5 w-5 shrink-0 transition {openIndex === i ? 'rotate-180' : ''}" />
 				</button>
 				{#if openIndex === i}
-					<p class="px-5 pb-5 text-sm leading-relaxed text-muted">{faq.a}</p>
+					<p transition:slide={{ duration: 200 }} class="px-5 pb-5 text-sm leading-relaxed text-muted">{faq.a}</p>
 				{/if}
 			</div>
 		{/each}
 	</div>
 
-	<div class="mt-8 rounded-3xl bg-ink p-7 text-white shadow-sm">
+	<div class="mt-8 rounded-3xl bg-ink p-7 text-white shadow-sm" use:reveal>
 		<h2 class="flex items-center gap-2 font-display text-xl font-bold">
 			<Headphones class="h-5 w-5 text-brand-light" /> Still need help?
 		</h2>

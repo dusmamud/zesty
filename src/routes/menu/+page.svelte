@@ -2,6 +2,7 @@
 	import { Search } from '@lucide/svelte';
 	import CategoryRail from '#lib/components/CategoryRail.svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
+	import { reveal } from '#lib/actions/reveal.ts';
 	import { CATEGORIES, DISHES } from '#lib/data.ts';
 
 	let activeCategory = $state<(typeof CATEGORIES)[number]>('All');
@@ -34,11 +35,13 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">Explore Our Menu</p>
-	<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Tasty Food You'll Love</h1>
-	<p class="mt-2 max-w-xl text-muted">
-		All {DISHES.length} dishes, hot and fresh in 20–30 minutes. Tap a dish to see ingredients, add-ons and reviews.
-	</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">Explore Our Menu</p>
+		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Tasty Food You'll Love</h1>
+		<p class="mt-2 max-w-xl text-muted">
+			All {DISHES.length} dishes, hot and fresh in 20–30 minutes. Tap a dish to see ingredients, add-ons and reviews.
+		</p>
+	</div>
 
 	<div class="mt-6 flex flex-wrap items-center gap-3">
 		<div class="relative grow sm:max-w-sm">
@@ -83,11 +86,15 @@
 				<p class="mb-4 text-sm text-muted">
 					{visibleDishes.length} dish{visibleDishes.length === 1 ? '' : 'es'}
 				</p>
-				<div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-					{#each visibleDishes as dish (dish.id)}
-						<DishCard {dish} />
-					{/each}
-				</div>
+				{#key activeCategory + searchQuery + sort + vegOnly}
+					<div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+						{#each visibleDishes as dish, i (dish.id)}
+							<div use:reveal={{ delay: (i % 3) * 80 }}>
+								<DishCard {dish} />
+							</div>
+						{/each}
+					</div>
+				{/key}
 			{/if}
 		</div>
 	</div>

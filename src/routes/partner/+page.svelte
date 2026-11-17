@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { CheckCircle2, ChefHat, Store, TrendingUp, Users } from '@lucide/svelte';
+	import { reveal } from '#lib/actions/reveal.ts';
 
 	let name = $state('');
 	let restaurant = $state('');
@@ -34,19 +35,21 @@
 </svelte:head>
 
 <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-	<p class="text-xs font-bold tracking-widest text-brand uppercase">For Restaurants</p>
-	<h1 class="mt-1 max-w-2xl font-display text-3xl font-extrabold sm:text-4xl">
-		Partner With Us — Grow Your Restaurant
-	</h1>
-	<p class="mt-2 max-w-xl text-muted">
-		Join Zesty and put your food in front of 10,000+ hungry customers in Flavortown. No setup fees,
-		no complicated tech — we handle delivery, you handle the cooking.
-	</p>
+	<div use:reveal>
+		<p class="text-xs font-bold tracking-widest text-brand uppercase">For Restaurants</p>
+		<h1 class="mt-1 max-w-2xl font-display text-3xl font-extrabold sm:text-4xl">
+			Partner With Us — Grow Your Restaurant
+		</h1>
+		<p class="mt-2 max-w-xl text-muted">
+			Join Zesty and put your food in front of 10,000+ hungry customers in Flavortown. No setup fees,
+			no complicated tech — we handle delivery, you handle the cooking.
+		</p>
+	</div>
 
 	<div class="mt-8 grid gap-4 sm:grid-cols-3">
-		{#each [{ icon: Users, title: 'Reach 10K+ customers', text: 'Your dishes shown to thousands of people ordering every week.' }, { icon: TrendingUp, title: 'Grow orders 2×', text: 'Partner restaurants typically double their delivery orders in the first month.' }, { icon: Store, title: 'Simple order management', text: 'One dashboard for orders, menu updates and payouts. No extra hardware.' }] as b (b.title)}
+		{#each [{ icon: Users, title: 'Reach 10K+ customers', text: 'Your dishes shown to thousands of people ordering every week.' }, { icon: TrendingUp, title: 'Grow orders 2×', text: 'Partner restaurants typically double their delivery orders in the first month.' }, { icon: Store, title: 'Simple order management', text: 'One dashboard for orders, menu updates and payouts. No extra hardware.' }] as b, i (b.title)}
 			{@const Icon = b.icon}
-			<div class="rounded-3xl bg-white p-7 shadow-sm">
+			<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal={{ delay: i * 100 }}>
 				<span class="flex h-14 w-14 items-center justify-center rounded-full bg-orange-100 text-brand">
 					<Icon class="h-7 w-7" />
 				</span>
@@ -57,7 +60,7 @@
 	</div>
 
 	<div class="mt-10 grid gap-6 lg:grid-cols-2">
-		<div class="rounded-3xl bg-white p-7 shadow-sm">
+		<div class="rounded-3xl bg-white p-7 shadow-sm" use:reveal>
 			<h2 class="flex items-center gap-2 font-display text-xl font-bold">
 				<ChefHat class="h-5 w-5 text-brand" /> How partnering works
 			</h2>
@@ -105,7 +108,7 @@
 					<button
 						type="button"
 						onclick={submit}
-						class="w-full rounded-full bg-brand py-3.5 font-bold text-white hover:bg-brand-dark"
+						class="w-full rounded-full bg-brand py-3.5 font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 					>
 						Submit Application
 					</button>
