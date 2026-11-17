@@ -1,18 +1,13 @@
 <script lang="ts">
 	import { Banknote, CheckCircle2, CreditCard, Smartphone, X } from '@lucide/svelte';
+	import { placeOrder, store, totals } from '#lib/store.svelte.ts';
 	import { formatPrice } from '#lib/data.ts';
 
-	interface Props {
-		total: number;
-		onClose: () => void;
-		onPlaceOrder: (details: { name: string; phone: string; address: string; payment: string }) => void;
-	}
+	let t = $derived(totals());
 
-	let { total, onClose, onPlaceOrder }: Props = $props();
-
-	let name = $state('');
-	let phone = $state('');
-	let address = $state('');
+	let name = $state(store.user?.name ?? '');
+	let phone = $state(store.user?.phone ?? '');
+	let address = $state(store.user?.address ?? '');
 	let payment = $state('UPI');
 	let error = $state('');
 
@@ -30,16 +25,16 @@
 			return;
 		}
 		error = '';
-		onPlaceOrder({ name: name.trim(), phone: phone.trim(), address: address.trim(), payment });
+		placeOrder({ name: name.trim(), phone: phone.trim(), address: address.trim(), payment });
 	}
 </script>
 
 <div class="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-label="Checkout">
-	<button type="button" aria-label="Close checkout" onclick={onClose} class="absolute inset-0 bg-black/40"></button>
+	<button type="button" aria-label="Close checkout" onclick={() => (store.checkoutOpen = false)} class="absolute inset-0 bg-black/40"></button>
 	<div class="relative w-full max-w-lg rounded-t-3xl bg-white p-6 shadow-2xl sm:rounded-3xl">
 		<div class="flex items-center justify-between">
 			<h2 class="font-display text-xl font-bold">Guest Checkout</h2>
-			<button type="button" aria-label="Close checkout" onclick={onClose} class="rounded-full p-2 hover:bg-stone-100">
+			<button type="button" aria-label="Close checkout" onclick={() => (store.checkoutOpen = false)} class="rounded-full p-2 hover:bg-stone-100">
 				<X class="h-5 w-5" />
 			</button>
 		</div>
@@ -89,7 +84,7 @@
 				class="flex w-full items-center justify-center gap-2 rounded-full bg-brand py-3.5 font-bold text-white hover:bg-brand-dark"
 			>
 				<CheckCircle2 class="h-5 w-5" />
-				Place Order • {formatPrice(total)}
+				Place Order • {formatPrice(t.total)}
 			</button>
 			<p class="text-center text-xs text-muted">Demo checkout — no real payment is taken.</p>
 		</div>

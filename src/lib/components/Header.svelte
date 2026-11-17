@@ -1,20 +1,25 @@
 <script lang="ts">
-	import { Search, ShoppingCart, UtensilsCrossed } from '@lucide/svelte';
+	import { Menu, Search, ShoppingCart, User, UtensilsCrossed, X } from '@lucide/svelte';
+	import { page } from '$app/state';
+	import { cartCount, store } from '#lib/store.svelte.ts';
 
-	interface Props {
-		cartCount: number;
-		searchQuery: string;
-		onCartOpen: () => void;
-		onSearch: (value: string) => void;
-	}
+	let count = $derived(cartCount());
+	let mobileOpen = $state(false);
 
-	let { cartCount, searchQuery, onCartOpen, onSearch }: Props = $props();
-	let showSearch = $state(false);
+	const LINKS = [
+		{ href: '/', label: 'Home' },
+		{ href: '/menu', label: 'Menu' },
+		{ href: '/how-it-works', label: 'How It Works' },
+		{ href: '/offers', label: 'Offers' },
+		{ href: '/about', label: 'About Us' }
+	];
+
+	let firstName = $derived(store.user ? store.user.name.split(' ')[0] : '');
 </script>
 
 <header class="sticky top-0 z-40 border-b border-orange-100 bg-cream/90 backdrop-blur">
 	<div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
-		<a href="#top" class="flex items-center gap-2">
+		<a href="/" class="flex items-center gap-2">
 			<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-white">
 				<UtensilsCrossed class="h-5 w-5" />
 			</span>
@@ -22,55 +27,96 @@
 		</a>
 
 		<nav class="ml-6 hidden items-center gap-6 text-sm font-semibold text-stone-700 lg:flex">
-			<a href="#top" class="text-brand">Home</a>
-			<a href="#menu" class="hover:text-brand">Menu</a>
-			<a href="#how-it-works" class="hover:text-brand">How It Works</a>
-			<a href="#offers" class="hover:text-brand">Offers</a>
-			<a href="#about" class="hover:text-brand">About Us</a>
+			{#each LINKS as link (link.href)}
+				<a
+					href={link.href}
+					aria-current={page.url.pathname === link.href ? 'page' : undefined}
+					class={page.url.pathname === link.href ? 'text-brand' : 'hover:text-brand'}
+				>
+					{link.label}
+				</a>
+			{/each}
 		</nav>
 
 		<div class="ml-auto flex items-center gap-2 sm:gap-3">
-			{#if showSearch}
-				<input
-					type="search"
-					value={searchQuery}
-					placeholder="Search dishes…"
-					aria-label="Search dishes"
-					oninput={(e) => onSearch(e.currentTarget.value)}
-					class="w-40 rounded-full border border-orange-200 bg-white px-4 py-2 text-sm outline-none focus:border-brand sm:w-56"
-				/>
-			{/if}
-			<button
-				type="button"
-				aria-label="Search"
-				onclick={() => (showSearch = !showSearch)}
+			<a
+				href="/menu"
+				aria-label="Search dishes"
 				class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm hover:text-brand"
 			>
 				<Search class="h-5 w-5" />
-			</button>
+			</a>
 
 			<button
 				type="button"
 				aria-label="Open cart"
-				onclick={onCartOpen}
+				onclick={() => (store.cartOpen = true)}
 				class="relative flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm hover:text-brand"
 			>
 				<ShoppingCart class="h-5 w-5" />
-				{#if cartCount > 0}
+				{#if count > 0}
 					<span
 						class="absolute -top-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[11px] font-bold text-white"
 					>
-						{cartCount}
+						{count}
 					</span>
 				{/if}
 			</button>
 
+			{#if store.user}
+				<a
+					href="/orders"
+					class="hidden items-center gap-2 rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-brand-dark sm:flex"
+				>
+					<User class="h-4 w-4" /> Hi, {firstName}
+				</a>
+			{:else}
+				<a
+					href="/signin"
+					class="hidden rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-brand-dark sm:block"
+				>
+					Sign In
+				</a>
+			{/if}
+
 			<button
 				type="button"
-				class="hidden rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-brand-dark sm:block"
+				aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+				aria-expanded={mobileOpen}
+				onclick={() => (mobileOpen = !mobileOpen)}
+				class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm lg:hidden"
 			>
-				Sign In
+				{#if mobileOpen}<X class="h-5 w-5" />{:else}<Menu class="h-5 w-5" />{/if}
 			</button>
 		</div>
 	</div>
+
+	{#if mobileOpen}
+		<nav class="border-t border-orange-100 bg-cream px-4 py-3 lg:hidden">
+			<ul class="space-y-1 text-sm font-semibold">
+				{#each LINKS as link (link.href)}
+					<li>
+						<a
+							href={link.href}
+							onclick={() => (mobileOpen = false)}
+							class="block rounded-xl px-3 py-2.5 hover:bg-white {page.url.pathname === link.href
+								? 'text-brand'
+								: 'text-stone-700'}"
+						>
+							{link.label}
+						</a>
+					</li>
+				{/each}
+				<li>
+					<a
+						href={store.user ? '/orders' : '/signin'}
+						onclick={() => (mobileOpen = false)}
+						class="block rounded-xl bg-brand px-3 py-2.5 text-center font-bold text-white"
+					>
+						{store.user ? `Hi, ${firstName} — My Orders` : 'Sign In'}
+					</a>
+				</li>
+			</ul>
+		</nav>
+	{/if}
 </header>

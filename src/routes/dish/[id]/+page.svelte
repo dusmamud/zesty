@@ -1,0 +1,220 @@
+<script lang="ts">
+	import { ArrowLeft, Clock, Heart, Minus, Plus, ShoppingCart, Star } from '@lucide/svelte';
+	import DishCard from '#lib/components/DishCard.svelte';
+	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
+	import { DISHES, DISH_REVIEWS, formatPrice } from '#lib/data.ts';
+	import type { PageProps } from './$types';
+
+	let { params }: PageProps = $props();
+
+	let dish = $derived(DISHES.find((d) => d.id === params.id)!);
+
+	let qty = $state(1);
+	let extraCheese = $state(false);
+	let extraSauce = $state(false);
+	let spice = $state<'Mild' | 'Medium' | 'Hot'>('Medium');
+	let instructions = $state('');
+
+	let unitPrice = $derived(dish.price + (extraCheese ? 0.99 : 0) + (extraSauce ? 0.49 : 0));
+	let totalPrice = $derived(unitPrice * qty);
+
+	let related = $derived(
+		DISHES.filter((d) => d.category === dish.category && d.id !== dish.id).slice(0, 3)
+	);
+
+	// Rotate the review pool per dish so each dish shows a different set.
+	let dishReviews = $derived.by(() => {
+		const offset = dish.id.split('').reduce((s, c) => s + c.charCodeAt(0), 0) % DISH_REVIEWS.length;
+		return [0, 1, 2].map((i) => DISH_REVIEWS[(offset + i) % DISH_REVIEWS.length]);
+	});
+</script>
+
+<svelte:head>
+	<title>{dish.name} — Zesty</title>
+	<meta
+		name="description"
+		content="{dish.name} — {dish.desc} Rated {dish.rating.toFixed(1)} by {dish.reviews} customers. Order on Zesty, delivered hot in 20–30 minutes."
+	/>
+</svelte:head>
+
+<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+	<a href="/menu" class="inline-flex items-center gap-2 text-sm font-bold text-stone-600 hover:text-brand">
+		<ArrowLeft class="h-4 w-4" /> Back to Menu
+	</a>
+
+	<div class="mt-6 grid gap-10 lg:grid-cols-2">
+		<div>
+			<div class="relative overflow-hidden rounded-3xl shadow-sm">
+				<img src={dish.image} alt={dish.name} class="aspect-[4/3] w-full object-cover" />
+				{#if dish.discount}
+					<span class="absolute top-4 left-4 rounded-full bg-brand px-3 py-1 text-sm font-bold text-white">
+						{dish.discount}
+					</span>
+				{/if}
+				<button
+					type="button"
+					aria-label={store.favourites.has(dish.id)
+						? `Remove ${dish.name} from favourites`
+						: `Save ${dish.name} as favourite`}
+					aria-pressed={store.favourites.has(dish.id)}
+					onclick={() => toggleFavourite(dish.id)}
+					class="absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 shadow hover:scale-110"
+				>
+					<Heart
+						class="h-5 w-5 {store.favourites.has(dish.id) ? 'fill-red-500 text-red-500' : 'text-stone-500'}"
+					/>
+				</button>
+			</div>
+			<p class="mt-3 flex items-center gap-2 text-sm text-muted">
+				<Clock class="h-4 w-4" /> Delivered hot in 20–30 minutes • Free delivery over $20
+			</p>
+		</div>
+
+		<div>
+			<div class="flex items-start justify-between gap-4">
+				<div>
+					<span
+						class="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-bold shadow-sm"
+						title={dish.veg ? 'Vegetarian' : 'Non-vegetarian'}
+					>
+						<span class="flex h-3.5 w-3.5 items-center justify-center border-2 {dish.veg ? 'border-green-600' : 'border-red-600'}">
+							<span class="h-1.5 w-1.5 rounded-full {dish.veg ? 'bg-green-600' : 'bg-red-600'}"></span>
+						</span>
+						{dish.veg ? 'Veg' : 'Non-veg'}
+					</span>
+					<h1 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">{dish.name}</h1>
+					<p class="mt-2 flex items-center gap-1.5 text-sm">
+						<Star class="h-5 w-5 fill-amber-400 text-amber-400" />
+						<span class="font-bold">{dish.rating.toFixed(1)}</span>
+						<span class="text-muted">({dish.reviews} reviews)</span>
+						<span class="ml-2 rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-brand">{dish.category}</span>
+					</p>
+				</div>
+				<p class="font-display text-3xl font-extrabold whitespace-nowrap">
+					{formatPrice(dish.price)}
+					{#if dish.oldPrice}
+						<span class="ml-1 align-middle text-base font-medium text-muted line-through">{formatPrice(dish.oldPrice)}</span>
+					{/if}
+				</p>
+			</div>
+
+			<p class="mt-4 leading-relaxed text-muted">{dish.desc}</p>
+
+			<h2 class="mt-6 font-display text-lg font-bold">Ingredients</h2>
+			<ul class="mt-2 flex flex-wrap gap-2">
+				{#each dish.ingredients as ing (ing)}
+					<li class="rounded-full bg-white px-3 py-1.5 text-sm font-semibold shadow-sm">{ing}</li>
+				{/each}
+			</ul>
+
+			<h2 class="mt-6 font-display text-lg font-bold">Customise</h2>
+			<div class="mt-2 space-y-2">
+				<label class="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm">
+					<span class="flex items-center gap-2 text-sm font-semibold">
+						<input type="checkbox" bind:checked={extraCheese} class="h-4 w-4 accent-orange-600" />
+						Extra cheese
+					</span>
+					<span class="text-sm font-bold">+$0.99</span>
+				</label>
+				<label class="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm">
+					<span class="flex items-center gap-2 text-sm font-semibold">
+						<input type="checkbox" bind:checked={extraSauce} class="h-4 w-4 accent-orange-600" />
+						Extra sauce
+					</span>
+					<span class="text-sm font-bold">+$0.49</span>
+				</label>
+			</div>
+
+			<fieldset class="mt-4">
+				<legend class="font-display text-lg font-bold">Spice level</legend>
+				<div class="mt-2 flex gap-2">
+					{#each ['Mild', 'Medium', 'Hot'] as level (level)}
+						<button
+							type="button"
+							aria-pressed={spice === level}
+							onclick={() => (spice = level as 'Mild' | 'Medium' | 'Hot')}
+							class="rounded-full px-5 py-2 text-sm font-bold {spice === level
+								? 'bg-brand text-white shadow'
+								: 'bg-white text-stone-700 shadow-sm hover:text-brand'}"
+						>
+							{level}
+						</button>
+					{/each}
+				</div>
+			</fieldset>
+
+			<div class="mt-4">
+				<label for="instructions" class="font-display text-lg font-bold">Cooking instructions</label>
+				<textarea
+					id="instructions"
+					rows="2"
+					bind:value={instructions}
+					placeholder="e.g. No onions, extra spicy, cut the burger in half…"
+					class="mt-2 w-full resize-none rounded-2xl border border-orange-200 bg-white px-4 py-3 text-sm outline-none focus:border-brand"
+				></textarea>
+			</div>
+
+			<div class="mt-6 flex flex-wrap items-center gap-3">
+				<div class="flex items-center gap-1 rounded-full bg-white px-2 py-2 shadow-sm">
+					<button
+						type="button"
+						aria-label="Decrease quantity"
+						onclick={() => (qty = Math.max(1, qty - 1))}
+						class="flex h-9 w-9 items-center justify-center rounded-full hover:bg-stone-100"
+					>
+						<Minus class="h-4 w-4" />
+					</button>
+					<span class="w-8 text-center font-display text-lg font-extrabold">{qty}</span>
+					<button
+						type="button"
+						aria-label="Increase quantity"
+						onclick={() => (qty += 1)}
+						class="flex h-9 w-9 items-center justify-center rounded-full hover:bg-stone-100"
+					>
+						<Plus class="h-4 w-4" />
+					</button>
+				</div>
+				<button
+					type="button"
+					onclick={() => addToCart(dish, qty, unitPrice)}
+					class="flex flex-1 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 font-bold text-white shadow hover:bg-brand-dark"
+				>
+					<ShoppingCart class="h-5 w-5" />
+					Add to Cart • {formatPrice(totalPrice)}
+				</button>
+			</div>
+			{#if instructions.trim()}
+				<p class="mt-2 text-xs text-muted">Note for the kitchen: “{instructions.trim()}”</p>
+			{/if}
+		</div>
+	</div>
+
+	<section class="mt-14">
+		<h2 class="font-display text-2xl font-extrabold">What customers say</h2>
+		<div class="mt-4 grid gap-4 sm:grid-cols-3">
+			{#each dishReviews as review (review.name + review.text)}
+				<figure class="rounded-3xl bg-white p-5 shadow-sm">
+					<div class="flex items-center gap-1">
+						{#each Array(review.rating) as _}
+							<Star class="h-4 w-4 fill-amber-400 text-amber-400" />
+						{/each}
+						<span class="ml-1 text-sm font-bold">{review.rating.toFixed(1)}</span>
+					</div>
+					<blockquote class="mt-2 text-sm leading-relaxed">“{review.text}”</blockquote>
+					<figcaption class="mt-3 text-sm font-bold">{review.name}</figcaption>
+				</figure>
+			{/each}
+		</div>
+	</section>
+
+	{#if related.length > 0}
+		<section class="mt-14">
+			<h2 class="font-display text-2xl font-extrabold">You may also like</h2>
+			<div class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+				{#each related as rel (rel.id)}
+					<DishCard dish={rel} />
+				{/each}
+			</div>
+		</section>
+	{/if}
+</div>

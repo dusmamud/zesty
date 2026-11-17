@@ -12,6 +12,7 @@ export interface Dish {
 	category: Category;
 	image: string;
 	veg: boolean;
+	ingredients: string[];
 }
 
 export const CATEGORIES: Array<'All' | Category> = [
@@ -35,7 +36,8 @@ export const DISHES: Dish[] = [
 		reviews: 410,
 		category: 'Burgers',
 		image: '/images/burger-chicken.jpg',
-		veg: false
+		veg: false,
+		ingredients: ['Crispy fried chicken', 'Lettuce', 'Tomato', 'Zesty sauce', 'Sesame bun']
 	},
 	{
 		id: 'double-cheese-burger',
@@ -46,7 +48,8 @@ export const DISHES: Dish[] = [
 		reviews: 285,
 		category: 'Burgers',
 		image: '/images/burger-cheese.jpg',
-		veg: false
+		veg: false,
+		ingredients: ['Two beef patties', 'Cheddar cheese', 'Pickles', 'Onion', 'House sauce']
 	},
 	{
 		id: 'veggie-supreme-pizza',
@@ -59,7 +62,8 @@ export const DISHES: Dish[] = [
 		reviews: 320,
 		category: 'Pizza',
 		image: '/images/pizza-veggie.jpg',
-		veg: true
+		veg: true,
+		ingredients: ['Bell peppers', 'Mushrooms', 'Red onion', 'Sweet corn', 'Mozzarella']
 	},
 	{
 		id: 'margherita-pizza',
@@ -70,7 +74,8 @@ export const DISHES: Dish[] = [
 		reviews: 198,
 		category: 'Pizza',
 		image: '/images/pizza-margherita.jpg',
-		veg: true
+		veg: true,
+		ingredients: ['Tomato sauce', 'Fresh mozzarella', 'Basil', 'Olive oil']
 	},
 	{
 		id: 'thai-basil-noodles',
@@ -81,7 +86,8 @@ export const DISHES: Dish[] = [
 		reviews: 210,
 		category: 'Asian',
 		image: '/images/noodles-thai.jpg',
-		veg: true
+		veg: true,
+		ingredients: ['Rice noodles', 'Thai basil', 'Bell peppers', 'Peanuts', 'Soy glaze']
 	},
 	{
 		id: 'schezwan-fried-rice',
@@ -92,7 +98,8 @@ export const DISHES: Dish[] = [
 		reviews: 176,
 		category: 'Asian',
 		image: '/images/fried-rice.jpg',
-		veg: false
+		veg: false,
+		ingredients: ['Basmati rice', 'Schezwan sauce', 'Egg', 'Spring onion', 'Chicken']
 	},
 	{
 		id: 'chocolate-lava-cake',
@@ -103,7 +110,8 @@ export const DISHES: Dish[] = [
 		reviews: 342,
 		category: 'Desserts',
 		image: '/images/lava-cake.jpg',
-		veg: true
+		veg: true,
+		ingredients: ['Dark chocolate', 'Butter', 'Vanilla crumbs', 'Cocoa']
 	},
 	{
 		id: 'mango-smoothie',
@@ -114,7 +122,56 @@ export const DISHES: Dish[] = [
 		reviews: 154,
 		category: 'Drinks',
 		image: '/images/smoothie.jpg',
-		veg: true
+		veg: true,
+		ingredients: ['Mango', 'Yoghurt', 'Honey', 'Ice']
+	},
+	{
+		id: 'veg-biryani',
+		name: 'Veg Biryani',
+		desc: 'Fragrant basmati rice layered with spiced vegetables and saffron, served with cool raita.',
+		price: 8.99,
+		rating: 4.8,
+		reviews: 265,
+		category: 'Asian',
+		image: '/images/biryani-veg.jpg',
+		veg: true,
+		ingredients: ['Basmati rice', 'Mixed vegetables', 'Saffron', 'Fried onions', 'Raita']
+	},
+	{
+		id: 'grilled-chicken-wings',
+		name: 'Grilled Chicken Wings',
+		desc: 'Smoky grilled wings tossed in BBQ glaze, served with a cool garlic dip.',
+		price: 6.49,
+		rating: 4.7,
+		reviews: 198,
+		category: 'Burgers',
+		image: '/images/chicken-wings.jpg',
+		veg: false,
+		ingredients: ['Chicken wings', 'Smoky BBQ glaze', 'Garlic dip', 'Spring onion']
+	},
+	{
+		id: 'garlic-bread',
+		name: 'Garlic Bread',
+		desc: 'Crusty bread baked with garlic butter, herbs and a dusting of parmesan.',
+		price: 3.99,
+		rating: 4.6,
+		reviews: 142,
+		category: 'Pizza',
+		image: '/images/garlic-bread.jpg',
+		veg: true,
+		ingredients: ['French bread', 'Garlic butter', 'Mixed herbs', 'Parmesan']
+	},
+	{
+		id: 'cold-coffee',
+		name: 'Cold Coffee',
+		desc: 'Chilled espresso shaken with cold milk and vanilla, served over ice.',
+		price: 3.99,
+		rating: 4.8,
+		reviews: 187,
+		category: 'Drinks',
+		image: '/images/cold-coffee.jpg',
+		veg: true,
+		ingredients: ['Espresso', 'Cold milk', 'Ice', 'Vanilla syrup']
 	}
 ];
 
@@ -146,6 +203,35 @@ export const TESTIMONIALS: Testimonial[] = [
 	}
 ];
 
+/** Short customer reviews shown on dish pages (rotated per dish). */
+export const DISH_REVIEWS: Array<{ name: string; rating: number; text: string }> = [
+	{
+		name: 'Riya K.',
+		rating: 5,
+		text: 'Arrived hot and fresh — easily the best version of this dish I have had delivered.'
+	},
+	{
+		name: 'Arjun M.',
+		rating: 5,
+		text: 'Portion is generous and the flavours are spot on. Reordered twice this week.'
+	},
+	{
+		name: 'Sana P.',
+		rating: 4,
+		text: 'Really good. A little less salt would make it perfect, but I will order it again.'
+	},
+	{
+		name: 'Vikram T.',
+		rating: 5,
+		text: 'Packaging was neat, food was still warm after 25 minutes. Great value for money.'
+	},
+	{
+		name: 'Meera D.',
+		rating: 4,
+		text: 'Tasty and fresh. The kids loved it — that is saying something.'
+	}
+];
+
 export const FREE_DELIVERY_OVER = 20;
 export const DELIVERY_FEE = 1.99;
 
@@ -154,6 +240,9 @@ export const PROMOS: Record<string, number> = {
 	ZESTY20: 0.2
 };
 
+/** FREEDEL is not a percentage discount — it waives the delivery fee (see store). */
+export const FREEDEL_CODE = 'FREEDEL';
+
 export function promoRate(code: string | null): number {
 	return code ? (PROMOS[code] ?? 0) : 0;
 }
@@ -161,3 +250,13 @@ export function promoRate(code: string | null): number {
 export function formatPrice(n: number): string {
 	return `$${n.toFixed(2)}`;
 }
+
+/** Neighbourhoods we deliver to, with typical delivery times. */
+export const DELIVERY_AREAS: Array<{ area: string; eta: string }> = [
+	{ area: 'Downtown', eta: '20–25 min' },
+	{ area: 'Riverside', eta: '20–30 min' },
+	{ area: 'Old Town', eta: '25–30 min' },
+	{ area: 'University District', eta: '20–25 min' },
+	{ area: 'Green Park', eta: '25–30 min' },
+	{ area: 'Harbour View', eta: '25–30 min' }
+];
