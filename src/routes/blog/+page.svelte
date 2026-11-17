@@ -19,7 +19,7 @@
 			image: '/images/noodles-thai.jpg',
 			alt: 'Thai Basil Noodles',
 			paras: [
-				'Minute 0: your order prints in the kitchen. Minute 2: cooking starts. Minute 10: packing, with a photo check. Minute 12: a rider picks it up. The rest is the road — and riders who know every shortcut in Flavortown.',
+				'Minute 0: your order prints in the kitchen. Minute 2: cooking starts. Minute 10: packing, with a photo check. Minute 12: a rider picks it up. The rest is the road — and riders who know every shortcut in the city.',
 				'If anything slips past 30 minutes, the Orders page tells you why instead of leaving you guessing. A late order you can see is still annoying — but at least it is honest.'
 			]
 		},
@@ -44,7 +44,7 @@
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">Blog</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">From Our Kitchen</h1>

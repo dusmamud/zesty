@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Heart, Star } from '@lucide/svelte';
 	import FadeImage from '#lib/components/FadeImage.svelte';
+	import VegMark from '#lib/components/VegMark.svelte';
 	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
 	import { formatPrice, type Dish } from '#lib/data.ts';
 
@@ -19,7 +20,9 @@
 	}
 </script>
 
-<article class="group h-full overflow-hidden rounded-3xl bg-white shadow-sm transition hover:shadow-xl">
+<article
+	class="group h-full overflow-hidden rounded-3xl bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+>
 	<div class="relative">
 		<a href="/dish/{dish.id}" aria-label="View {dish.name}">
 			<FadeImage
@@ -49,20 +52,13 @@
 			/>
 		</button>
 		<div
-			class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/45 to-transparent px-4 pt-12 pb-4 text-white"
+			class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-black/5 px-4 pt-16 pb-4 text-white"
 		>
 			<div class="flex items-start gap-2">
 				<a href="/dish/{dish.id}" class="min-w-0">
 					<h3 class="font-display text-lg leading-tight font-bold hover:underline">{dish.name}</h3>
 				</a>
-				<span
-					class="mt-1 flex h-4 w-4 shrink-0 items-center justify-center border-2 {dish.veg
-						? 'border-green-400'
-						: 'border-red-400'}"
-					title={dish.veg ? 'Vegetarian' : 'Non-vegetarian'}
-				>
-					<span class="h-2 w-2 rounded-full {dish.veg ? 'bg-green-400' : 'bg-red-400'}"></span>
-				</span>
+				<VegMark veg={dish.veg} />
 			</div>
 			<p class="mt-1 flex items-center gap-1 text-sm">
 				<Star class="h-4 w-4 fill-amber-400 text-amber-400" />
@@ -70,10 +66,10 @@
 				<span class="text-white/80">({dish.reviews})</span>
 			</p>
 			<div class="pointer-events-auto mt-2 flex items-center justify-between gap-2">
-				<p class="font-display text-xl font-extrabold">
+				<p class="flex items-baseline gap-2 font-display text-xl font-extrabold">
 					{formatPrice(dish.price)}
 					{#if dish.oldPrice}
-						<span class="ml-1 text-sm font-medium text-white/70 line-through">
+						<span class="text-sm font-medium text-white/70 line-through">
 							{formatPrice(dish.oldPrice)}
 						</span>
 					{/if}
@@ -81,7 +77,7 @@
 				<button
 					type="button"
 					onclick={() => addToCart(dish)}
-					class="rounded-full bg-brand px-4 py-2 text-sm font-bold text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95"
+					class="rounded-full bg-brand px-5 py-2.5 text-sm font-bold text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					Order Now
 				</button>

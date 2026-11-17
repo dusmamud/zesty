@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { CheckCircle2, Clock, Mail, MapPin, Phone } from '@lucide/svelte';
+	import { CheckCircle2, Clock, Mail, MapPin } from '@lucide/svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 
 	let name = $state('');
@@ -30,11 +30,11 @@
 	<title>Contact Us — Zesty</title>
 	<meta
 		name="description"
-		content="Contact Zesty: 123 Food Street, Flavortown. Call +1-555-0199, email hello@zesty.example, or send us a message. Open 10am–11pm, 7 days."
+		content="Contact Zesty — send us a message about an order, feedback, or anything else. Open 10am–11pm, 7 days."
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">Contact Us</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">We'd Love To Hear From You</h1>
@@ -47,21 +47,14 @@
 				<MapPin class="h-6 w-6 shrink-0 text-brand" />
 				<div>
 					<h2 class="font-display font-bold">Our kitchen</h2>
-					<p class="text-sm text-muted">123 Food Street, Flavortown<br />Open 10:00 AM – 11:00 PM, 7 days a week</p>
-				</div>
-			</div>
-			<div class="flex items-start gap-4 rounded-3xl bg-white p-6 shadow-sm">
-				<Phone class="h-6 w-6 shrink-0 text-brand" />
-				<div>
-					<h2 class="font-display font-bold">Call us</h2>
-					<p class="text-sm text-muted"><a href="tel:+15550199" class="font-bold text-brand hover:underline">+1-555-0199</a> — 24/7 support</p>
+					<p class="text-sm text-muted">Delivery-only kitchen<br />Open 10:00 AM – 11:00 PM, 7 days a week</p>
 				</div>
 			</div>
 			<div class="flex items-start gap-4 rounded-3xl bg-white p-6 shadow-sm">
 				<Mail class="h-6 w-6 shrink-0 text-brand" />
 				<div>
-					<h2 class="font-display font-bold">Email us</h2>
-					<p class="text-sm text-muted"><a href="mailto:hello@zesty.example" class="font-bold text-brand hover:underline">hello@zesty.example</a> — we reply within a day</p>
+					<h2 class="font-display font-bold">Message us</h2>
+					<p class="text-sm text-muted">Use the form on this page — we reply within a day.</p>
 				</div>
 			</div>
 			<div class="flex items-start gap-4 rounded-3xl bg-white p-6 shadow-sm">

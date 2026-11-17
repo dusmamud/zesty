@@ -46,8 +46,8 @@
 			<h2 class="font-display text-xl font-bold text-ink">4. Your choices</h2>
 			<p class="mt-2 text-sm">
 				You can order as a guest without an account, sign out any time, and delete your saved
-				data by clearing your browser storage. Questions about privacy? Email
-				<a href="mailto:hello@zesty.example" class="font-bold text-brand hover:underline">hello@zesty.example</a>.
+				data by clearing your browser storage. Questions about privacy?
+				<a href="/contact" class="font-bold text-brand hover:underline">Contact us</a>.
 			</p>
 		</section>
 	</div>

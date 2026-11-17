@@ -9,7 +9,6 @@
 		ChevronLeft,
 		ChevronRight,
 		Clock,
-		Copy,
 		Headphones,
 		Heart,
 		Play,
@@ -23,11 +22,13 @@
 	} from '@lucide/svelte';
 	import CategoryRail from '#lib/components/CategoryRail.svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
+	import OfferCard from '#lib/components/OfferCard.svelte';
 	import { parallax } from '#lib/actions/parallax.ts';
 	import { reveal } from '#lib/actions/reveal.ts';
 	import {
 		CATEGORIES,
 		DISHES,
+		OFFERS,
 		TESTIMONIALS,
 		type Dish
 	} from '#lib/data.ts';
@@ -94,10 +95,14 @@
 		setTimeout(() => (copiedCode = null), 2000);
 	}
 
-	const HOME_OFFERS = [
-		{ code: 'FIRST50', text: '50% off your first order' },
-		{ code: 'ZESTY20', text: '20% off orders over $15' },
-		{ code: 'FREEDEL', text: 'Free delivery on any order' }
+	const MARQUEE_ITEMS = [
+		'Burgers',
+		'Pizza',
+		'Asian',
+		'Desserts',
+		'Drinks',
+		'Free delivery over $20',
+		'20–30 mins'
 	];
 
 	const POPULAR_NEAR_YOU: Dish[] = [
@@ -125,15 +130,13 @@
 			'@type': 'Restaurant',
 			name: 'Zesty',
 			servesCuisine: ['Burgers', 'Pizza', 'Asian', 'Desserts'],
-			priceRange: '$',
-			telephone: '+1-555-0199',
-			address: { '@type': 'PostalAddress', streetAddress: '123 Food Street', addressLocality: 'Flavortown' }
+			priceRange: '$'
 		})}
 	</script>
 </svelte:head>
 
 <!-- HERO -->
-<section class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:py-16">
+<section class="mx-auto grid max-w-[1440px] items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:py-16">
 	<div>
 		<p
 			class="hero-anim inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-brand"
@@ -188,10 +191,10 @@
 	</div>
 
 	<div class="relative mx-auto w-full max-w-lg" use:parallax={{ speed: 0.08, max: 80 }}>
-		<div class="absolute inset-0 -z-10 rounded-full bg-orange-100"></div>
+		<div class="hero-blob absolute -inset-3 -z-10 rounded-full sm:-inset-4"></div>
 		<img
 			src="/images/hero-woman.jpg"
-			alt="Happy woman in a mustard sweater eating a fresh salad bowl"
+			alt="Smiling woman holding a fresh salad bowl"
 			class="hero-photo aspect-square w-full rounded-full object-cover shadow-xl"
 		/>
 		<div
@@ -209,7 +212,7 @@
 			class="hero-float absolute right-0 bottom-10 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg"
 			style="--hero-delay: 600ms; --bob-delay: 1.6s"
 		>
-			<img src="/images/pizza-veggie.jpg" alt="Pizza" class="h-12 w-12 rounded-full object-cover" />
+			<img src="/images/salad-bowl.jpg" alt="Fresh salad bowl" class="h-12 w-12 rounded-full object-cover" />
 			<div>
 				<p class="font-display text-lg font-extrabold text-brand">50% OFF</p>
 				<p class="text-xs text-muted">On Your First Order</p>
@@ -223,11 +226,24 @@
 	</div>
 </section>
 
+<!-- SIGNATURE CUISINE MARQUEE -->
+<div class="marquee overflow-hidden bg-brand py-3" aria-hidden="true">
+	<div class="marquee-track">
+		{#each [0, 1] as copy (copy)}
+			<div class="flex shrink-0 items-center">
+				{#each MARQUEE_ITEMS as item (item)}
+					<span class="flex items-center font-display text-sm font-extrabold tracking-widest whitespace-nowrap text-white uppercase">
+						<span class="px-6">{item}</span>
+						<span class="text-white/60">✦</span>
+					</span>
+				{/each}
+			</div>
+		{/each}
+	</div>
+</div>
+
 <!-- WHY CHOOSE US -->
-<section id="how-it-works" class="relative mx-auto max-w-7xl scroll-mt-24 px-4 py-12 sm:px-6">
-	<span class="absolute top-16 left-[8%] hidden h-2.5 w-2.5 rounded-full bg-brand sm:block" aria-hidden="true"></span>
-	<span class="absolute top-24 right-[6%] hidden h-2 w-2 rounded-full bg-amber-400 sm:block" aria-hidden="true"></span>
-	<span class="absolute bottom-24 left-[3%] hidden h-2 w-2 rounded-full bg-amber-400 sm:block" aria-hidden="true"></span>
+<section id="how-it-works" class="relative mx-auto max-w-[1440px] scroll-mt-24 px-4 py-16 sm:px-6">
 	<div use:reveal>
 		<p class="text-center text-xs font-bold tracking-widest text-brand uppercase">• Why Choose Us •</p>
 		<h2 class="mt-2 text-center font-display text-3xl font-extrabold sm:text-4xl">
@@ -237,8 +253,7 @@
 	<div class="mt-10 grid gap-8 sm:grid-cols-3">
 		{#each [{ icon: Bike, title: 'Lightning Fast', text: 'Super quick delivery right to your door.' }, { icon: UtensilsCrossed, title: 'Wide Variety', text: 'Choose from a wide range of cuisines and dishes.' }, { icon: BadgeCheck, title: 'Top Quality', text: 'We use the freshest ingredients for the best taste.' }] as f, i (f.title)}
 			{@const Icon = f.icon}
-			<div class="relative rounded-3xl bg-white p-8 text-center shadow-sm" use:reveal={{ delay: i * 100 }}>
-				<span class="absolute top-4 right-5 h-2 w-2 rounded-full bg-brand/70" aria-hidden="true"></span>
+			<div class="rounded-3xl bg-white p-8 text-center shadow-sm" use:reveal={{ delay: i * 100 }}>
 				<span class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 text-brand">
 					<Icon class="h-10 w-10" />
 				</span>
@@ -255,7 +270,7 @@
 </section>
 
 <!-- MENU -->
-<section id="menu" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-12 sm:px-6">
+<section id="menu" class="mx-auto max-w-[1440px] scroll-mt-24 px-4 py-16 sm:px-6">
 	<div use:reveal>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">Explore Our Menu</p>
 		<div class="mt-1 flex flex-wrap items-end justify-between gap-4">
@@ -306,24 +321,11 @@
 </section>
 
 <!-- OFFERS -->
-<section id="offers" class="mx-auto max-w-7xl scroll-mt-24 px-4 py-8 sm:px-6">
+<section id="offers" class="mx-auto max-w-[1440px] scroll-mt-24 px-4 py-8 sm:px-6">
 	<div class="grid gap-4 sm:grid-cols-3">
-		{#each HOME_OFFERS as offer, i (offer.code)}
-			<div
-				class="flex items-center justify-between gap-4 rounded-3xl bg-ink p-6 text-white"
-				use:reveal={{ delay: i * 100 }}
-			>
-				<div>
-					<p class="font-display text-2xl font-extrabold">{offer.code}</p>
-					<p class="text-sm text-stone-300">{offer.text}</p>
-				</div>
-				<button
-					type="button"
-					onclick={() => copyCode(offer.code)}
-					class="flex shrink-0 items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-bold text-ink transition-transform duration-150 hover:bg-orange-100 active:scale-95"
-				>
-					<Copy class="h-4 w-4" /> {copiedCode === offer.code ? 'Copied!' : 'Copy'}
-				</button>
+		{#each OFFERS as offer, i (offer.code)}
+			<div use:reveal={{ delay: i * 100 }}>
+				<OfferCard {offer} copied={copiedCode === offer.code} onCopy={() => copyCode(offer.code)} compact />
 			</div>
 		{/each}
 	</div>
@@ -334,7 +336,7 @@
 </section>
 
 <!-- TESTIMONIALS -->
-<section id="about" class="mx-auto grid max-w-7xl scroll-mt-24 items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2">
+<section id="about" class="mx-auto grid max-w-[1440px] scroll-mt-24 items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2">
 	<div class="relative mx-auto w-full max-w-md" use:reveal>
 		<div class="absolute inset-0 -z-10 rounded-full bg-brand"></div>
 		<img
@@ -424,7 +426,7 @@
 </section>
 
 <!-- APP DOWNLOAD -->
-<section class="mx-auto max-w-7xl px-4 pb-12 sm:px-6">
+<section class="mx-auto max-w-[1440px] px-4 pb-12 sm:px-6">
 	<div class="grid items-center gap-8 rounded-[2rem] bg-cream-dark p-8 sm:p-10 lg:grid-cols-2" use:reveal>
 		<div>
 			<p class="text-xs font-bold tracking-widest text-brand uppercase">Download Our App</p>
@@ -485,7 +487,7 @@
 
 <!-- TRUST ROW -->
 <section class="border-t border-orange-100 bg-white">
-	<div class="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-4">
+	<div class="mx-auto grid max-w-[1440px] grid-cols-2 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-4">
 		{#each [{ icon: Truck, title: 'Free Delivery', text: 'On orders over $20' }, { icon: RotateCcw, title: 'Easy Returns', text: 'Within 7 days' }, { icon: ShieldCheck, title: 'Secure Payment', text: '100% protected' }, { icon: Headphones, title: '24/7 Support', text: "We're here to help" }] as t, i (t.title)}
 			{@const Icon = t.icon}
 			<div class="flex items-start gap-3" use:reveal={{ delay: i * 80 }}>

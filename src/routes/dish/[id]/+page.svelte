@@ -2,6 +2,7 @@
 	import { ArrowLeft, Clock, Heart, Minus, Plus, ShoppingCart, Star } from '@lucide/svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
 	import FadeImage from '#lib/components/FadeImage.svelte';
+	import VegMark from '#lib/components/VegMark.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
 	import { DISHES, DISH_REVIEWS, formatPrice } from '#lib/data.ts';
@@ -47,7 +48,7 @@
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<a href="/menu" class="inline-flex items-center gap-2 text-sm font-bold text-stone-600 hover:text-brand">
 		<ArrowLeft class="h-4 w-4" /> Back to Menu
 	</a>
@@ -85,15 +86,7 @@
 		<div>
 			<div class="flex items-start justify-between gap-4">
 				<div>
-					<span
-						class="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1 text-xs font-bold shadow-sm"
-						title={dish.veg ? 'Vegetarian' : 'Non-vegetarian'}
-					>
-						<span class="flex h-3.5 w-3.5 items-center justify-center border-2 {dish.veg ? 'border-green-600' : 'border-red-600'}">
-							<span class="h-1.5 w-1.5 rounded-full {dish.veg ? 'bg-green-600' : 'bg-red-600'}"></span>
-						</span>
-						{dish.veg ? 'Veg' : 'Non-veg'}
-					</span>
+					<VegMark veg={dish.veg} />
 					<h1 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">{dish.name}</h1>
 					<p class="mt-2 flex items-center gap-1.5 text-sm">
 						<Star class="h-5 w-5 fill-amber-400 text-amber-400" />
@@ -102,10 +95,10 @@
 						<span class="ml-2 rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-brand">{dish.category}</span>
 					</p>
 				</div>
-				<p class="font-display text-3xl font-extrabold whitespace-nowrap">
+				<p class="flex items-baseline gap-2 font-display text-3xl font-extrabold whitespace-nowrap">
 					{formatPrice(dish.price)}
 					{#if dish.oldPrice}
-						<span class="ml-1 align-middle text-base font-medium text-muted line-through">{formatPrice(dish.oldPrice)}</span>
+						<span class="align-middle text-base font-medium text-muted line-through">{formatPrice(dish.oldPrice)}</span>
 					{/if}
 				</p>
 			</div>

@@ -43,7 +43,7 @@
 		? 'bg-cream/95 shadow-md backdrop-blur-md'
 		: 'bg-cream/90 backdrop-blur'}"
 >
-	<div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
+	<div class="mx-auto flex max-w-[1440px] items-center gap-4 px-4 py-3 sm:px-6">
 		<a href="/" class="flex items-center gap-2">
 			<span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand text-white">
 				<UtensilsCrossed class="h-5 w-5" />

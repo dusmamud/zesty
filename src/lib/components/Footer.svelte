@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ArrowRight, CheckCircle2, MapPin, UtensilsCrossed } from '@lucide/svelte';
+	import { ArrowRight, CheckCircle2, UtensilsCrossed } from '@lucide/svelte';
 	import { store, subscribeNewsletter } from '#lib/store.svelte.ts';
 
 	let email = $state('');
@@ -13,7 +13,7 @@
 </script>
 
 <footer class="bg-white">
-	<div class="mx-auto grid max-w-7xl gap-8 border-t px-4 py-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-5">
+	<div class="mx-auto grid max-w-[1440px] gap-8 border-t px-4 py-10 sm:grid-cols-2 sm:px-6 lg:grid-cols-5">
 		<div>
 			<a href="/" class="flex items-center gap-2 font-display text-xl font-extrabold">
 				<span class="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-white">
@@ -22,9 +22,6 @@
 				Zesty
 			</a>
 			<p class="mt-2 text-sm text-muted">Good food. Fast delivery.<br />Every time you order.</p>
-			<p class="mt-3 flex items-center gap-1.5 text-sm text-muted">
-				<MapPin class="h-4 w-4" /> 123 Food Street, Flavortown
-			</p>
 			<div class="mt-4 flex items-center gap-2">
 				<a
 					href="https://facebook.com"
@@ -140,7 +137,5 @@
 			{/if}
 		</div>
 	</div>
-	<p class="border-t py-4 text-center text-xs text-muted">
-		© 2026 Zesty. Demo frontend — no real orders or payments.
-	</p>
+	<p class="border-t py-4 text-center text-xs text-muted">© 2026 Zesty. All rights reserved.</p>
 </footer>

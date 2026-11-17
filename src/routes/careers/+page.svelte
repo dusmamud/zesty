@@ -6,14 +6,14 @@
 		{
 			icon: Bike,
 			title: 'Delivery Rider',
-			type: 'Full-time • Flavortown',
+			type: 'Full-time • On-site',
 			text: 'Ride, deliver hot food, earn per order plus tips. Flexible shifts, fuel allowance, and a rider kit on joining.',
 			perks: ['Flexible shifts', 'Per-order pay + tips', 'Fuel allowance']
 		},
 		{
 			icon: ChefHat,
 			title: 'Kitchen Chef',
-			type: 'Full-time • 123 Food Street',
+			type: 'Full-time • On-site',
 			text: 'Run a station in our kitchen — burgers, pizza or Asian. We care about consistency and speed, not fancy CVs.',
 			perks: ['Free staff meals', 'Two days off a week', 'Growth to head chef']
 		},
@@ -35,7 +35,7 @@
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">Careers</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Come Work With Us</h1>
@@ -73,8 +73,8 @@
 	</div>
 
 	<p class="mt-8 rounded-3xl bg-white p-6 text-center text-sm text-muted shadow-sm" use:reveal>
-		Don't see your role? Write to
-		<a href="mailto:hello@zesty.example" class="font-bold text-brand hover:underline">hello@zesty.example</a>
-		with what you do best — we always read every email.
+		Don't see your role? Write to us from the
+		<a href="/contact" class="font-bold text-brand hover:underline">Contact page</a>
+		with what you do best — we always read every message.
 	</p>
 </div>

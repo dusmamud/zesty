@@ -12,7 +12,7 @@
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">About Us</p>
 		<h1 class="mt-1 max-w-2xl font-display text-3xl font-extrabold sm:text-4xl">
@@ -62,7 +62,7 @@
 				just people who care whether your dinner arrives hot.
 			</p>
 			<p class="mt-3 text-sm leading-relaxed text-muted">
-				Our kitchen is at 123 Food Street, Flavortown. Come say hi — the coffee is on us.
+				We're a delivery-only kitchen — every order goes straight from our kitchen to your door, hot and fresh.
 			</p>
 		</div>
 		<div class="rounded-3xl bg-ink p-7 text-white shadow-sm" use:reveal={{ delay: 100 }}>

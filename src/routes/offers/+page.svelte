@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { CheckCircle2, Copy, Tag } from '@lucide/svelte';
+	import OfferCard from '#lib/components/OfferCard.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
+	import { OFFERS } from '#lib/data.ts';
 
 	let copiedCode = $state<string | null>(null);
 	async function copyCode(code: string) {
@@ -12,27 +13,6 @@
 		copiedCode = code;
 		setTimeout(() => (copiedCode = null), 2000);
 	}
-
-	const OFFERS = [
-		{
-			code: 'FIRST50',
-			title: '50% off your first order',
-			text: 'Half price on your very first Zesty order. No minimum spend.',
-			terms: 'First order only • One use per customer • Valid till 31 Dec 2026'
-		},
-		{
-			code: 'ZESTY20',
-			title: '20% off orders over $15',
-			text: 'A flat 20% off whenever your order crosses $15.',
-			terms: 'Minimum order $15 • Can be used on every order • Valid till 31 Dec 2026'
-		},
-		{
-			code: 'FREEDEL',
-			title: 'Free delivery on any order',
-			text: 'Delivery fee waived completely — even on a single coffee.',
-			terms: 'No minimum spend • One use per order • Valid till 31 Dec 2026'
-		}
-	];
 </script>
 
 <svelte:head>
@@ -43,7 +23,7 @@
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">Offers</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Deals Worth Ordering For</h1>
@@ -54,26 +34,9 @@
 
 	<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 		{#each OFFERS as offer, i (offer.code)}
-			<article class="flex flex-col rounded-3xl bg-ink p-7 text-white shadow-sm" use:reveal={{ delay: i * 100 }}>
-				<span class="flex h-12 w-12 items-center justify-center rounded-full bg-white/10">
-					<Tag class="h-6 w-6 text-brand-light" />
-				</span>
-				<p class="mt-4 font-display text-3xl font-extrabold">{offer.code}</p>
-				<p class="mt-1 font-display text-lg font-bold">{offer.title}</p>
-				<p class="mt-1 flex-1 text-sm text-stone-300">{offer.text}</p>
-				<p class="mt-3 border-t border-white/15 pt-3 text-xs text-stone-400">{offer.terms}</p>
-				<button
-					type="button"
-					onclick={() => copyCode(offer.code)}
-					class="mt-4 flex items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-bold text-ink transition-transform duration-150 hover:bg-orange-100 active:scale-95"
-				>
-					{#if copiedCode === offer.code}
-						<CheckCircle2 class="h-4 w-4 text-green-600" /> Copied!
-					{:else}
-						<Copy class="h-4 w-4" /> Copy Code
-					{/if}
-				</button>
-			</article>
+			<div use:reveal={{ delay: i * 100 }}>
+				<OfferCard {offer} copied={copiedCode === offer.code} onCopy={() => copyCode(offer.code)} />
+			</div>
 		{/each}
 	</div>
 

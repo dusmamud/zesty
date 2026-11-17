@@ -243,6 +243,45 @@ export const PROMOS: Record<string, number> = {
 /** FREEDEL is not a percentage discount — it waives the delivery fee (see store). */
 export const FREEDEL_CODE = 'FREEDEL';
 
+/** Shared offer cards — one system used on home and /offers (accent is the only difference). */
+export type OfferAccent = 'orange' | 'green' | 'amber';
+
+export interface Offer {
+	code: string;
+	title: string;
+	text: string;
+	terms: string;
+	accent: OfferAccent;
+	tag: string;
+}
+
+export const OFFERS: Offer[] = [
+	{
+		code: 'FIRST50',
+		title: '50% off your first order',
+		text: 'Half price on your very first Zesty order. No minimum spend.',
+		terms: 'First order only • One use per customer • Valid till 31 Dec 2026',
+		accent: 'orange',
+		tag: 'Most popular'
+	},
+	{
+		code: 'ZESTY20',
+		title: '20% off orders over $15',
+		text: 'A flat 20% off whenever your order crosses $15.',
+		terms: 'Minimum order $15 • Can be used on every order • Valid till 31 Dec 2026',
+		accent: 'green',
+		tag: 'Best value'
+	},
+	{
+		code: 'FREEDEL',
+		title: 'Free delivery on any order',
+		text: 'Delivery fee waived completely — even on a single coffee.',
+		terms: 'No minimum spend • One use per order • Valid till 31 Dec 2026',
+		accent: 'amber',
+		tag: 'No minimum'
+	}
+];
+
 export function promoRate(code: string | null): number {
 	return code ? (PROMOS[code] ?? 0) : 0;
 }

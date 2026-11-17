@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
-	import { ChevronDown, Headphones, Mail, Phone } from '@lucide/svelte';
+	import { ChevronDown, Headphones } from '@lucide/svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 
 	let openIndex = $state(0);
@@ -16,7 +16,7 @@
 		},
 		{
 			q: 'What payment methods do you accept?',
-			a: 'UPI, debit/credit card, and cash on delivery. You can pay as a guest — no account is needed. (This is a demo, so no real payment is taken.)'
+			a: 'UPI, debit/credit card, and cash on delivery. You can pay as a guest — no account is needed.'
 		},
 		{
 			q: 'How do promo codes work?',
@@ -24,7 +24,7 @@
 		},
 		{
 			q: 'What if my order is wrong or late?',
-			a: 'Tell us within 7 days and we will make it right — a replacement, a refund, or credit on your next order. Start from the Contact page or call +1-555-0199.'
+			a: 'Tell us within 7 days and we will make it right — a replacement, a refund, or credit on your next order. Start from the Contact page.'
 		},
 		{
 			q: 'Can I order without creating an account?',
@@ -77,12 +77,6 @@
 		</h2>
 		<p class="mt-2 text-sm text-stone-300">Reach us any time — we answer fast, day or night.</p>
 		<div class="mt-4 flex flex-wrap gap-4 text-sm font-semibold">
-			<a href="tel:+15550199" class="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 hover:bg-white/20">
-				<Phone class="h-4 w-4" /> +1-555-0199
-			</a>
-			<a href="mailto:hello@zesty.example" class="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 hover:bg-white/20">
-				<Mail class="h-4 w-4" /> hello@zesty.example
-			</a>
 			<a href="/contact" class="flex items-center gap-2 rounded-full bg-brand px-4 py-2.5 hover:bg-brand-dark">
 				Contact Us →
 			</a>

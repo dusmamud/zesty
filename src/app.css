@@ -185,7 +185,33 @@ button:focus-visible {
 	outline-offset: 2px;
 }
 
-/* 6. Respect reduced motion everywhere. */
+/* 6. Hero peach blob — a real radial peach gradient, clearly visible on cream. */
+.hero-blob {
+	background: radial-gradient(circle at 50% 42%, #ffe9cf 0%, #ffddb6 55%, #ffd2a8 100%);
+	box-shadow: 0 0 0 8px rgb(255 233 207 / 0.55);
+}
+
+/* 7. Signature cuisine marquee — infinite ticker, transform only, pauses on hover. */
+@keyframes marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+.marquee-track {
+	display: flex;
+	width: max-content;
+	animation: marquee 30s linear infinite;
+}
+
+.marquee:hover .marquee-track {
+	animation-play-state: paused;
+}
+
+/* 8. Respect reduced motion everywhere. */
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
@@ -213,5 +239,9 @@ button:focus-visible {
 
 	.scroll-progress {
 		display: none;
+	}
+
+	.marquee-track {
+		animation: none;
 	}
 }

@@ -34,14 +34,14 @@
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">For Restaurants</p>
 		<h1 class="mt-1 max-w-2xl font-display text-3xl font-extrabold sm:text-4xl">
 			Partner With Us — Grow Your Restaurant
 		</h1>
 		<p class="mt-2 max-w-xl text-muted">
-			Join Zesty and put your food in front of 10,000+ hungry customers in Flavortown. No setup fees,
+			Join Zesty and put your food in front of 10,000+ hungry customers in your city. No setup fees,
 			no complicated tech — we handle delivery, you handle the cooking.
 		</p>
 	</div>
@@ -70,8 +70,7 @@
 				<li class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-extrabold text-white">3</span><span><strong>Go live</strong> — start receiving orders the same week. Payouts every Friday.</span></li>
 			</ol>
 			<p class="mt-4 text-sm text-muted">
-				Questions? Call <a href="tel:+15550199" class="font-bold text-brand hover:underline">+1-555-0199</a> or
-				<a href="/contact" class="font-bold text-brand hover:underline">contact us</a>.
+				Questions? <a href="/contact" class="font-bold text-brand hover:underline">Contact us</a> — we reply within a day.
 			</p>
 		</div>
 

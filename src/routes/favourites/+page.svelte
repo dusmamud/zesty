@@ -16,7 +16,7 @@
 	/>
 </svelte:head>
 
-<div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
 		<p class="text-xs font-bold tracking-widest text-brand uppercase">Saved For Later</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">My Favourites</h1>
