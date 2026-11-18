@@ -22,16 +22,32 @@
 	} from '@lucide/svelte';
 	import CategoryRail from '#lib/components/CategoryRail.svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import OfferCard from '#lib/components/OfferCard.svelte';
 	import { parallax } from '#lib/actions/parallax.ts';
 	import { reveal } from '#lib/actions/reveal.ts';
 	import {
 		CATEGORIES,
 		DISHES,
+		IMAGE_DIMS,
 		OFFERS,
 		TESTIMONIALS,
 		type Dish
 	} from '#lib/data.ts';
+
+	// JSON-LD as a string: Svelte does not evaluate {…} inside a raw ld+json
+	// <script> tag, so the markup is injected with {@html} instead.
+	const SITE_URL = 'https://zeesty.pages.dev';
+	const restaurantLd = `<script type="application/ld+json">${JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'Restaurant',
+		name: 'Zesty',
+		url: `${SITE_URL}/`,
+		image: `${SITE_URL}/og.jpg`,
+		servesCuisine: ['Burgers', 'Pizza', 'Asian', 'Desserts'],
+		priceRange: '$',
+		hasMenu: { '@type': 'Menu', url: `${SITE_URL}/menu` }
+	}).replace(/</g, '\\u003c')}<\/script>`;
 
 	// --- menu state ---
 	let activeCategory = $state<(typeof CATEGORIES)[number]>('All');
@@ -79,7 +95,7 @@
 
 	const TESTIMONIAL_AVATARS: Record<string, string> = {
 		'Alex Morgan': '/images/avatars/alex-morgan.webp',
-		'Priya Sharma': '/images/avatars/avatar-woman-2.jpg',
+		'Priya Sharma': '/images/avatars/avatar-woman-2.webp',
 		'James Carter': '/images/avatars/avatar-man.webp'
 	};
 
@@ -118,28 +134,20 @@
 		name="description"
 		content="Zesty — delicious food, delivered fast to your door. Burgers, pizza, Asian, desserts and drinks, hot and fresh in 20–30 minutes."
 	/>
-	<meta property="og:title" content="Zesty — Delicious Food, Delivered Fast" />
-	<meta
-		property="og:description"
-		content="Craving something tasty? We deliver your favorite meals hot, fresh and on time."
+	<Seo
+		title="Zesty — Delicious Food, Delivered Fast"
+		description="Zesty — delicious food, delivered fast to your door. Burgers, pizza, Asian, desserts and drinks, hot and fresh in 20–30 minutes."
+		path="/"
+		ogDescription="Craving something tasty? We deliver your favorite meals hot, fresh and on time."
 	/>
-	<meta property="og:type" content="website" />
-	<script type="application/ld+json">
-		{JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'Restaurant',
-			name: 'Zesty',
-			servesCuisine: ['Burgers', 'Pizza', 'Asian', 'Desserts'],
-			priceRange: '$'
-		})}
-	</script>
+	{@html restaurantLd}
 </svelte:head>
 
 <!-- HERO -->
 <section class="mx-auto grid max-w-[1440px] items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:py-16">
 	<div>
 		<p
-			class="hero-anim inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-brand"
+			class="hero-anim inline-flex items-center gap-1.5 rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700"
 			style="--hero-delay: 0ms"
 		>
 			<Zap class="h-3.5 w-3.5" /> Fast • Fresh • Reliable
@@ -169,14 +177,14 @@
 				<span class="flex h-11 w-11 items-center justify-center rounded-full border-2 border-ink">
 					<Play class="h-4 w-4 fill-current" />
 				</span>
-				Watch Video
+				See How It Works
 			</a>
 		</div>
 		<div class="hero-anim mt-8 flex items-center gap-3" style="--hero-delay: 320ms">
 			<div class="flex -space-x-2">
-				<img src="/images/avatars/avatar-woman-1.jpg" alt="Happy customer" class="h-10 w-10 rounded-full border-2 border-white object-cover" />
-				<img src="/images/avatars/avatar-man.webp" alt="Happy customer" class="h-10 w-10 rounded-full border-2 border-white object-cover" />
-				<img src="/images/avatars/avatar-woman-2.jpg" alt="Happy customer" class="h-10 w-10 rounded-full border-2 border-white object-cover" />
+				<img src="/images/avatars/avatar-woman-1.webp" alt="" width="200" height="133" class="h-10 w-10 rounded-full border-2 border-white object-cover" />
+				<img src="/images/avatars/avatar-man.webp" alt="" width="200" height="200" class="h-10 w-10 rounded-full border-2 border-white object-cover" />
+				<img src="/images/avatars/avatar-woman-2.webp" alt="" width="200" height="134" class="h-10 w-10 rounded-full border-2 border-white object-cover" />
 			</div>
 			<div>
 				<p class="text-sm font-bold">10K+ Happy Customers</p>
@@ -193,15 +201,18 @@
 	<div class="relative mx-auto w-full max-w-lg" use:parallax={{ speed: 0.08, max: 80 }}>
 		<div class="hero-blob absolute z-0 rounded-full" aria-hidden="true"></div>
 		<img
-			src="/images/hero-woman.jpg"
+			src="/images/hero-woman.webp"
 			alt="Smiling woman holding a fresh salad bowl"
+			width="900"
+			height="900"
+			fetchpriority="high"
 			class="hero-photo relative z-10 aspect-square w-full rounded-full object-cover shadow-xl"
 		/>
 		<div
 			class="hero-float absolute top-8 -left-2 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-lg sm:-left-8"
 			style="--hero-delay: 500ms; --bob-delay: 1.1s"
 		>
-			<img src="/images/avatars/avatar-woman-1.jpg" alt="" class="h-9 w-9 rounded-full object-cover" />
+			<img src="/images/avatars/avatar-woman-1.webp" alt="" width="200" height="133" class="h-9 w-9 rounded-full object-cover" />
 			<div>
 				<p class="text-xs text-muted">Delivery Time</p>
 				<p class="text-sm font-bold">20–30 mins</p>
@@ -212,7 +223,7 @@
 			class="hero-float absolute right-0 bottom-10 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg"
 			style="--hero-delay: 600ms; --bob-delay: 1.6s"
 		>
-			<img src="/images/salad-bowl.jpg" alt="Fresh salad bowl" class="h-12 w-12 rounded-full object-cover" />
+			<img src="/images/salad-bowl.webp" alt="Fresh salad bowl" width="800" height="533" class="h-12 w-12 rounded-full object-cover" />
 			<div>
 				<p class="font-display text-lg font-extrabold text-brand">50% OFF</p>
 				<p class="text-xs text-muted">On Your First Order</p>
@@ -245,7 +256,7 @@
 <!-- WHY CHOOSE US -->
 <section id="how-it-works" class="relative mx-auto max-w-[1440px] scroll-mt-24 px-4 py-16 sm:px-6">
 	<div use:reveal>
-		<p class="text-center text-xs font-bold tracking-widest text-brand uppercase">• Why Choose Us •</p>
+		<p class="text-center text-xs font-bold tracking-widest text-orange-700 uppercase">• Why Choose Us •</p>
 		<h2 class="mt-2 text-center font-display text-3xl font-extrabold sm:text-4xl">
 			Your Favourite Food<br />Delivery Partner
 		</h2>
@@ -272,7 +283,7 @@
 <!-- MENU -->
 <section id="menu" class="mx-auto max-w-[1440px] scroll-mt-24 px-4 py-16 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Explore Our Menu</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Explore Our Menu</p>
 		<div class="mt-1 flex flex-wrap items-end justify-between gap-4">
 			<h2 class="font-display text-3xl font-extrabold sm:text-4xl">Tasty Food You'll Love</h2>
 			<div class="relative">
@@ -331,7 +342,7 @@
 	</div>
 	<p class="mt-2 text-sm text-muted">
 		All codes work in the cart: FIRST50 gives 50% off, ZESTY20 gives 20% off, FREEDEL gives free delivery.
-		<a href="/offers" class="font-bold text-brand hover:underline">See all offers →</a>
+		<a href="/offers" class="font-bold text-orange-700 hover:underline">See all offers →</a>
 	</p>
 </section>
 
@@ -342,13 +353,15 @@
 		<img
 			src="/images/testimonial-man.webp"
 			alt="Smiling man eating a burger"
+			width="800"
+			height="533"
 			class="aspect-square w-full rounded-full object-cover"
 		/>
 		<div class="absolute bottom-6 left-0 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-lg">
 			<div class="flex -space-x-2">
-				<img src="/images/avatars/avatar-woman-1.jpg" alt="" class="h-7 w-7 rounded-full border-2 border-white object-cover" />
-				<img src="/images/avatars/avatar-man.webp" alt="" class="h-7 w-7 rounded-full border-2 border-white object-cover" />
-				<img src="/images/avatars/avatar-woman-2.jpg" alt="" class="h-7 w-7 rounded-full border-2 border-white object-cover" />
+				<img src="/images/avatars/avatar-woman-1.webp" alt="" width="200" height="133" class="h-7 w-7 rounded-full border-2 border-white object-cover" />
+				<img src="/images/avatars/avatar-man.webp" alt="" width="200" height="200" class="h-7 w-7 rounded-full border-2 border-white object-cover" />
+				<img src="/images/avatars/avatar-woman-2.webp" alt="" width="200" height="134" class="h-7 w-7 rounded-full border-2 border-white object-cover" />
 			</div>
 			<span class="font-display text-lg font-extrabold">12K+</span>
 			<span class="text-sm text-muted">Our Happy Customers</span>
@@ -363,7 +376,7 @@
 		onfocusin={() => (testimonialPaused = true)}
 		onfocusout={() => (testimonialPaused = false)}
 	>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">What Our Customers Say</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">What Our Customers Say</p>
 		<h2 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">Loved By Thousands<br />Of Foodies</h2>
 		<p class="mt-2 text-muted">We're proud to serve delicious food and great service every single time.</p>
 
@@ -380,6 +393,8 @@
 					<img
 						src={TESTIMONIAL_AVATARS[testimonial.name]}
 						alt={testimonial.name}
+						width={IMAGE_DIMS[TESTIMONIAL_AVATARS[testimonial.name]]?.width}
+						height={IMAGE_DIMS[TESTIMONIAL_AVATARS[testimonial.name]]?.height}
 						class="h-11 w-11 rounded-full object-cover"
 					/>
 					<div>
@@ -429,7 +444,7 @@
 <section class="mx-auto max-w-[1440px] px-4 pb-12 sm:px-6">
 	<div class="grid items-center gap-8 rounded-[2rem] bg-cream-dark p-8 sm:p-10 lg:grid-cols-2" use:reveal>
 		<div>
-			<p class="text-xs font-bold tracking-widest text-brand uppercase">Download Our App</p>
+			<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Download Our App</p>
 			<h2 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">Get Exclusive Offers<br />On The Zesty App!</h2>
 			<p class="mt-3 max-w-md text-muted">Download now and enjoy special discounts, fast delivery and easy tracking.</p>
 			<div class="mt-6">
@@ -469,14 +484,14 @@
 			<p class="mt-3 rounded-xl bg-brand px-3 py-2 text-center text-sm font-bold text-white">50% OFF on First Order</p>
 			<div class="mt-3 flex gap-2">
 				{#each ['Burger', 'Pizza', 'Noodles', 'Drinks'] as chip (chip)}
-					<span class="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-brand">{chip}</span>
+					<span class="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700">{chip}</span>
 				{/each}
 			</div>
 			<p class="mt-4 text-sm font-bold">Popular Near You</p>
 			<div class="mt-2 grid grid-cols-3 gap-2">
 				{#each POPULAR_NEAR_YOU as dish (dish.id)}
 					<a href="/dish/{dish.id}" class="group block">
-						<img src={dish.image} alt={dish.name} loading="lazy" class="h-20 w-full rounded-xl object-cover" />
+						<img src={dish.image} alt={dish.name} width={dish.width} height={dish.height} loading="lazy" class="h-20 w-full rounded-xl object-cover" />
 						<p class="mt-1 truncate text-[11px] font-bold group-hover:text-brand">{dish.name}</p>
 					</a>
 				{/each}

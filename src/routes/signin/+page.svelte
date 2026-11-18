@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { CheckCircle2, LogOut, ShieldCheck, User } from '@lucide/svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { goto } from '$app/navigation';
 	import { signIn, signOut, store } from '#lib/store.svelte.ts';
 	import { reveal } from '#lib/actions/reveal.ts';
@@ -53,6 +54,11 @@
 	<meta
 		name="description"
 		content="Sign in to Zesty to save your address and keep your order history. Demo sign-in — any 6-digit code works, no real SMS."
+	/>
+	<Seo
+		title="Sign In — Zesty"
+		description="Sign in to Zesty to save your address and keep your order history. Demo sign-in — any 6-digit code works, no real SMS."
+		path="/signin"
 	/>
 </svelte:head>
 

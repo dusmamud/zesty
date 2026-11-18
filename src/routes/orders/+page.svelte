@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Check, Clock, Package, RotateCcw } from '@lucide/svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { onMount } from 'svelte';
 	import { orderEtaMinutes, orderStatus, reorder, store, TRACK_STEPS } from '#lib/store.svelte.ts';
 	import { DISHES, formatPrice } from '#lib/data.ts';
@@ -17,7 +18,12 @@
 	}
 
 	function dishImage(id: string): string {
-		return DISHES.find((d) => d.id === id)?.image ?? '/images/salad-bowl.jpg';
+		return DISHES.find((d) => d.id === id)?.image ?? '/images/salad-bowl.webp';
+	}
+
+	function dishDims(id: string): { width: number; height: number } {
+		const d = DISHES.find((x) => x.id === id);
+		return d ? { width: d.width, height: d.height } : { width: 800, height: 533 };
 	}
 </script>
 
@@ -27,11 +33,16 @@
 		name="description"
 		content="Track your Zesty orders live and view your order history. Reorder your favourites in one tap."
 	/>
+	<Seo
+		title="My Orders — Zesty"
+		description="Track your Zesty orders live and view your order history. Reorder your favourites in one tap."
+		path="/orders"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">My Orders</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">My Orders</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Order History &amp; Tracking</h1>
 	</div>
 
@@ -70,7 +81,13 @@
 					<ul class="mt-4 space-y-2">
 						{#each order.items as item (item.dishId)}
 							<li class="flex items-center gap-3 text-sm">
-								<img src={dishImage(item.dishId)} alt="" class="h-10 w-10 rounded-lg object-cover" />
+								<img
+								src={dishImage(item.dishId)}
+								alt=""
+								width={dishDims(item.dishId).width}
+								height={dishDims(item.dishId).height}
+								class="h-10 w-10 rounded-lg object-cover"
+							/>
 								<span class="font-semibold">{dishName(item.dishId)}</span>
 								<span class="text-muted">× {item.qty}</span>
 								<span class="ml-auto font-bold">{formatPrice(item.price * item.qty)}</span>
@@ -85,7 +102,7 @@
 								<Check class="h-4 w-4" /> Delivered — enjoy your meal!
 							</p>
 						{:else}
-							<p class="flex items-center gap-2 text-sm font-bold text-brand">
+							<p class="flex items-center gap-2 text-sm font-bold text-orange-700">
 								<Clock class="h-4 w-4" /> Arriving in about {eta} min
 							</p>
 						{/if}

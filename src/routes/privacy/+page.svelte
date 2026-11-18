@@ -1,18 +1,24 @@
 <script lang="ts">
 	import { reveal } from '#lib/actions/reveal.ts';
+	import Seo from '#lib/components/Seo.svelte';
 </script>
 
 <svelte:head>
 	<title>Privacy Policy — Zesty</title>
 	<meta
 		name="description"
-		content="Zesty privacy policy: what we collect, how we use it, and your choices. Demo site — no real data leaves your browser."
+		content="Zesty privacy policy: how we collect, use and protect your information when you order, sign in or subscribe."
+	/>
+	<Seo
+		title="Privacy Policy — Zesty"
+		description="Zesty privacy policy: how we collect, use and protect your information when you order, sign in or subscribe."
+		path="/privacy"
 	/>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Legal</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Legal</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Privacy Policy</h1>
 		<p class="mt-2 text-sm text-muted">Last updated: 17 November 2026</p>
 	</div>
@@ -47,7 +53,7 @@
 			<p class="mt-2 text-sm">
 				You can order as a guest without an account, sign out any time, and delete your saved
 				data by clearing your browser storage. Questions about privacy?
-				<a href="/contact" class="font-bold text-brand hover:underline">Contact us</a>.
+				<a href="/contact" class="font-bold text-orange-700 hover:underline">Contact us</a>.
 			</p>
 		</section>
 	</div>

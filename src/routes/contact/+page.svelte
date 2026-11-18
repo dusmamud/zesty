@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { CheckCircle2, Clock, Mail, MapPin } from '@lucide/svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 
 	let name = $state('');
@@ -32,11 +33,16 @@
 		name="description"
 		content="Contact Zesty — send us a message about an order, feedback, or anything else. Open 10am–11pm, 7 days."
 	/>
+	<Seo
+		title="Contact Us — Zesty"
+		description="Contact Zesty — send us a message about an order, feedback, or anything else. Open 10am–11pm, 7 days."
+		path="/contact"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Contact Us</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Contact Us</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">We'd Love To Hear From You</h1>
 		<p class="mt-2 max-w-xl text-muted">Order issue, feedback, or just hungry? Reach us any time.</p>
 	</div>

@@ -67,6 +67,8 @@
 								<img
 									src={line.dish.image}
 									alt={line.dish.name}
+									width={line.dish.width}
+									height={line.dish.height}
 									class="h-20 w-20 rounded-xl object-cover"
 									loading="lazy"
 								/>
@@ -76,6 +78,13 @@
 									{line.dish.name}
 								</a>
 								<p class="text-sm text-muted">{formatPrice(line.unitPrice)} each</p>
+								{#if line.spice || line.instructions}
+									<p class="mt-0.5 text-xs text-muted">
+										{#if line.spice}Spice: {line.spice}{/if}{#if line.spice && line.instructions}
+											•
+										{/if}{#if line.instructions}Note: {line.instructions}{/if}
+									</p>
+								{/if}
 								<div class="mt-2 flex items-center gap-2">
 									<button
 										type="button"

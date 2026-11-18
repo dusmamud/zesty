@@ -1,18 +1,24 @@
 <script lang="ts">
 	import { reveal } from '#lib/actions/reveal.ts';
+	import Seo from '#lib/components/Seo.svelte';
 </script>
 
 <svelte:head>
 	<title>Terms of Service — Zesty</title>
 	<meta
 		name="description"
-		content="Zesty terms of service: ordering, delivery, payments, refunds and fair use. Demo site — no real orders or payments."
+		content="Zesty terms of service: ordering, delivery, payments, refunds and fair use when you order with Zesty."
+	/>
+	<Seo
+		title="Terms of Service — Zesty"
+		description="Zesty terms of service: ordering, delivery, payments, refunds and fair use when you order with Zesty."
+		path="/terms"
 	/>
 </svelte:head>
 
 <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Legal</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Legal</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Terms of Service</h1>
 		<p class="mt-2 text-sm text-muted">Last updated: 17 November 2026</p>
 	</div>
@@ -45,8 +51,8 @@
 			<h2 class="font-display text-xl font-bold text-ink">4. Refunds and returns</h2>
 			<p class="mt-2 text-sm">
 				If an order is wrong, damaged or late, tell us within 7 days and we will offer a
-				replacement, refund or credit. See the <a href="/faq" class="font-bold text-brand hover:underline">FAQ</a>
-				or <a href="/contact" class="font-bold text-brand hover:underline">contact us</a>.
+				replacement, refund or credit. See the <a href="/faq" class="font-bold text-orange-700 hover:underline">FAQ</a>
+				or <a href="/contact" class="font-bold text-orange-700 hover:underline">contact us</a>.
 			</p>
 		</section>
 		<section>

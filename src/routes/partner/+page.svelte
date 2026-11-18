@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { CheckCircle2, ChefHat, Store, TrendingUp, Users } from '@lucide/svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 
 	let name = $state('');
@@ -32,11 +33,16 @@
 		name="description"
 		content="Own a restaurant? Partner with Zesty to reach 10,000+ hungry customers, with fast payouts and simple order management."
 	/>
+	<Seo
+		title="Partner With Us — Zesty"
+		description="Own a restaurant? Partner with Zesty to reach 10,000+ hungry customers, with fast payouts and simple order management."
+		path="/partner"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">For Restaurants</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">For Restaurants</p>
 		<h1 class="mt-1 max-w-2xl font-display text-3xl font-extrabold sm:text-4xl">
 			Partner With Us — Grow Your Restaurant
 		</h1>
@@ -70,7 +76,7 @@
 				<li class="flex gap-3"><span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-extrabold text-white">3</span><span><strong>Go live</strong> — start receiving orders the same week. Payouts every Friday.</span></li>
 			</ol>
 			<p class="mt-4 text-sm text-muted">
-				Questions? <a href="/contact" class="font-bold text-brand hover:underline">Contact us</a> — we reply within a day.
+				Questions? <a href="/contact" class="font-bold text-orange-700 hover:underline">Contact us</a> — we reply within a day.
 			</p>
 		</div>
 

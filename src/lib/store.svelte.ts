@@ -61,10 +61,13 @@ export function dismissToast() {
 	store.toast = null;
 }
 
-/** One cart line: qty plus the per-unit price at add time (dish price + add-ons). */
+/** One cart line: qty plus the per-unit price at add time (dish price + add-ons),
+ * plus the customisation chosen on the dish page (optional). */
 export interface CartEntry {
 	qty: number;
 	unitPrice: number;
+	spice?: string;
+	instructions?: string;
 }
 
 const LS = {
@@ -107,7 +110,12 @@ if (typeof window !== 'undefined') {
 		if (!dish) continue;
 		if (typeof entry === 'number') migrated[id] = { qty: entry, unitPrice: dish.price };
 		else if (entry && typeof entry.qty === 'number') {
-			migrated[id] = { qty: entry.qty, unitPrice: entry.unitPrice ?? dish.price };
+			migrated[id] = {
+				qty: entry.qty,
+				unitPrice: entry.unitPrice ?? dish.price,
+				...(entry.spice ? { spice: entry.spice } : {}),
+				...(entry.instructions ? { instructions: entry.instructions } : {})
+			};
 		}
 	}
 	store.cart = migrated;
@@ -121,6 +129,8 @@ export interface CartLine {
 	dish: Dish;
 	qty: number;
 	unitPrice: number;
+	spice?: string;
+	instructions?: string;
 }
 
 export function cartLines(): CartLine[] {
@@ -128,7 +138,9 @@ export function cartLines(): CartLine[] {
 		.map(([id, entry]) => ({
 			dish: DISHES.find((d) => d.id === id)!,
 			qty: entry.qty,
-			unitPrice: entry.unitPrice
+			unitPrice: entry.unitPrice,
+			...(entry.spice ? { spice: entry.spice } : {}),
+			...(entry.instructions ? { instructions: entry.instructions } : {})
 		}))
 		.filter((l) => l.dish && l.qty > 0);
 }
@@ -155,12 +167,22 @@ export function totals(): Totals {
 	return { lines, subtotal, discount, delivery, total: Math.max(0, subtotal - discount + delivery) };
 }
 
-export function addToCart(dish: Dish, qty = 1, unitPrice: number = dish.price) {
+export function addToCart(
+	dish: Dish,
+	qty = 1,
+	unitPrice: number = dish.price,
+	opts: { spice?: string; instructions?: string } = {}
+) {
 	const existing = store.cart[dish.id];
 	// Same dish merges; the latest customisation's unit price wins for the line.
 	store.cart = {
 		...store.cart,
-		[dish.id]: { qty: (existing?.qty ?? 0) + qty, unitPrice }
+		[dish.id]: {
+			qty: (existing?.qty ?? 0) + qty,
+			unitPrice,
+			...(opts.spice ? { spice: opts.spice } : {}),
+			...(opts.instructions ? { instructions: opts.instructions } : {})
+		}
 	};
 	persist();
 	// No auto-open drawer — a toast with a View Cart action confirms the add.

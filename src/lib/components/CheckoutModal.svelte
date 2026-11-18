@@ -74,7 +74,7 @@
 							aria-pressed={payment === opt.id}
 							onclick={() => (payment = opt.id)}
 							class="flex flex-col items-center gap-1 rounded-xl border-2 py-3 text-sm font-semibold {payment === opt.id
-								? 'border-brand bg-orange-50 text-brand'
+								? 'border-brand bg-orange-50 text-orange-700'
 								: 'border-stone-200 hover:border-stone-300'}"
 						>
 							<Icon class="h-5 w-5" />
@@ -87,6 +87,25 @@
 			{#if error}
 				<p role="alert" class="text-sm font-semibold text-red-600">{error}</p>
 			{/if}
+
+			<div class="rounded-2xl bg-cream p-4">
+				<p class="text-sm font-bold">Your order</p>
+				<ul class="mt-2 space-y-2">
+					{#each t.lines as line (line.dish.id)}
+						<li class="text-sm">
+							<span class="font-semibold">{line.qty} × {line.dish.name}</span>
+							<span class="text-muted"> — {formatPrice(line.unitPrice * line.qty)}</span>
+							{#if line.spice || line.instructions}
+								<span class="block text-xs text-muted">
+									{#if line.spice}Spice: {line.spice}{/if}{#if line.spice && line.instructions}
+										•
+									{/if}{#if line.instructions}Note: {line.instructions}{/if}
+								</span>
+							{/if}
+						</li>
+					{/each}
+				</ul>
+			</div>
 
 			<button
 				type="button"

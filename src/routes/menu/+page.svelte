@@ -2,6 +2,7 @@
 	import { Search } from '@lucide/svelte';
 	import CategoryRail from '#lib/components/CategoryRail.svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 	import { CATEGORIES, DISHES } from '#lib/data.ts';
 
@@ -32,11 +33,16 @@
 		name="description"
 		content="Browse the full Zesty menu: burgers, pizza, Asian, desserts and drinks. Filter by category, search, sort by price or rating."
 	/>
+	<Seo
+		title="Menu — Zesty"
+		description="Browse the full Zesty menu: burgers, pizza, Asian, desserts and drinks. Filter by category, search, sort by price or rating."
+		path="/menu"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Explore Our Menu</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Explore Our Menu</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Tasty Food You'll Love</h1>
 		<p class="mt-2 max-w-xl text-muted">
 			All {DISHES.length} dishes, hot and fresh in 20–30 minutes. Tap a dish to see ingredients, add-ons and reviews.
@@ -90,7 +96,7 @@
 					<div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
 						{#each visibleDishes as dish, i (dish.id)}
 							<div use:reveal={{ delay: (i % 3) * 80 }}>
-								<DishCard {dish} />
+								<DishCard {dish} priority={i === 0} />
 							</div>
 						{/each}
 					</div>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import OfferCard from '#lib/components/OfferCard.svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 	import { OFFERS } from '#lib/data.ts';
 
@@ -21,11 +22,16 @@
 		name="description"
 		content="Zesty offers: FIRST50 for 50% off your first order, ZESTY20 for 20% off over $15, and FREEDEL for free delivery on any order."
 	/>
+	<Seo
+		title="Offers — Zesty"
+		description="Zesty offers: FIRST50 for 50% off your first order, ZESTY20 for 20% off over $15, and FREEDEL for free delivery on any order."
+		path="/offers"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Offers</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Offers</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Deals Worth Ordering For</h1>
 		<p class="mt-2 max-w-xl text-muted">
 			Copy a code and paste it in the cart at checkout. One code per order.

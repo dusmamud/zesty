@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Bike, ChefHat, Headphones, MapPin } from '@lucide/svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 
 	const ROLES = [
@@ -33,11 +34,16 @@
 		name="description"
 		content="Work at Zesty: delivery riders, kitchen chefs and customer support. See open roles and how to apply."
 	/>
+	<Seo
+		title="Careers — Zesty"
+		description="Work at Zesty: delivery riders, kitchen chefs and customer support. See open roles and how to apply."
+		path="/careers"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Careers</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Careers</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Come Work With Us</h1>
 		<p class="mt-2 max-w-xl text-muted">
 			We're a small team that takes food seriously and ourselves lightly. If you like feeding people,
@@ -59,7 +65,7 @@
 				<p class="mt-2 flex-1 text-sm leading-relaxed text-muted">{role.text}</p>
 				<ul class="mt-3 flex flex-wrap gap-2">
 					{#each role.perks as perk (perk)}
-						<li class="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-brand">{perk}</li>
+						<li class="rounded-full bg-orange-100 px-3 py-1 text-xs font-bold text-orange-700">{perk}</li>
 					{/each}
 				</ul>
 				<a
@@ -74,7 +80,7 @@
 
 	<p class="mt-8 rounded-3xl bg-white p-6 text-center text-sm text-muted shadow-sm" use:reveal>
 		Don't see your role? Write to us from the
-		<a href="/contact" class="font-bold text-brand hover:underline">Contact page</a>
+		<a href="/contact" class="font-bold text-orange-700 hover:underline">Contact page</a>
 		with what you do best — we always read every message.
 	</p>
 </div>

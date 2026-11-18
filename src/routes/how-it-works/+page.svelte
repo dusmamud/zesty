@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Banknote, Bike, Clock, CreditCard, MapPin, ShoppingBag, Smartphone, Truck } from '@lucide/svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import { DELIVERY_AREAS, DELIVERY_FEE, FREE_DELIVERY_OVER, formatPrice } from '#lib/data.ts';
 	import { reveal } from '#lib/actions/reveal.ts';
 </script>
@@ -10,11 +11,16 @@
 		name="description"
 		content="Ordering on Zesty takes three steps: pick a dish, checkout as a guest, and get hot food at your door in 20–30 minutes."
 	/>
+	<Seo
+		title="How It Works — Zesty"
+		description="Ordering on Zesty takes three steps: pick a dish, checkout as a guest, and get hot food at your door in 20–30 minutes."
+		path="/how-it-works"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">How It Works</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">How It Works</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Dinner In Three Easy Steps</h1>
 		<p class="mt-2 max-w-xl text-muted">No account, no fuss. From craving to doorstep in about half an hour.</p>
 	</div>
@@ -26,7 +32,7 @@
 				<span class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 text-brand">
 					<Icon class="h-8 w-8" />
 				</span>
-				<p class="mt-4 text-xs font-bold tracking-widest text-brand uppercase">{s.step}</p>
+				<p class="mt-4 text-xs font-bold tracking-widest text-orange-700 uppercase">{s.step}</p>
 				<h2 class="mt-1 font-display text-xl font-bold">{s.title}</h2>
 				<p class="mt-1 text-sm text-muted">{s.text}</p>
 			</div>
@@ -47,7 +53,7 @@
 				{/each}
 			</ul>
 			<p class="mt-3 text-sm text-muted">
-				Outside these areas? <a href="/contact" class="font-bold text-brand hover:underline">Contact us</a> — we're adding new neighbourhoods every month.
+				Outside these areas? <a href="/contact" class="font-bold text-orange-700 hover:underline">Contact us</a> — we're adding new neighbourhoods every month.
 			</p>
 		</div>
 

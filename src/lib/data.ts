@@ -11,9 +11,23 @@ export interface Dish {
 	reviews: number;
 	category: Category;
 	image: string;
+	/** Intrinsic pixel size of the dish photo (for width/height attributes). */
+	width: number;
+	height: number;
 	veg: boolean;
 	ingredients: string[];
 }
+
+/** Intrinsic pixel size of non-dish images (avatars, hero, etc.). */
+export const IMAGE_DIMS: Record<string, { width: number; height: number }> = {
+	'/images/hero-woman.webp': { width: 900, height: 900 },
+	'/images/salad-bowl.webp': { width: 800, height: 533 },
+	'/images/testimonial-man.webp': { width: 800, height: 533 },
+	'/images/avatars/alex-morgan.webp': { width: 200, height: 200 },
+	'/images/avatars/avatar-man.webp': { width: 200, height: 200 },
+	'/images/avatars/avatar-woman-1.webp': { width: 200, height: 133 },
+	'/images/avatars/avatar-woman-2.webp': { width: 200, height: 134 }
+};
 
 export const CATEGORIES: Array<'All' | Category> = [
 	'All',
@@ -35,7 +49,9 @@ export const DISHES: Dish[] = [
 		rating: 4.9,
 		reviews: 410,
 		category: 'Burgers',
-		image: '/images/burger-chicken.jpg',
+		image: '/images/burger-chicken.webp',
+		width: 719,
+		height: 719,
 		veg: false,
 		ingredients: ['Crispy fried chicken', 'Lettuce', 'Tomato', 'Zesty sauce', 'Sesame bun']
 	},
@@ -47,7 +63,9 @@ export const DISHES: Dish[] = [
 		rating: 4.8,
 		reviews: 285,
 		category: 'Burgers',
-		image: '/images/burger-cheese.jpg',
+		image: '/images/burger-cheese.webp',
+		width: 800,
+		height: 533,
 		veg: false,
 		ingredients: ['Two beef patties', 'Cheddar cheese', 'Pickles', 'Onion', 'House sauce']
 	},
@@ -61,7 +79,9 @@ export const DISHES: Dish[] = [
 		rating: 4.8,
 		reviews: 320,
 		category: 'Pizza',
-		image: '/images/pizza-veggie.jpg',
+		image: '/images/pizza-veggie.webp',
+		width: 900,
+		height: 675,
 		veg: true,
 		ingredients: ['Bell peppers', 'Mushrooms', 'Red onion', 'Sweet corn', 'Mozzarella']
 	},
@@ -73,7 +93,9 @@ export const DISHES: Dish[] = [
 		rating: 4.7,
 		reviews: 198,
 		category: 'Pizza',
-		image: '/images/pizza-margherita.jpg',
+		image: '/images/pizza-margherita.webp',
+		width: 900,
+		height: 601,
 		veg: true,
 		ingredients: ['Tomato sauce', 'Fresh mozzarella', 'Basil', 'Olive oil']
 	},
@@ -85,7 +107,9 @@ export const DISHES: Dish[] = [
 		rating: 4.7,
 		reviews: 210,
 		category: 'Asian',
-		image: '/images/noodles-thai.jpg',
+		image: '/images/noodles-thai.webp',
+		width: 900,
+		height: 755,
 		veg: true,
 		ingredients: ['Rice noodles', 'Thai basil', 'Bell peppers', 'Peanuts', 'Soy glaze']
 	},
@@ -97,7 +121,9 @@ export const DISHES: Dish[] = [
 		rating: 4.6,
 		reviews: 176,
 		category: 'Asian',
-		image: '/images/fried-rice.jpg',
+		image: '/images/fried-rice.webp',
+		width: 900,
+		height: 720,
 		veg: false,
 		ingredients: ['Basmati rice', 'Schezwan sauce', 'Egg', 'Spring onion', 'Chicken']
 	},
@@ -109,7 +135,9 @@ export const DISHES: Dish[] = [
 		rating: 4.9,
 		reviews: 342,
 		category: 'Desserts',
-		image: '/images/lava-cake.jpg',
+		image: '/images/lava-cake.webp',
+		width: 900,
+		height: 600,
 		veg: true,
 		ingredients: ['Dark chocolate', 'Butter', 'Vanilla crumbs', 'Cocoa']
 	},
@@ -121,7 +149,9 @@ export const DISHES: Dish[] = [
 		rating: 4.8,
 		reviews: 154,
 		category: 'Drinks',
-		image: '/images/smoothie.jpg',
+		image: '/images/smoothie.webp',
+		width: 600,
+		height: 800,
 		veg: true,
 		ingredients: ['Mango', 'Yoghurt', 'Honey', 'Ice']
 	},
@@ -133,7 +163,9 @@ export const DISHES: Dish[] = [
 		rating: 4.8,
 		reviews: 265,
 		category: 'Asian',
-		image: '/images/biryani-veg.jpg',
+		image: '/images/biryani-veg.webp',
+		width: 800,
+		height: 1200,
 		veg: true,
 		ingredients: ['Basmati rice', 'Mixed vegetables', 'Saffron', 'Fried onions', 'Raita']
 	},
@@ -145,7 +177,9 @@ export const DISHES: Dish[] = [
 		rating: 4.7,
 		reviews: 198,
 		category: 'Burgers',
-		image: '/images/chicken-wings.jpg',
+		image: '/images/chicken-wings.webp',
+		width: 900,
+		height: 1352,
 		veg: false,
 		ingredients: ['Chicken wings', 'Smoky BBQ glaze', 'Garlic dip', 'Spring onion']
 	},
@@ -157,7 +191,9 @@ export const DISHES: Dish[] = [
 		rating: 4.6,
 		reviews: 142,
 		category: 'Pizza',
-		image: '/images/garlic-bread.jpg',
+		image: '/images/garlic-bread.webp',
+		width: 900,
+		height: 1350,
 		veg: true,
 		ingredients: ['French bread', 'Garlic butter', 'Mixed herbs', 'Parmesan']
 	},
@@ -169,7 +205,9 @@ export const DISHES: Dish[] = [
 		rating: 4.8,
 		reviews: 187,
 		category: 'Drinks',
-		image: '/images/cold-coffee.jpg',
+		image: '/images/cold-coffee.webp',
+		width: 900,
+		height: 1350,
 		veg: true,
 		ingredients: ['Espresso', 'Cold milk', 'Ice', 'Vanilla syrup']
 	}

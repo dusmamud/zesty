@@ -3,7 +3,6 @@
 	import { fade, fly, scale } from 'svelte/transition';
 	import { page } from '$app/state';
 	import '../app.css';
-	import favicon from '#lib/assets/favicon.svg';
 	import { ArrowUp, CheckCircle2, Clock, ShoppingCart } from '@lucide/svelte';
 	import CartDrawer from '#lib/components/CartDrawer.svelte';
 	import CheckoutModal from '#lib/components/CheckoutModal.svelte';
@@ -52,10 +51,6 @@
 	let flyIn = $derived(reducedMotion ? { y: 0, duration: 0 } : { y: 8, duration: 200 });
 	let fadeOut = $derived(reducedMotion ? { duration: 0 } : { duration: 120 });
 </script>
-
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
 
 <div id="top" class="min-h-screen bg-cream font-body text-ink">
 	{#if !reducedMotion}

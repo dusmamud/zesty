@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Heart } from '@lucide/svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
 	import { store } from '#lib/store.svelte.ts';
 	import { DISHES } from '#lib/data.ts';
@@ -14,11 +15,16 @@
 		name="description"
 		content="Your saved favourite dishes on Zesty. Tap the heart on any dish to save it here."
 	/>
+	<Seo
+		title="My Favourites — Zesty"
+		description="Your saved favourite dishes on Zesty. Tap the heart on any dish to save it here."
+		path="/favourites"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Saved For Later</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Saved For Later</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">My Favourites</h1>
 	</div>
 

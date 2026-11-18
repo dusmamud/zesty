@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Bike, Heart, Leaf, Star, Users } from '@lucide/svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import CountUp from '#lib/components/CountUp.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 </script>
@@ -10,11 +11,16 @@
 		name="description"
 		content="Zesty is a small food-delivery team with one job: hot, fresh food at your door in 20–30 minutes. Read our story and values."
 	/>
+	<Seo
+		title="About Us — Zesty"
+		description="Zesty is a small food-delivery team with one job: hot, fresh food at your door in 20–30 minutes. Read our story and values."
+		path="/about"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">About Us</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">About Us</p>
 		<h1 class="mt-1 max-w-2xl font-display text-3xl font-extrabold sm:text-4xl">
 			Good Food. Fast Delivery. Every Time You Order.
 		</h1>

@@ -7,9 +7,11 @@
 
 	interface Props {
 		dish: Dish;
+		/** True for the first card on a listing page (its image is the LCP element). */
+		priority?: boolean;
 	}
 
-	let { dish }: Props = $props();
+	let { dish, priority = false }: Props = $props();
 
 	// Re-trigger the heart pop on every toggle.
 	let heartPopped = $state(false);
@@ -28,6 +30,10 @@
 			<FadeImage
 				src={dish.image}
 				alt={dish.name}
+				width={dish.width}
+				height={dish.height}
+				loading={priority ? 'eager' : 'lazy'}
+				fetchpriority={priority ? 'high' : undefined}
 				class="h-64 w-full object-cover transition duration-300 group-hover:scale-105"
 			/>
 		</a>
@@ -56,7 +62,7 @@
 		>
 			<div class="flex items-start gap-2">
 				<a href="/dish/{dish.id}" class="min-w-0">
-					<h3 class="font-display text-lg leading-tight font-bold hover:underline">{dish.name}</h3>
+					<h2 class="font-display text-lg leading-tight font-bold hover:underline">{dish.name}</h2>
 				</a>
 				<VegMark veg={dish.veg} />
 			</div>

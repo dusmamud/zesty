@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition';
+	import Seo from '#lib/components/Seo.svelte';
 	import { ChevronDown, Headphones } from '@lucide/svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 
@@ -43,11 +44,16 @@
 		name="description"
 		content="Zesty FAQ: delivery time and areas, payment methods, promo codes, refunds and returns, guest checkout and vegetarian options."
 	/>
+	<Seo
+		title="FAQ — Zesty"
+		description="Zesty FAQ: delivery time and areas, payment methods, promo codes, refunds and returns, guest checkout and vegetarian options."
+		path="/faq"
+	/>
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-10 sm:px-6">
 	<div use:reveal>
-		<p class="text-xs font-bold tracking-widest text-brand uppercase">Support</p>
+		<p class="text-xs font-bold tracking-widest text-orange-700 uppercase">Support</p>
 		<h1 class="mt-1 font-display text-3xl font-extrabold sm:text-4xl">Frequently Asked Questions</h1>
 		<p class="mt-2 text-muted">Can't find your answer? Our support team is here 24/7.</p>
 	</div>

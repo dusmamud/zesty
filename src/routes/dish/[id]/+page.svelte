@@ -2,6 +2,7 @@
 	import { ArrowLeft, Clock, Heart, Minus, Plus, ShoppingCart, Star } from '@lucide/svelte';
 	import DishCard from '#lib/components/DishCard.svelte';
 	import FadeImage from '#lib/components/FadeImage.svelte';
+	import Seo from '#lib/components/Seo.svelte';
 	import VegMark from '#lib/components/VegMark.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
@@ -33,6 +34,25 @@
 		DISHES.filter((d) => d.category === dish.category && d.id !== dish.id).slice(0, 3)
 	);
 
+	// Product JSON-LD as a string (see home page: raw ld+json <script> tags do not
+	// evaluate {…} in Svelte, so it is injected with {@html}).
+	const SITE_URL = 'https://zeesty.pages.dev';
+	let productLd = $derived(
+		`<script type="application/ld+json">${JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'Product',
+			name: dish.name,
+			image: `${SITE_URL}${dish.image}`,
+			description: dish.desc,
+			offers: {
+				'@type': 'Offer',
+				price: dish.price,
+				priceCurrency: 'USD',
+				availability: 'https://schema.org/InStock'
+			}
+		}).replace(/</g, '\\u003c')}<\/script>`
+	);
+
 	// Rotate the review pool per dish so each dish shows a different set.
 	let dishReviews = $derived.by(() => {
 		const offset = dish.id.split('').reduce((s, c) => s + c.charCodeAt(0), 0) % DISH_REVIEWS.length;
@@ -46,6 +66,13 @@
 		name="description"
 		content="{dish.name} — {dish.desc} Rated {dish.rating.toFixed(1)} by {dish.reviews} customers. Order on Zesty, delivered hot in 20–30 minutes."
 	/>
+	<Seo
+		title="{dish.name} — Zesty"
+		description="{dish.name} — {dish.desc} Rated {dish.rating.toFixed(1)} by {dish.reviews} customers. Order on Zesty, delivered hot in 20–30 minutes."
+		path="/dish/{dish.id}"
+		image={dish.image}
+	/>
+	{@html productLd}
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
@@ -56,7 +83,7 @@
 	<div class="mt-6 grid gap-10 lg:grid-cols-2">
 		<div>
 			<div class="relative overflow-hidden rounded-3xl shadow-sm">
-				<FadeImage src={dish.image} alt={dish.name} loading="eager" class="aspect-[4/3] w-full object-cover" />
+				<FadeImage src={dish.image} alt={dish.name} width={dish.width} height={dish.height} loading="eager" fetchpriority="high" class="aspect-[4/3] w-full object-cover" />
 				{#if dish.discount}
 					<span class="absolute top-4 left-4 rounded-full bg-brand px-3 py-1 text-sm font-bold text-white">
 						{dish.discount}
@@ -92,7 +119,7 @@
 						<Star class="h-5 w-5 fill-amber-400 text-amber-400" />
 						<span class="font-bold">{dish.rating.toFixed(1)}</span>
 						<span class="text-muted">({dish.reviews} reviews)</span>
-						<span class="ml-2 rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-brand">{dish.category}</span>
+						<span class="ml-2 rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-orange-700">{dish.category}</span>
 					</p>
 				</div>
 				<p class="flex items-baseline gap-2 font-display text-3xl font-extrabold whitespace-nowrap">
@@ -181,7 +208,7 @@
 				</div>
 				<button
 					type="button"
-					onclick={() => addToCart(dish, qty, unitPrice)}
+					onclick={() => addToCart(dish, qty, unitPrice, { spice, instructions: instructions.trim() || undefined })}
 					class="flex flex-1 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 font-bold text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					<ShoppingCart class="h-5 w-5" />

@@ -4,9 +4,12 @@
 		alt: string;
 		class?: string;
 		loading?: 'lazy' | 'eager';
+		width?: number;
+		height?: number;
+		fetchpriority?: 'high' | 'low' | 'auto';
 	}
 
-	let { src, alt, class: cls = '', loading = 'lazy' }: Props = $props();
+	let { src, alt, class: cls = '', loading = 'lazy', width, height, fetchpriority }: Props = $props();
 
 	let loaded = $state(false);
 	let img: HTMLImageElement | undefined = $state();
@@ -22,6 +25,9 @@
 	{src}
 	{alt}
 	{loading}
+	{width}
+	{height}
+	{fetchpriority}
 	onload={() => (loaded = true)}
 	class="img-fade {loaded ? 'img-loaded' : ''} {cls}"
 />
