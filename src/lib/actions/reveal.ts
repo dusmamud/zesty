@@ -29,7 +29,7 @@ export function reveal(node: HTMLElement, params: { delay?: number } = {}) {
 				}
 			}
 		},
-		{ threshold: 0.1, rootMargin: '0px 0px -40px' }
+		{ threshold: 0.05, rootMargin: '0px 0px -20px' }
 	);
 	io.observe(node);
 

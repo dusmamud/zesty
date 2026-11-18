@@ -352,3 +352,73 @@ export const DELIVERY_AREAS: Array<{ area: string; eta: string }> = [
 	{ area: 'Green Park', eta: '25–30 min' },
 	{ area: 'Harbour View', eta: '25–30 min' }
 ];
+
+/** Mock customer reviews (reviews page). Ratings and text are demo content. */
+export interface Review {
+	name: string;
+	dish: string;
+	rating: number;
+	date: string;
+	text: string;
+}
+
+export const REVIEWS: Review[] = [
+	{ name: 'Alex Morgan', dish: 'Zesty Chicken Burger', rating: 5, date: '14 Nov 2026', text: 'The chicken burger arrived hot in 25 minutes and still tasted like it just left the kitchen. Zesty is now my default order.' },
+	{ name: 'Priya Sharma', dish: 'Thai Basil Noodles', rating: 5, date: '11 Nov 2026', text: 'I order the Thai noodles almost every week. The food is fresh, the packaging is neat, and the delivery partner is always polite.' },
+	{ name: 'James Carter', dish: 'Veggie Supreme Pizza', rating: 5, date: '8 Nov 2026', text: 'First order with FIRST50 and the pizza was genuinely great — proper cheese pull, not soggy at all. Impressed.' },
+	{ name: 'Riya K.', dish: 'Chocolate Lava Cake', rating: 5, date: '6 Nov 2026', text: 'Arrived hot and fresh — easily the best version of this dish I have had delivered.' },
+	{ name: 'Arjun M.', dish: 'Double Cheese Burger', rating: 5, date: '2 Nov 2026', text: 'Portion is generous and the flavours are spot on. Reordered twice this week.' },
+	{ name: 'Sana P.', dish: 'Veg Biryani', rating: 4, date: '30 Oct 2026', text: 'Really good. A little less salt would make it perfect, but I will order it again.' },
+	{ name: 'Vikram T.', dish: 'Schezwan Fried Rice', rating: 5, date: '28 Oct 2026', text: 'Packaging was neat, food was still warm after 25 minutes. Great value for money.' },
+	{ name: 'Meera D.', dish: 'Mango Smoothie', rating: 4, date: '25 Oct 2026', text: 'Tasty and fresh. The kids loved it — that is saying something.' },
+	{ name: 'Noah W.', dish: 'Grilled Chicken Wings', rating: 5, date: '21 Oct 2026', text: 'Smoky, juicy, and the garlic dip is dangerously good. My Friday-night regular now.' },
+	{ name: 'Anaya S.', dish: 'Margherita Pizza', rating: 5, date: '18 Oct 2026', text: 'Simple done right. Fresh basil, good mozzarella, base still crisp on arrival.' },
+	{ name: 'Kabir R.', dish: 'Cold Coffee', rating: 4, date: '15 Oct 2026', text: 'Properly chilled and not too sweet. Wish the large size was on the menu too.' },
+	{ name: 'Elena G.', dish: 'Garlic Bread', rating: 5, date: '12 Oct 2026', text: 'Crusty outside, buttery inside. The parmesan dusting is a nice touch.' }
+];
+
+/** Zesty Rewards tiers (mock loyalty programme — points are demo only). */
+export interface RewardTier {
+	name: string;
+	points: string;
+	perks: string[];
+}
+
+export const REWARD_TIERS: RewardTier[] = [
+	{ name: 'Bronze', points: '0–499 pts', perks: ['1 pt per $1 spent', 'Birthday treat', 'Members-only offers'] },
+	{ name: 'Silver', points: '500–1,499 pts', perks: ['Everything in Bronze', 'Free delivery on weekends', 'Early access to new dishes'] },
+	{ name: 'Gold', points: '1,500+ pts', perks: ['Everything in Silver', 'Free delivery, always', 'Priority support', 'Double points Tuesdays'] }
+];
+
+/** Gift card denominations (mock — demo checkout only, no real payment). */
+export const GIFT_CARD_AMOUNTS = [10, 25, 50, 100];
+
+/** Catering packages (mock — enquiry only, no real booking). */
+export interface CateringPackage {
+	name: string;
+	serves: string;
+	price: string;
+	items: string[];
+}
+
+export const CATERING_PACKAGES: CateringPackage[] = [
+	{ name: 'Small Gathering', serves: 'Serves 10–15', price: 'From $89', items: ['2 burger platters', '1 pizza platter', 'Garlic bread', 'Soft drinks'] },
+	{ name: 'Office Lunch', serves: 'Serves 20–30', price: 'From $179', items: ['Mixed burger + pizza platters', 'Thai noodles trays', 'Salad bowls', 'Cold coffee + smoothies'] },
+	{ name: 'Big Celebration', serves: 'Serves 40–60', price: 'From $349', items: ['Full menu spread', 'Veg biryani trays', 'Dessert platter', 'Dedicated delivery slot'] }
+];
+
+/** Allergen guide per dish (from the listed ingredients — demo content). */
+export const ALLERGEN_INFO: Record<string, string[]> = {
+	'zesty-chicken-burger': ['Gluten (bun)', 'Egg (sauce)'],
+	'double-cheese-burger': ['Gluten (bun)', 'Milk (cheese)', 'Egg (sauce)'],
+	'veggie-supreme-pizza': ['Gluten (base)', 'Milk (mozzarella)'],
+	'margherita-pizza': ['Gluten (base)', 'Milk (mozzarella)'],
+	'thai-basil-noodles': ['Peanuts', 'Soy', 'Gluten (noodles)'],
+	'schezwan-fried-rice': ['Egg', 'Soy'],
+	'chocolate-lava-cake': ['Gluten', 'Milk', 'Egg'],
+	'mango-smoothie': ['Milk (yoghurt)'],
+	'veg-biryani': ['Milk (raita)'],
+	'grilled-chicken-wings': ['Milk (dip)'],
+	'garlic-bread': ['Gluten', 'Milk'],
+	'cold-coffee': ['Milk']
+};

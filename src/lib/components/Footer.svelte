@@ -29,16 +29,18 @@
 				<li><a href="/about" class="hover:text-brand">About Us</a></li>
 				<li><a href="/careers" class="hover:text-brand">Careers</a></li>
 				<li><a href="/blog" class="hover:text-brand">Blog</a></li>
-				<li><a href="/blog" class="hover:text-brand">Press</a></li>
+				<li><a href="/reviews" class="hover:text-brand">Reviews</a></li>
+				<li><a href="/rewards" class="hover:text-brand">Rewards</a></li>
 				<li><a href="/contact" class="hover:text-brand">Contact Us</a></li>
 			</ul>
 		</div>
 		<div>
 			<h3 class="font-bold">Support</h3>
 			<ul class="mt-3 space-y-2 text-sm text-muted">
+				<li><a href="/help" class="hover:text-brand">Help Centre</a></li>
 				<li><a href="/faq" class="hover:text-brand">FAQ</a></li>
-				<li><a href="/faq" class="hover:text-brand">Shipping</a></li>
-				<li><a href="/faq" class="hover:text-brand">Returns</a></li>
+				<li><a href="/help" class="hover:text-brand">Shipping</a></li>
+				<li><a href="/help" class="hover:text-brand">Returns</a></li>
 				<li><a href="/privacy" class="hover:text-brand">Privacy Policy</a></li>
 				<li><a href="/terms" class="hover:text-brand">Terms</a></li>
 			</ul>
@@ -49,7 +51,8 @@
 				<li><a href="/partner" class="hover:text-brand">Partner With Us</a></li>
 				<li><a href="/partner" class="hover:text-brand">Add Your Restaurant</a></li>
 				<li><a href="/orders" class="hover:text-brand">Manage Orders</a></li>
-				<li><a href="/blog" class="hover:text-brand">Resources</a></li>
+				<li><a href="/catering" class="hover:text-brand">Catering</a></li>
+				<li><a href="/delivery-areas" class="hover:text-brand">Delivery Areas</a></li>
 			</ul>
 		</div>
 		<div>
@@ -79,5 +82,11 @@
 			{/if}
 		</div>
 	</div>
+	<p class="border-t py-4 text-center text-xs text-muted">
+		<a href="/gift-cards" class="hover:text-brand">Gift Cards</a> •
+		<a href="/app" class="hover:text-brand">Get the App</a> •
+		<a href="/account" class="hover:text-brand">My Account</a> •
+		<a href="/delivery-areas" class="hover:text-brand">Delivery Areas</a>
+	</p>
 	<p class="border-t py-4 text-center text-xs text-muted">© 2026 Zesty. All rights reserved.</p>
 </footer>

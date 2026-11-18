@@ -162,4 +162,52 @@
 		<changefreq>monthly</changefreq>
 		<priority>0.6</priority>
 	</url>
+	<url>
+		<loc>https://zeesty.pages.dev/reviews</loc>
+		<lastmod>2026-11-18</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.7</priority>
+	</url>
+	<url>
+		<loc>https://zeesty.pages.dev/rewards</loc>
+		<lastmod>2026-11-18</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.6</priority>
+	</url>
+	<url>
+		<loc>https://zeesty.pages.dev/gift-cards</loc>
+		<lastmod>2026-11-18</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.6</priority>
+	</url>
+	<url>
+		<loc>https://zeesty.pages.dev/catering</loc>
+		<lastmod>2026-11-18</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.6</priority>
+	</url>
+	<url>
+		<loc>https://zeesty.pages.dev/delivery-areas</loc>
+		<lastmod>2026-11-18</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.6</priority>
+	</url>
+	<url>
+		<loc>https://zeesty.pages.dev/account</loc>
+		<lastmod>2026-11-18</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.5</priority>
+	</url>
+	<url>
+		<loc>https://zeesty.pages.dev/help</loc>
+		<lastmod>2026-11-18</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.6</priority>
+	</url>
+	<url>
+		<loc>https://zeesty.pages.dev/app</loc>
+		<lastmod>2026-11-18</lastmod>
+		<changefreq>monthly</changefreq>
+		<priority>0.6</priority>
+	</url>
 </urlset>

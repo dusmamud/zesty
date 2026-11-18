@@ -24,7 +24,6 @@
 	import DishCard from '#lib/components/DishCard.svelte';
 	import Seo from '#lib/components/Seo.svelte';
 	import OfferCard from '#lib/components/OfferCard.svelte';
-	import { parallax } from '#lib/actions/parallax.ts';
 	import { reveal } from '#lib/actions/reveal.ts';
 	import {
 		CATEGORIES,
@@ -154,7 +153,7 @@
 			<Zap class="h-3.5 w-3.5" /> Fast • Fresh • Reliable
 		</p>
 		<h1
-			class="hero-anim mt-4 font-display text-5xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl"
+			class="hero-anim mt-4 font-display text-4xl leading-[1.05] font-extrabold tracking-tight sm:text-6xl"
 			style="--hero-delay: 80ms"
 		>
 			Delicious Food,<br />
@@ -199,7 +198,7 @@
 		</div>
 	</div>
 
-	<div class="relative mx-auto w-full max-w-lg" use:parallax={{ speed: 0.08, max: 80 }}>
+	<div class="relative mx-auto w-full max-w-lg">
 		<div class="hero-blob absolute z-0 rounded-full" aria-hidden="true"></div>
 		<img
 			src="/images/hero-woman.webp"
@@ -212,7 +211,7 @@
 			class="hero-photo relative z-10 aspect-square w-full rounded-full object-cover shadow-xl"
 		/>
 		<div
-			class="hero-float absolute top-8 -left-2 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-lg sm:-left-8"
+			class="hero-float absolute top-6 -left-3 z-20 flex items-center gap-2 rounded-2xl bg-white px-3 py-2 shadow-lg sm:-left-10 sm:px-4 sm:py-3"
 			style="--hero-delay: 500ms; --bob-delay: 1.1s"
 		>
 			<img src="/images/avatars/avatar-woman-1.webp" alt="" width="200" height="133" class="h-9 w-9 rounded-full object-cover" />
@@ -223,7 +222,7 @@
 			<Clock class="h-5 w-5 text-brand" />
 		</div>
 		<div
-			class="hero-float absolute right-0 bottom-10 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg"
+			class="hero-float absolute -right-2 bottom-8 z-20 flex items-center gap-3 rounded-2xl bg-white px-3 py-2 shadow-lg sm:-right-6 sm:bottom-10 sm:px-4 sm:py-3"
 			style="--hero-delay: 600ms; --bob-delay: 1.6s"
 		>
 			<img src="/images/salad-bowl.webp" srcset="/images/salad-bowl-320.webp 320w, /images/salad-bowl-480.webp 480w, /images/salad-bowl-720.webp 720w, /images/salad-bowl.webp 800w" sizes="48px" alt="Fresh salad bowl" width="800" height="533" class="h-12 w-12 rounded-full object-cover" />
@@ -233,7 +232,7 @@
 			</div>
 		</div>
 		<div
-			class="hero-pulse absolute top-2 right-6 flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-lg"
+			class="hero-pulse absolute top-1 right-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-lg sm:top-2 sm:right-6"
 		>
 			<Heart class="h-5 w-5 fill-red-500 text-red-500" />
 		</div>
@@ -345,14 +344,15 @@
 	</div>
 	<p class="mt-2 text-sm text-muted">
 		All codes work in the cart: FIRST50 gives 50% off, ZESTY20 gives 20% off, FREEDEL gives free delivery.
-		<a href="/offers" class="font-bold text-orange-700 hover:underline">See all offers →</a>
+		<a href="/offers" class="font-bold text-orange-700 hover:underline">See all offers →</a> •
+		<a href="/rewards" class="font-bold text-orange-700 hover:underline">Zesty Rewards →</a>
 	</p>
 </section>
 
 <!-- TESTIMONIALS -->
 <section id="about" class="mx-auto grid max-w-[1440px] scroll-mt-24 items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-2">
 	<div class="relative mx-auto w-full max-w-md" use:reveal>
-		<div class="absolute inset-0 -z-10 rounded-full bg-brand"></div>
+		<div class="absolute inset-0 z-0 translate-x-3 translate-y-3 rounded-full bg-brand" aria-hidden="true"></div>
 		<img
 			src="/images/testimonial-man.webp"
 			srcset="/images/testimonial-man-480.webp 480w, /images/testimonial-man-720.webp 720w, /images/testimonial-man.webp 800w"
@@ -360,7 +360,7 @@
 			alt="Smiling man eating a burger"
 			width="800"
 			height="533"
-			class="aspect-square w-full rounded-full object-cover"
+			class="relative z-10 aspect-square w-full rounded-full object-cover"
 		/>
 		<div class="absolute bottom-6 left-0 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-lg">
 			<div class="flex -space-x-2">
@@ -441,6 +441,7 @@
 				{/each}
 			</div>
 			<span class="ml-1 text-sm text-muted">{testimonialIndex + 1} / {TESTIMONIALS.length}</span>
+			<a href="/reviews" class="ml-2 text-sm font-bold text-orange-700 hover:underline">See all reviews →</a>
 		</div>
 	</div>
 </section>

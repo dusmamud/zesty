@@ -13,11 +13,14 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
 			// Static site: every route is prerendered at build time, no server runtime.
-			// No fallback — a missing route must fail the build, not silently serve an SPA shell.
+			// Fallback '404.html' is the SPA shell Cloudflare Pages serves (with a
+			// 404 status) for unknown paths, so our branded +error.svelte renders
+			// there. Build strictness is unchanged: a missing prerendered route
+			// still fails the build (strict: true).
 			adapter: adapter({
 				pages: 'build',
 				assets: 'build',
-				fallback: undefined,
+				fallback: '404.html',
 				precompress: false,
 				strict: true
 			})
