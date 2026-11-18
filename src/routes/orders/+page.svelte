@@ -3,7 +3,7 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import { onMount } from 'svelte';
 	import { orderEtaMinutes, orderStatus, reorder, store, TRACK_STEPS } from '#lib/store.svelte.ts';
-	import { DISHES, formatPrice } from '#lib/data.ts';
+	import { DISHES, formatPrice, responsiveSrcset } from '#lib/data.ts';
 	import { reveal } from '#lib/actions/reveal.ts';
 
 	let now = $state(Date.now());
@@ -83,6 +83,8 @@
 							<li class="flex items-center gap-3 text-sm">
 								<img
 								src={dishImage(item.dishId)}
+								srcset={responsiveSrcset(dishImage(item.dishId), dishDims(item.dishId).width)}
+								sizes="40px"
 								alt=""
 								width={dishDims(item.dishId).width}
 								height={dishDims(item.dishId).height}

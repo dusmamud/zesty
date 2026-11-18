@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FadeImage from '#lib/components/FadeImage.svelte';
 	import Seo from '#lib/components/Seo.svelte';
-	import { DISHES } from '#lib/data.ts';
+	import { DISHES, responsiveSrcset } from '#lib/data.ts';
 	import { reveal } from '#lib/actions/reveal.ts';
 
 	const POSTS = [
@@ -60,12 +60,15 @@
 
 	<div class="mt-8 grid gap-6 lg:grid-cols-3">
 		{#each POSTS as post, i (post.title)}
+			{@const postDish = DISHES.find((d) => d.image === post.image)}
 			<article class="overflow-hidden rounded-3xl bg-white shadow-sm" use:reveal={{ delay: i * 100 }}>
 				<FadeImage
 					src={post.image}
+					srcset={postDish ? responsiveSrcset(post.image, postDish.width) : undefined}
+					sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
 					alt={post.alt}
-					width={DISHES.find((d) => d.image === post.image)?.width}
-					height={DISHES.find((d) => d.image === post.image)?.height}
+					width={postDish?.width}
+					height={postDish?.height}
 					class="h-52 w-full object-cover"
 				/>
 				<div class="p-6">

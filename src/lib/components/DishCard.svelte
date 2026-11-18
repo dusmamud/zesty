@@ -3,7 +3,7 @@
 	import FadeImage from '#lib/components/FadeImage.svelte';
 	import VegMark from '#lib/components/VegMark.svelte';
 	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
-	import { formatPrice, type Dish } from '#lib/data.ts';
+	import { formatPrice, responsiveSrcset, type Dish } from '#lib/data.ts';
 
 	interface Props {
 		dish: Dish;
@@ -29,6 +29,8 @@
 		<a href="/dish/{dish.id}" aria-label="View {dish.name}">
 			<FadeImage
 				src={dish.image}
+				srcset={responsiveSrcset(dish.image, dish.width)}
+				sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
 				alt={dish.name}
 				width={dish.width}
 				height={dish.height}

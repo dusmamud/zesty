@@ -2,7 +2,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import { Minus, Plus, ShoppingBag, Trash2, X } from '@lucide/svelte';
 	import { applyPromo, changeQty, removeFromCart, store, totals } from '#lib/store.svelte.ts';
-	import { FREEDEL_CODE, FREE_DELIVERY_OVER, formatPrice, promoRate } from '#lib/data.ts';
+	import { FREEDEL_CODE, FREE_DELIVERY_OVER, formatPrice, promoRate, responsiveSrcset } from '#lib/data.ts';
 
 	let t = $derived(totals());
 	let promoError = $state<string | null>(null);
@@ -66,6 +66,8 @@
 							<a href="/dish/{line.dish.id}" onclick={() => (store.cartOpen = false)}>
 								<img
 									src={line.dish.image}
+									srcset={responsiveSrcset(line.dish.image, line.dish.width)}
+									sizes="80px"
 									alt={line.dish.name}
 									width={line.dish.width}
 									height={line.dish.height}

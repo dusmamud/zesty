@@ -6,7 +6,7 @@
 	import VegMark from '#lib/components/VegMark.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
 	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
-	import { DISHES, DISH_REVIEWS, formatPrice } from '#lib/data.ts';
+	import { DISHES, DISH_REVIEWS, formatPrice, responsiveSrcset } from '#lib/data.ts';
 	import type { PageProps } from './$types';
 
 	let { params }: PageProps = $props();
@@ -83,7 +83,7 @@
 	<div class="mt-6 grid gap-10 lg:grid-cols-2">
 		<div>
 			<div class="relative overflow-hidden rounded-3xl shadow-sm">
-				<FadeImage src={dish.image} alt={dish.name} width={dish.width} height={dish.height} loading="eager" fetchpriority="high" class="aspect-[4/3] w-full object-cover" />
+				<FadeImage src={dish.image} srcset={responsiveSrcset(dish.image, dish.width)} sizes="(max-width: 768px) 100vw, 624px" alt={dish.name} width={dish.width} height={dish.height} loading="eager" fetchpriority="high" class="aspect-[4/3] w-full object-cover" />
 				{#if dish.discount}
 					<span class="absolute top-4 left-4 rounded-full bg-brand px-3 py-1 text-sm font-bold text-white">
 						{dish.discount}

@@ -7,9 +7,14 @@
 		width?: number;
 		height?: number;
 		fetchpriority?: 'high' | 'low' | 'auto';
+		/** Responsive candidates, e.g. from responsiveSrcset(). */
+		srcset?: string;
+		/** Slot size the image fills, e.g. "(min-width: 1024px) 33vw, 100vw". */
+		sizes?: string;
 	}
 
-	let { src, alt, class: cls = '', loading = 'lazy', width, height, fetchpriority }: Props = $props();
+	let { src, alt, class: cls = '', loading = 'lazy', width, height, fetchpriority, srcset, sizes }: Props =
+		$props();
 
 	let loaded = $state(false);
 	let img: HTMLImageElement | undefined = $state();
@@ -23,6 +28,8 @@
 <img
 	bind:this={img}
 	{src}
+	{srcset}
+	{sizes}
 	{alt}
 	{loading}
 	{width}

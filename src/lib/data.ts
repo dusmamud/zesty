@@ -328,6 +328,21 @@ export function formatPrice(n: number): string {
 	return `$${n.toFixed(2)}`;
 }
 
+/**
+ * Build a srcset string for a photo that has `-<width>.webp` variants
+ * (e.g. `/images/pizza-veggie-480.webp`). The original file is the largest
+ * candidate, at its intrinsic width. Variants wider than the source are
+ * skipped (never upscale). Keep a plain `src` alongside — it is the fallback.
+ */
+export function responsiveSrcset(src: string, fullWidth: number, variants: number[] = [480, 720]): string {
+	const stem = src.replace(/\.webp$/, '');
+	const cands = variants
+		.filter((w) => w < fullWidth)
+		.map((w) => `${stem}-${w}.webp ${w}w`);
+	cands.push(`${src} ${fullWidth}w`);
+	return cands.join(', ');
+}
+
 /** Neighbourhoods we deliver to, with typical delivery times. */
 export const DELIVERY_AREAS: Array<{ area: string; eta: string }> = [
 	{ area: 'Downtown', eta: '20–25 min' },

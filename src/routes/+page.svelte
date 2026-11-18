@@ -31,6 +31,7 @@
 		DISHES,
 		IMAGE_DIMS,
 		OFFERS,
+		responsiveSrcset,
 		TESTIMONIALS,
 		type Dish
 	} from '#lib/data.ts';
@@ -202,7 +203,9 @@
 		<div class="hero-blob absolute z-0 rounded-full" aria-hidden="true"></div>
 		<img
 			src="/images/hero-woman.webp"
-			alt="Smiling woman holding a fresh salad bowl"
+			srcset="/images/hero-woman-480.webp 480w, /images/hero-woman-720.webp 720w, /images/hero-woman.webp 900w"
+			sizes="(min-width: 1024px) 560px, 90vw"
+			alt=""
 			width="900"
 			height="900"
 			fetchpriority="high"
@@ -223,7 +226,7 @@
 			class="hero-float absolute right-0 bottom-10 flex items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-lg"
 			style="--hero-delay: 600ms; --bob-delay: 1.6s"
 		>
-			<img src="/images/salad-bowl.webp" alt="Fresh salad bowl" width="800" height="533" class="h-12 w-12 rounded-full object-cover" />
+			<img src="/images/salad-bowl.webp" srcset="/images/salad-bowl-320.webp 320w, /images/salad-bowl-480.webp 480w, /images/salad-bowl-720.webp 720w, /images/salad-bowl.webp 800w" sizes="48px" alt="Fresh salad bowl" width="800" height="533" class="h-12 w-12 rounded-full object-cover" />
 			<div>
 				<p class="font-display text-lg font-extrabold text-brand">50% OFF</p>
 				<p class="text-xs text-muted">On Your First Order</p>
@@ -352,6 +355,8 @@
 		<div class="absolute inset-0 -z-10 rounded-full bg-brand"></div>
 		<img
 			src="/images/testimonial-man.webp"
+			srcset="/images/testimonial-man-480.webp 480w, /images/testimonial-man-720.webp 720w, /images/testimonial-man.webp 800w"
+			sizes="(min-width: 1024px) 448px, 90vw"
 			alt="Smiling man eating a burger"
 			width="800"
 			height="533"
@@ -491,7 +496,7 @@
 			<div class="mt-2 grid grid-cols-3 gap-2">
 				{#each POPULAR_NEAR_YOU as dish (dish.id)}
 					<a href="/dish/{dish.id}" class="group block">
-						<img src={dish.image} alt={dish.name} width={dish.width} height={dish.height} loading="lazy" class="h-20 w-full rounded-xl object-cover" />
+						<img src={dish.image} srcset={responsiveSrcset(dish.image, dish.width)} sizes="160px" alt={dish.name} width={dish.width} height={dish.height} loading="lazy" class="h-20 w-full rounded-xl object-cover" />
 						<p class="mt-1 truncate text-[11px] font-bold group-hover:text-brand">{dish.name}</p>
 					</a>
 				{/each}
