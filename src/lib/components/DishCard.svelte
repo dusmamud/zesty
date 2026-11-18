@@ -63,7 +63,7 @@
 			class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/60 to-black/5 px-4 pt-16 pb-4 text-white"
 		>
 			<div class="flex items-start gap-2">
-				<a href="/dish/{dish.id}" class="min-w-0">
+				<a href="/dish/{dish.id}" class="block min-w-0 py-0.5">
 					<h2 class="font-display text-lg leading-tight font-bold hover:underline">{dish.name}</h2>
 				</a>
 				<VegMark veg={dish.veg} />

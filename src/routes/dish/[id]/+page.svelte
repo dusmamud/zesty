@@ -76,7 +76,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
-	<a href="/menu" class="inline-flex items-center gap-2 text-sm font-bold text-stone-600 hover:text-brand">
+	<a href="/menu" class="inline-flex items-center gap-2 py-1 text-sm font-bold text-stone-600 hover:text-brand">
 		<ArrowLeft class="h-4 w-4" /> Back to Menu
 	</a>
 
@@ -112,17 +112,17 @@
 
 		<div>
 			<div class="flex items-start justify-between gap-4">
-				<div>
+				<div class="min-w-0">
 					<VegMark veg={dish.veg} />
 					<h1 class="mt-2 font-display text-3xl font-extrabold sm:text-4xl">{dish.name}</h1>
-					<p class="mt-2 flex items-center gap-1.5 text-sm">
+					<p class="mt-2 flex flex-wrap items-center gap-1.5 text-sm">
 						<Star class="h-5 w-5 fill-amber-400 text-amber-400" />
 						<span class="font-bold">{dish.rating.toFixed(1)}</span>
-						<span class="text-muted">({dish.reviews} reviews)</span>
+						<span class="whitespace-nowrap text-muted">({dish.reviews} reviews)</span>
 						<span class="ml-2 rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-bold text-orange-700">{dish.category}</span>
 					</p>
 				</div>
-				<p class="flex items-baseline gap-2 font-display text-3xl font-extrabold whitespace-nowrap">
+				<p class="flex shrink-0 items-baseline gap-2 font-display text-3xl font-extrabold whitespace-nowrap">
 					{formatPrice(dish.price)}
 					{#if dish.oldPrice}
 						<span class="align-middle text-base font-medium text-muted line-through">{formatPrice(dish.oldPrice)}</span>
@@ -143,14 +143,14 @@
 			<div class="mt-2 space-y-2">
 				<label class="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm">
 					<span class="flex items-center gap-2 text-sm font-semibold">
-						<input type="checkbox" bind:checked={extraCheese} class="h-4 w-4 accent-orange-600" />
+						<input type="checkbox" bind:checked={extraCheese} class="h-5 w-5 accent-orange-600" />
 						Extra cheese
 					</span>
 					<span class="text-sm font-bold">+$0.99</span>
 				</label>
 				<label class="flex items-center justify-between rounded-2xl bg-white px-4 py-3 shadow-sm">
 					<span class="flex items-center gap-2 text-sm font-semibold">
-						<input type="checkbox" bind:checked={extraSauce} class="h-4 w-4 accent-orange-600" />
+						<input type="checkbox" bind:checked={extraSauce} class="h-5 w-5 accent-orange-600" />
 						Extra sauce
 					</span>
 					<span class="text-sm font-bold">+$0.49</span>
@@ -209,7 +209,7 @@
 				<button
 					type="button"
 					onclick={() => addToCart(dish, qty, unitPrice, { spice, instructions: instructions.trim() || undefined })}
-					class="flex flex-1 items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 font-bold text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95"
+					class="flex flex-1 items-center justify-center gap-2 rounded-full bg-brand px-4 py-3.5 text-[15px] font-bold whitespace-nowrap text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95 sm:px-6 sm:text-base"
 				>
 					<ShoppingCart class="h-5 w-5" />
 					Add to Cart • {formatPrice(totalPrice)}

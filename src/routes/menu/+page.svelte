@@ -62,7 +62,7 @@
 			/>
 		</div>
 		<label class="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-bold shadow-sm">
-			<input type="checkbox" bind:checked={vegOnly} class="h-4 w-4 accent-green-600" />
+			<input type="checkbox" bind:checked={vegOnly} class="h-5 w-5 accent-green-600" />
 			Veg only
 		</label>
 		<label class="flex items-center gap-2 text-sm font-semibold">

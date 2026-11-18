@@ -25,7 +25,7 @@
 		</div>
 		<div>
 			<h3 class="font-bold">Company</h3>
-			<ul class="mt-3 space-y-2 text-sm text-muted">
+			<ul class="mt-3 space-y-2 text-sm text-muted [&_a]:inline-block [&_a]:py-1">
 				<li><a href="/about" class="hover:text-brand">About Us</a></li>
 				<li><a href="/careers" class="hover:text-brand">Careers</a></li>
 				<li><a href="/blog" class="hover:text-brand">Blog</a></li>
@@ -36,7 +36,7 @@
 		</div>
 		<div>
 			<h3 class="font-bold">Support</h3>
-			<ul class="mt-3 space-y-2 text-sm text-muted">
+			<ul class="mt-3 space-y-2 text-sm text-muted [&_a]:inline-block [&_a]:py-1">
 				<li><a href="/help" class="hover:text-brand">Help Centre</a></li>
 				<li><a href="/faq" class="hover:text-brand">FAQ</a></li>
 				<li><a href="/help" class="hover:text-brand">Shipping</a></li>
@@ -47,7 +47,7 @@
 		</div>
 		<div>
 			<h3 class="font-bold">For Restaurants</h3>
-			<ul class="mt-3 space-y-2 text-sm text-muted">
+			<ul class="mt-3 space-y-2 text-sm text-muted [&_a]:inline-block [&_a]:py-1">
 				<li><a href="/partner" class="hover:text-brand">Partner With Us</a></li>
 				<li><a href="/partner" class="hover:text-brand">Add Your Restaurant</a></li>
 				<li><a href="/orders" class="hover:text-brand">Manage Orders</a></li>

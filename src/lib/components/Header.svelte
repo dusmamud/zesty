@@ -56,7 +56,7 @@
 				<a
 					href={link.href}
 					aria-current={page.url.pathname === link.href ? 'page' : undefined}
-					class={page.url.pathname === link.href ? 'text-orange-700' : 'hover:text-brand'}
+					class="py-1 {page.url.pathname === link.href ? 'text-orange-700' : 'hover:text-brand'}"
 				>
 					{link.label}
 				</a>

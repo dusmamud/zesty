@@ -1,12 +1,20 @@
 <script lang="ts">
 	import { fade, fly } from 'svelte/transition';
 	import { Minus, Plus, ShoppingBag, Trash2, X } from '@lucide/svelte';
-	import { applyPromo, changeQty, removeFromCart, store, totals } from '#lib/store.svelte.ts';
-	import { FREEDEL_CODE, FREE_DELIVERY_OVER, formatPrice, promoRate, responsiveSrcset } from '#lib/data.ts';
+	import { addToCart, applyPromo, changeQty, removeFromCart, store, totals } from '#lib/store.svelte.ts';
+	import { DISHES, FREEDEL_CODE, FREE_DELIVERY_OVER, formatPrice, promoRate, responsiveSrcset } from '#lib/data.ts';
 
 	let t = $derived(totals());
 	let promoError = $state<string | null>(null);
 	let progress = $derived(Math.min(100, ((t.subtotal - t.discount) / FREE_DELIVERY_OVER) * 100));
+
+	// Quick-add suggestions fill the drawer's empty middle: with 1 item the
+	// pinned totals footer left a big blank gap.
+	let suggestions = $derived(
+		DISHES.filter((d) => !t.lines.some((l) => l.dish.id === d.id))
+			.sort((a, b) => b.rating - a.rating)
+			.slice(0, 3)
+	);
 
 	function onApplyPromo() {
 		promoError = applyPromo(store.promoCode);
@@ -92,7 +100,7 @@
 										type="button"
 										aria-label="Decrease quantity"
 										onclick={() => changeQty(line.dish.id, -1)}
-										class="flex h-7 w-7 items-center justify-center rounded-full border hover:bg-stone-100"
+										class="flex h-9 w-9 items-center justify-center rounded-full border hover:bg-stone-100"
 									>
 										<Minus class="h-3.5 w-3.5" />
 									</button>
@@ -101,7 +109,7 @@
 										type="button"
 										aria-label="Increase quantity"
 										onclick={() => changeQty(line.dish.id, 1)}
-										class="flex h-7 w-7 items-center justify-center rounded-full border hover:bg-stone-100"
+										class="flex h-9 w-9 items-center justify-center rounded-full border hover:bg-stone-100"
 									>
 										<Plus class="h-3.5 w-3.5" />
 									</button>
@@ -151,6 +159,38 @@
 						<p class="mt-1 text-sm text-red-600">{promoError}</p>
 					{/if}
 					<p class="mt-1 text-xs text-muted">Try FIRST50, ZESTY20 or FREEDEL.</p>
+				</div>
+
+				<div class="mt-6">
+					<p class="text-sm font-bold">Complete your order</p>
+					<ul class="mt-2 space-y-3">
+						{#each suggestions as s (s.id)}
+							<li class="flex items-center gap-3">
+								<img
+									src={s.image}
+									srcset={responsiveSrcset(s.image, s.width)}
+									sizes="48px"
+									alt={s.name}
+									width={s.width}
+									height={s.height}
+									loading="lazy"
+									class="h-12 w-12 rounded-xl object-cover"
+								/>
+								<div class="min-w-0 flex-1">
+									<p class="truncate text-sm font-semibold">{s.name}</p>
+									<p class="text-sm text-muted">{formatPrice(s.price)}</p>
+								</div>
+								<button
+									type="button"
+									onclick={() => addToCart(s)}
+									aria-label="Add {s.name} to cart"
+									class="rounded-full bg-brand px-4 py-2 text-xs font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
+								>
+									Add
+								</button>
+							</li>
+						{/each}
+					</ul>
 				</div>
 			</div>
 

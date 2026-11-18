@@ -303,3 +303,12 @@ button:focus-visible {
 		animation: none;
 	}
 }
+
+/* Hide the native scrollbar on horizontal rails (menu categories) — the grey
+   scrollbar track under the chips looked like a UI glitch on mobile. */
+.no-scrollbar {
+	scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+	display: none;
+}

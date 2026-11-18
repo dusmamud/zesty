@@ -27,7 +27,7 @@
 </script>
 
 <div
-	class="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0"
+	class="no-scrollbar flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0"
 	role="tablist"
 	aria-label="Menu categories"
 >

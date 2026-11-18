@@ -78,7 +78,7 @@
 								: 'border-stone-200 hover:border-stone-300'}"
 						>
 							<Icon class="h-5 w-5" />
-							{payment === 'COD' ? 'Cash on Delivery' : opt.id}
+							{opt.id}
 						</button>
 					{/each}
 				</div>

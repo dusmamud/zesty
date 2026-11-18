@@ -22,6 +22,9 @@
 	let progress = $state(0);
 	let showTop = $state(false);
 	let reducedMotion = $state(false);
+	// Hide the back-to-top button while the footer is on screen: it used to sit
+	// exactly on top of the newsletter submit arrow (mobile footer).
+	let footerVisible = $state(false);
 
 	onMount(() => {
 		reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -40,7 +43,18 @@
 		}
 		update();
 		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
+		const footer = document.querySelector('footer');
+		let obs: IntersectionObserver | undefined;
+		if (footer) {
+			obs = new IntersectionObserver(([entry]) => (footerVisible = entry.isIntersecting), {
+				threshold: 0
+			});
+			obs.observe(footer);
+		}
+		return () => {
+			window.removeEventListener('scroll', onScroll);
+			obs?.disconnect();
+		};
 	});
 
 	function backToTop() {
@@ -77,7 +91,7 @@
 <Toast />
 
 <!-- BACK TO TOP -->
-{#if showTop}
+{#if showTop && !footerVisible}
 	<button
 		type="button"
 		aria-label="Back to top"
@@ -112,6 +126,13 @@
 
 {#if store.orderPlaced}
 	<div class="fixed inset-0 z-50 flex items-end justify-center sm:items-center" role="dialog" aria-label="Order confirmed">
+		<button
+			type="button"
+			aria-label="Close"
+			onclick={() => (store.orderPlaced = null)}
+			transition:fade={{ duration: 200 }}
+			class="absolute inset-0 bg-black/40"
+		></button>
 		<div
 			transition:scale={{ start: 0.96, duration: 200 }}
 			class="relative w-full max-w-md rounded-t-3xl bg-white p-6 text-center shadow-2xl sm:rounded-3xl"

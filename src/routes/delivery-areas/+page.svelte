@@ -52,8 +52,8 @@
 	<div class="mt-6 rounded-3xl bg-cream-dark p-6 sm:p-8" use:motionReveal={{ delay: 100 }}>
 		<h2 class="font-display text-xl font-extrabold">Outside these areas?</h2>
 		<p class="mt-2 text-muted">
-			We are adding new neighbourhoods every month. Check back soon — or order for pickup from
-			the menu in the meantime.
+			We are adding new neighbourhoods every month. Check back soon — new areas open
+			regularly.
 		</p>
 		<a
 			href="/menu"

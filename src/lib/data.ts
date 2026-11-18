@@ -22,7 +22,7 @@ export interface Dish {
 export const IMAGE_DIMS: Record<string, { width: number; height: number }> = {
 	'/images/hero-woman.webp': { width: 900, height: 900 },
 	'/images/salad-bowl.webp': { width: 800, height: 533 },
-	'/images/testimonial-man.webp': { width: 800, height: 533 },
+	'/images/testimonial-woman.webp': { width: 800, height: 800 },
 	'/images/avatars/alex-morgan.webp': { width: 200, height: 200 },
 	'/images/avatars/avatar-man.webp': { width: 200, height: 200 },
 	'/images/avatars/avatar-woman-1.webp': { width: 200, height: 133 },

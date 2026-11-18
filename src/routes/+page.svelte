@@ -11,8 +11,8 @@
 		Clock,
 		Headphones,
 		Heart,
+		MapPin,
 		Play,
-		RotateCcw,
 		Search,
 		ShieldCheck,
 		Star,
@@ -126,6 +126,14 @@
 		DISHES.find((d) => d.id === 'zesty-chicken-burger')!,
 		DISHES.find((d) => d.id === 'thai-basil-noodles')!
 	];
+
+	// Short labels so dish names fit the phone mockup's 3-column grid without
+	// mid-word truncation ("Veggie Supre…", "Zesty Chicke…").
+	const SHORT_NAMES: Record<string, string> = {
+		'veggie-supreme-pizza': 'Veggie Pizza',
+		'zesty-chicken-burger': 'Chicken Burger',
+		'thai-basil-noodles': 'Thai Noodles'
+	};
 </script>
 
 <svelte:head>
@@ -354,12 +362,12 @@
 	<div class="relative mx-auto w-full max-w-md" use:reveal>
 		<div class="absolute inset-0 z-0 translate-x-3 translate-y-3 rounded-full bg-brand" aria-hidden="true"></div>
 		<img
-			src="/images/testimonial-man.webp"
-			srcset="/images/testimonial-man-480.webp 480w, /images/testimonial-man-720.webp 720w, /images/testimonial-man.webp 800w"
+			src="/images/testimonial-woman.webp"
+			srcset="/images/testimonial-woman-480.webp 480w, /images/testimonial-woman-720.webp 720w, /images/testimonial-woman.webp 800w"
 			sizes="(min-width: 1024px) 448px, 90vw"
-			alt="Smiling man eating a burger"
+			alt="Smiling woman holding a burger"
 			width="800"
-			height="533"
+			height="800"
 			class="relative z-10 aspect-square w-full rounded-full object-cover"
 		/>
 		<div class="absolute bottom-6 left-0 flex items-center gap-2 rounded-2xl bg-white px-4 py-3 shadow-lg">
@@ -481,7 +489,7 @@
 		</div>
 		<div class="mx-auto w-full max-w-xs rounded-[2.2rem] border-8 border-ink bg-white p-4 shadow-xl">
 			<div class="flex items-center justify-between">
-				<p class="font-display text-lg font-extrabold">Hi, Alex 👋</p>
+				<p class="font-display text-lg font-extrabold">Hungry?</p>
 				<span class="flex h-8 w-8 items-center justify-center rounded-full bg-brand text-white">
 					<UtensilsCrossed class="h-4 w-4" />
 				</span>
@@ -498,7 +506,7 @@
 				{#each POPULAR_NEAR_YOU as dish (dish.id)}
 					<a href="/dish/{dish.id}" class="group block">
 						<img src={dish.image} srcset={responsiveSrcset(dish.image, dish.width)} sizes="160px" alt={dish.name} width={dish.width} height={dish.height} loading="lazy" class="h-20 w-full rounded-xl object-cover" />
-						<p class="mt-1 truncate text-[11px] font-bold group-hover:text-brand">{dish.name}</p>
+						<p class="mt-1 truncate text-[11px] font-bold group-hover:text-brand">{SHORT_NAMES[dish.id] ?? dish.name}</p>
 					</a>
 				{/each}
 			</div>
@@ -509,7 +517,7 @@
 <!-- TRUST ROW -->
 <section class="border-t border-orange-100 bg-white">
 	<div class="mx-auto grid max-w-[1440px] grid-cols-2 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-4">
-		{#each [{ icon: Truck, title: 'Free Delivery', text: 'On orders over $20' }, { icon: RotateCcw, title: 'Easy Returns', text: 'Within 7 days' }, { icon: ShieldCheck, title: 'Secure Payment', text: '100% protected' }, { icon: Headphones, title: '24/7 Support', text: "We're here to help" }] as t, i (t.title)}
+		{#each [{ icon: Truck, title: 'Free Delivery', text: 'On orders over $20' }, { icon: MapPin, title: 'Live Tracking', text: 'Track every order' }, { icon: ShieldCheck, title: 'Secure Payment', text: '100% protected' }, { icon: Headphones, title: '24/7 Support', text: "We're here to help" }] as t, i (t.title)}
 			{@const Icon = t.icon}
 			<div class="flex items-start gap-3" use:reveal={{ delay: i * 80 }}>
 				<Icon class="h-7 w-7 shrink-0 text-brand" />
