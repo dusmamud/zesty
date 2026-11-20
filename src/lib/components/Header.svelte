@@ -22,9 +22,16 @@
 				requestAnimationFrame(update);
 			}
 		}
+		function onKeydown(e: KeyboardEvent) {
+			if (e.key === 'Escape' && mobileOpen) mobileOpen = false;
+		}
 		update();
 		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => window.removeEventListener('scroll', onScroll);
+		window.addEventListener('keydown', onKeydown);
+		return () => {
+			window.removeEventListener('scroll', onScroll);
+			window.removeEventListener('keydown', onKeydown);
+		};
 	});
 
 	const LINKS = [
@@ -65,7 +72,7 @@
 
 		<div class="ml-auto flex items-center gap-2 sm:gap-3">
 			<a
-				href="/menu"
+				href="/search"
 				aria-label="Search dishes"
 				class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-stone-700 shadow-sm transition-transform duration-150 hover:text-brand active:scale-95"
 			>

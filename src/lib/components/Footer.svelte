@@ -31,6 +31,8 @@
 				<li><a href="/blog" class="hover:text-brand">Blog</a></li>
 				<li><a href="/reviews" class="hover:text-brand">Reviews</a></li>
 				<li><a href="/rewards" class="hover:text-brand">Rewards</a></li>
+				<li><a href="/refer" class="hover:text-brand">Refer &amp; Earn</a></li>
+				<li><a href="/subscription" class="hover:text-brand">Zesty Plus</a></li>
 				<li><a href="/contact" class="hover:text-brand">Contact Us</a></li>
 			</ul>
 		</div>
@@ -39,10 +41,13 @@
 			<ul class="mt-3 space-y-2 text-sm text-muted [&_a]:inline-block [&_a]:py-1">
 				<li><a href="/help" class="hover:text-brand">Help Centre</a></li>
 				<li><a href="/faq" class="hover:text-brand">FAQ</a></li>
+				<li><a href="/track" class="hover:text-brand">Track Order</a></li>
+				<li><a href="/notifications" class="hover:text-brand">Notifications</a></li>
 				<li><a href="/help" class="hover:text-brand">Shipping</a></li>
 				<li><a href="/help" class="hover:text-brand">Returns</a></li>
 				<li><a href="/privacy" class="hover:text-brand">Privacy Policy</a></li>
 				<li><a href="/terms" class="hover:text-brand">Terms</a></li>
+				<li><a href="/accessibility" class="hover:text-brand">Accessibility</a></li>
 			</ul>
 		</div>
 		<div>
@@ -50,6 +55,8 @@
 			<ul class="mt-3 space-y-2 text-sm text-muted [&_a]:inline-block [&_a]:py-1">
 				<li><a href="/partner" class="hover:text-brand">Partner With Us</a></li>
 				<li><a href="/partner" class="hover:text-brand">Add Your Restaurant</a></li>
+				<li><a href="/rider" class="hover:text-brand">Become a Rider</a></li>
+				<li><a href="/corporate" class="hover:text-brand">Corporate Orders</a></li>
 				<li><a href="/orders" class="hover:text-brand">Manage Orders</a></li>
 				<li><a href="/catering" class="hover:text-brand">Catering</a></li>
 				<li><a href="/delivery-areas" class="hover:text-brand">Delivery Areas</a></li>
@@ -83,7 +90,11 @@
 		</div>
 	</div>
 	<p class="border-t py-4 text-center text-xs text-muted">
+		<a href="/search" class="hover:text-brand">Search</a> •
+		<a href="/combos" class="hover:text-brand">Combos</a> •
 		<a href="/gift-cards" class="hover:text-brand">Gift Cards</a> •
+		<a href="/wallet" class="hover:text-brand">Wallet</a> •
+		<a href="/addresses" class="hover:text-brand">Addresses</a> •
 		<a href="/app" class="hover:text-brand">Get the App</a> •
 		<a href="/account" class="hover:text-brand">My Account</a> •
 		<a href="/delivery-areas" class="hover:text-brand">Delivery Areas</a>

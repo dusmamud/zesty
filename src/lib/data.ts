@@ -422,3 +422,206 @@ export const ALLERGEN_INFO: Record<string, string[]> = {
 	'garlic-bread': ['Gluten', 'Milk'],
 	'cold-coffee': ['Milk']
 };
+
+/** Estimated nutrition per dish (demo values — not lab-tested). */
+export interface Nutrition {
+	calories: number;
+	protein: number;
+	carbs: number;
+	fat: number;
+}
+
+export const NUTRITION: Record<string, Nutrition> = {
+	'zesty-chicken-burger': { calories: 640, protein: 32, carbs: 48, fat: 34 },
+	'double-cheese-burger': { calories: 820, protein: 44, carbs: 42, fat: 48 },
+	'veggie-supreme-pizza': { calories: 580, protein: 22, carbs: 72, fat: 22 },
+	'margherita-pizza': { calories: 540, protein: 20, carbs: 68, fat: 20 },
+	'thai-basil-noodles': { calories: 490, protein: 14, carbs: 76, fat: 14 },
+	'schezwan-fried-rice': { calories: 560, protein: 18, carbs: 74, fat: 20 },
+	'chocolate-lava-cake': { calories: 420, protein: 6, carbs: 52, fat: 22 },
+	'mango-smoothie': { calories: 210, protein: 6, carbs: 38, fat: 4 },
+	'veg-biryani': { calories: 620, protein: 16, carbs: 88, fat: 18 },
+	'grilled-chicken-wings': { calories: 480, protein: 38, carbs: 8, fat: 32 },
+	'garlic-bread': { calories: 310, protein: 8, carbs: 42, fat: 12 },
+	'cold-coffee': { calories: 160, protein: 5, carbs: 24, fat: 5 }
+};
+
+/** Meal combos — bundles of existing dishes (demo bundles; items are added
+ * to the cart individually, so the normal cart math still applies). */
+export interface Combo {
+	id: string;
+	name: string;
+	desc: string;
+	serves: string;
+	tag: string;
+	items: Array<{ dishId: string; qty: number }>;
+}
+
+export const COMBOS: Combo[] = [
+	{
+		id: 'family-feast',
+		name: 'Family Feast',
+		desc: 'Two burgers, a whole pizza and wings — the table favourite.',
+		serves: 'Serves 4',
+		tag: 'Most ordered',
+		items: [
+			{ dishId: 'zesty-chicken-burger', qty: 2 },
+			{ dishId: 'veggie-supreme-pizza', qty: 1 },
+			{ dishId: 'grilled-chicken-wings', qty: 1 }
+		]
+	},
+	{
+		id: 'movie-night',
+		name: 'Movie Night',
+		desc: 'Pizza, garlic bread and two cold coffees. Couch, sorted.',
+		serves: 'Serves 2',
+		tag: 'Best value',
+		items: [
+			{ dishId: 'margherita-pizza', qty: 1 },
+			{ dishId: 'garlic-bread', qty: 1 },
+			{ dishId: 'cold-coffee', qty: 2 }
+		]
+	},
+	{
+		id: 'veggie-party',
+		name: 'Veggie Party',
+		desc: 'All-veg spread: biryani, pizza, noodles and smoothies.',
+		serves: 'Serves 4',
+		tag: '100% veg',
+		items: [
+			{ dishId: 'veg-biryani', qty: 1 },
+			{ dishId: 'veggie-supreme-pizza', qty: 1 },
+			{ dishId: 'thai-basil-noodles', qty: 1 },
+			{ dishId: 'mango-smoothie', qty: 2 }
+		]
+	}
+];
+
+export function comboPrice(combo: Combo): { price: number; oldPrice: number } {
+	let price = 0;
+	for (const item of combo.items) {
+		const dish = DISHES.find((d) => d.id === item.dishId);
+		if (dish) price += dish.price * item.qty;
+	}
+	// Combos save 10% on the summed dish prices.
+	const discounted = Math.round(price * 0.9 * 100) / 100;
+	return { price: discounted, oldPrice: Math.round(price * 100) / 100 };
+}
+
+/** Delivery time slots offered at checkout (demo slots). */
+export const DELIVERY_SLOTS = [
+	'ASAP — 20–30 min',
+	'Today, 12:30 PM',
+	'Today, 1:00 PM',
+	'Today, 6:30 PM',
+	'Tomorrow, 12:30 PM'
+];
+
+/** Tip options at checkout (fractions of the subtotal). */
+export const TIP_OPTIONS: Array<{ label: string; rate: number }> = [
+	{ label: 'No tip', rate: 0 },
+	{ label: '10%', rate: 0.1 },
+	{ label: '15%', rate: 0.15 },
+	{ label: '20%', rate: 0.2 }
+];
+
+/** Demo rider shown on the tracking page (mock persona, not a real person). */
+export const DEMO_RIDER = {
+	name: 'Rahul K.',
+	rating: 4.9,
+	trips: 1240,
+	vehicle: 'Scooter • Orange helmet',
+	etaNote: 'Your rider is on the way'
+};
+
+/** Demo notifications (mock inbox). */
+export interface AppNotification {
+	id: string;
+	kind: 'order' | 'offer' | 'reward';
+	title: string;
+	text: string;
+	time: string;
+	unread: boolean;
+}
+
+export const NOTIFICATIONS: AppNotification[] = [
+	{ id: 'n1', kind: 'order', title: 'Order delivered', text: 'Your Zesty Chicken Burger order was delivered. Enjoy your meal!', time: '2h ago', unread: true },
+	{ id: 'n2', kind: 'offer', title: 'FIRST50 is waiting', text: '50% off your first order — no minimum spend. Use code FIRST50 at checkout.', time: 'Yesterday', unread: true },
+	{ id: 'n3', kind: 'reward', title: 'You earned 120 points', text: 'Your last order added 120 Zesty Rewards points. 380 more to Silver.', time: 'Yesterday', unread: false },
+	{ id: 'n4', kind: 'offer', title: 'Free delivery weekend', text: 'Free delivery on all orders over $20 this weekend. No code needed.', time: '2 days ago', unread: false },
+	{ id: 'n5', kind: 'reward', title: 'Gold tier is close', text: 'Order 3 more times this month to keep your Gold perks next month.', time: '3 days ago', unread: false }
+];
+
+/** Zesty Plus membership plans (demo — no real subscription is taken). */
+export interface PlusPlan {
+	id: string;
+	name: string;
+	price: string;
+	period: string;
+	save?: string;
+	perks: string[];
+}
+
+export const PLUS_PLANS: PlusPlan[] = [
+	{
+		id: 'plus-monthly',
+		name: 'Plus Monthly',
+		price: '$4.99',
+		period: 'per month',
+		perks: ['Free delivery on every order', 'Priority support', 'Exclusive member deals', 'Cancel anytime']
+	},
+	{
+		id: 'plus-annual',
+		name: 'Plus Annual',
+		price: '$49',
+		period: 'per year',
+		save: 'Save 18%',
+		perks: ['Everything in Monthly', 'Two months free', 'Birthday month free delivery', 'Early access to new dishes']
+	}
+];
+
+/** Referral programme (demo — codes and credits are not real). */
+export const REFERRAL_CODE = 'ZESTY-INVITE';
+export const REFERRAL_REWARD = '$5 credit for you, 50% off for your friend';
+
+export interface Referral {
+	name: string;
+	status: 'Joined' | 'Ordered' | 'Invited';
+	reward: string;
+}
+
+export const REFERRALS: Referral[] = [
+	{ name: 'Aarav P.', status: 'Ordered', reward: '$5 earned' },
+	{ name: 'Sana M.', status: 'Joined', reward: 'Waiting for first order' },
+	{ name: 'Vikram T.', status: 'Invited', reward: 'Invite sent' }
+];
+
+/** Demo wallet transactions (mock history). */
+export interface WalletTx {
+	id: string;
+	label: string;
+	date: string;
+	amount: number;
+}
+
+export const WALLET_TXS: WalletTx[] = [
+	{ id: 'w1', label: 'Referral credit — Aarav P.', date: '16 Nov 2026', amount: 5 },
+	{ id: 'w2', label: 'Added money', date: '12 Nov 2026', amount: 25 },
+	{ id: 'w3', label: 'Order ZST790129', date: '11 Nov 2026', amount: -12.47 },
+	{ id: 'w4', label: 'Welcome bonus', date: '8 Nov 2026', amount: 5 }
+];
+
+export const WALLET_BALANCE = 25;
+
+/** Demo saved addresses (mock — edit or delete them on the Addresses page). */
+export interface SavedAddress {
+	id: string;
+	label: 'Home' | 'Work' | 'Other';
+	address: string;
+	isDefault: boolean;
+}
+
+export const DEFAULT_ADDRESSES: SavedAddress[] = [
+	{ id: 'a1', label: 'Home', address: '42 Palm Street, Downtown', isDefault: true },
+	{ id: 'a2', label: 'Work', address: '8 Market Road, University District', isDefault: false }
+];

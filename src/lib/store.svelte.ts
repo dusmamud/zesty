@@ -1,10 +1,13 @@
 import {
+	DEFAULT_ADDRESSES,
 	DELIVERY_FEE,
+	DELIVERY_SLOTS,
 	DISHES,
 	FREEDEL_CODE,
 	FREE_DELIVERY_OVER,
 	PROMOS,
-	type Dish
+	type Dish,
+	type SavedAddress
 } from '#lib/data.ts';
 
 export interface OrderItem {
@@ -21,6 +24,17 @@ export interface Order {
 	name: string;
 	address: string;
 	placedAt: number;
+	/** Rider tip paid on this order (0 when none). */
+	tip?: number;
+	/** Delivery slot chosen at checkout ('ASAP — 20–30 min' by default). */
+	slot?: string;
+}
+
+export interface SavedAddressState {
+	id: string;
+	label: 'Home' | 'Work' | 'Other';
+	address: string;
+	isDefault: boolean;
 }
 
 export interface User {
@@ -42,6 +56,12 @@ export const store = $state({
 	orderPlaced: null as { id: string; payment: string } | null,
 	promoCode: '',
 	promoApplied: null as string | null,
+	/** Rider tip for the current checkout (fraction of subtotal, 0 = none). */
+	tipRate: 0,
+	/** Delivery slot chosen at checkout. */
+	slot: DELIVERY_SLOTS[0],
+	/** Saved delivery addresses (demo defaults, persisted). */
+	addresses: [] as SavedAddress[],
 	toast: null as { id: number; message: string; actionLabel?: string } | null
 });
 
@@ -75,7 +95,8 @@ const LS = {
 	favourites: 'zesty-favourites',
 	orders: 'zesty-orders',
 	user: 'zesty-user',
-	newsletter: 'zesty-newsletter'
+	newsletter: 'zesty-newsletter',
+	addresses: 'zesty-addresses'
 };
 
 function load<T>(key: string, fallback: T): T {
@@ -95,6 +116,7 @@ function persist() {
 		localStorage.setItem(LS.orders, JSON.stringify(store.orders));
 		localStorage.setItem(LS.user, JSON.stringify(store.user));
 		localStorage.setItem(LS.newsletter, JSON.stringify(store.newsletterSubscribed));
+		localStorage.setItem(LS.addresses, JSON.stringify(store.addresses));
 	} catch {
 		// Storage unavailable (private mode, quota) — app still works in memory.
 	}
@@ -123,6 +145,7 @@ if (typeof window !== 'undefined') {
 	store.orders = load<Order[]>(LS.orders, []);
 	store.user = load<User | null>(LS.user, null);
 	store.newsletterSubscribed = load<boolean>(LS.newsletter, false);
+	store.addresses = load<SavedAddress[]>(LS.addresses, DEFAULT_ADDRESSES);
 }
 
 export interface CartLine {
@@ -154,6 +177,7 @@ export interface Totals {
 	subtotal: number;
 	discount: number;
 	delivery: number;
+	tip: number;
 	total: number;
 }
 
@@ -164,7 +188,8 @@ export function totals(): Totals {
 	const freeDelivery =
 		store.promoApplied === FREEDEL_CODE || subtotal - discount >= FREE_DELIVERY_OVER;
 	const delivery = subtotal === 0 || freeDelivery ? 0 : DELIVERY_FEE;
-	return { lines, subtotal, discount, delivery, total: Math.max(0, subtotal - discount + delivery) };
+	const tip = Math.round(subtotal * store.tipRate * 100) / 100;
+	return { lines, subtotal, discount, delivery, tip, total: Math.max(0, subtotal - discount + delivery + tip) };
 }
 
 export function addToCart(
@@ -243,12 +268,16 @@ export function placeOrder(details: { name: string; phone: string; address: stri
 		payment: details.payment,
 		name: details.name,
 		address: details.address,
-		placedAt: Date.now()
+		placedAt: Date.now(),
+		tip: t.tip,
+		slot: store.slot
 	};
 	store.orders = [order, ...store.orders];
 	store.cart = {};
 	store.promoApplied = null;
 	store.promoCode = '';
+	store.tipRate = 0;
+	store.slot = DELIVERY_SLOTS[0];
 	store.orderPlaced = { id: order.id, payment: order.payment };
 	store.checkoutOpen = false;
 	store.cartOpen = false;
@@ -287,6 +316,32 @@ export function subscribeNewsletter() {
 	store.newsletterSubscribed = true;
 	persist();
 	showToast('Subscribed — tasty offers are on the way!');
+}
+
+/** Saved addresses (demo data, persisted in localStorage). */
+export function addAddress(label: SavedAddress['label'], address: string) {
+	const entry: SavedAddress = {
+		id: `a${Date.now()}`,
+		label,
+		address: address.trim(),
+		isDefault: store.addresses.length === 0
+	};
+	store.addresses = [...store.addresses, entry];
+	persist();
+	showToast(`${label} address saved`);
+}
+
+export function removeAddress(id: string) {
+	const wasDefault = store.addresses.find((a) => a.id === id)?.isDefault;
+	let next = store.addresses.filter((a) => a.id !== id);
+	if (wasDefault && next.length > 0) next = [{ ...next[0], isDefault: true }, ...next.slice(1)];
+	store.addresses = next;
+	persist();
+}
+
+export function setDefaultAddress(id: string) {
+	store.addresses = store.addresses.map((a) => ({ ...a, isDefault: a.id === id }));
+	persist();
 }
 
 /** Tracking step index from placedAt: 0 Placed, 1 Preparing (2 min), 2 Out for delivery (10 min), 3 Delivered (25 min). */

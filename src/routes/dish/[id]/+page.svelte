@@ -5,8 +5,8 @@
 	import Seo from '#lib/components/Seo.svelte';
 	import VegMark from '#lib/components/VegMark.svelte';
 	import { reveal } from '#lib/actions/reveal.ts';
-	import { addToCart, store, toggleFavourite } from '#lib/store.svelte.ts';
-	import { DISHES, DISH_REVIEWS, formatPrice, responsiveSrcset } from '#lib/data.ts';
+	import { addToCart, cartCount, store, toggleFavourite } from '#lib/store.svelte.ts';
+	import { ALLERGEN_INFO, DISHES, DISH_REVIEWS, formatPrice, NUTRITION, responsiveSrcset } from '#lib/data.ts';
 	import type { PageProps } from './$types';
 
 	let { params }: PageProps = $props();
@@ -75,7 +75,7 @@
 	{@html productLd}
 </svelte:head>
 
-<div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6">
+<div class="mx-auto max-w-[1440px] px-4 pt-10 pb-28 sm:px-6 lg:pb-10">
 	<a href="/menu" class="inline-flex items-center gap-2 py-1 text-sm font-bold text-stone-600 hover:text-brand">
 		<ArrowLeft class="h-4 w-4" /> Back to Menu
 	</a>
@@ -138,6 +138,27 @@
 					<li class="rounded-full bg-white px-3 py-1.5 text-sm font-semibold shadow-sm">{ing}</li>
 				{/each}
 			</ul>
+
+			<!-- Nutrition (estimated) + allergens — trust info the leaders all show -->
+			{#if NUTRITION[dish.id]}
+				{@const n = NUTRITION[dish.id]}
+				<h2 class="mt-6 font-display text-lg font-bold">Nutrition <span class="text-sm font-semibold text-muted">(estimated, per serving)</span></h2>
+				<div class="mt-2 grid grid-cols-4 gap-2 text-center">
+					<div class="rounded-2xl bg-white p-3 shadow-sm"><p class="font-display text-lg font-extrabold">{n.calories}</p><p class="text-xs text-muted">Calories</p></div>
+					<div class="rounded-2xl bg-white p-3 shadow-sm"><p class="font-display text-lg font-extrabold">{n.protein}g</p><p class="text-xs text-muted">Protein</p></div>
+					<div class="rounded-2xl bg-white p-3 shadow-sm"><p class="font-display text-lg font-extrabold">{n.carbs}g</p><p class="text-xs text-muted">Carbs</p></div>
+					<div class="rounded-2xl bg-white p-3 shadow-sm"><p class="font-display text-lg font-extrabold">{n.fat}g</p><p class="text-xs text-muted">Fat</p></div>
+				</div>
+			{/if}
+			{#if ALLERGEN_INFO[dish.id]?.length}
+				<h2 class="mt-6 font-display text-lg font-bold">Allergens</h2>
+				<ul class="mt-2 flex flex-wrap gap-2">
+					{#each ALLERGEN_INFO[dish.id] as allergen (allergen)}
+						<li class="rounded-full bg-amber-50 px-3 py-1.5 text-sm font-semibold text-amber-800 ring-1 ring-amber-200">{allergen}</li>
+					{/each}
+				</ul>
+				<p class="mt-2 text-xs text-muted">Values are estimates. Tell us about allergies in “Cooking instructions” and we’ll take care.</p>
+			{/if}
 
 			<h2 class="mt-6 font-display text-lg font-bold">Customise</h2>
 			<div class="mt-2 space-y-2">
@@ -250,3 +271,24 @@
 		</section>
 	{/if}
 </div>
+
+<!-- STICKY MOBILE ADD BAR — thumb zone; only while the cart is empty, so it
+     never fights the global cart bar (which takes over once you add). -->
+{#if cartCount() === 0}
+	<div
+		class="fixed inset-x-4 bottom-20 z-30 flex items-center justify-between gap-3 rounded-full bg-white py-2 pr-2 pl-5 shadow-xl ring-1 ring-orange-100 lg:hidden"
+		style="margin-bottom: env(safe-area-inset-bottom)"
+	>
+		<span class="min-w-0">
+			<span class="block truncate text-sm font-bold">{dish.name}</span>
+			<span class="block text-sm font-extrabold text-brand">{formatPrice(totalPrice)}</span>
+		</span>
+		<button
+			type="button"
+			onclick={() => addToCart(dish, qty, unitPrice, { spice, instructions: instructions.trim() || undefined })}
+			class="flex shrink-0 items-center gap-2 rounded-full bg-brand px-5 py-3 text-sm font-bold whitespace-nowrap text-white shadow transition-transform duration-150 hover:bg-brand-dark active:scale-95"
+		>
+			<ShoppingCart class="h-4 w-4" /> Add to Cart
+		</button>
+	</div>
+{/if}

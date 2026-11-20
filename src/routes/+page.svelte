@@ -463,7 +463,7 @@
 			<p class="mt-3 max-w-md text-muted">Download now and enjoy special discounts, fast delivery and easy tracking.</p>
 			<div class="mt-6">
 				<a
-					href="/menu"
+					href="/app"
 					class="inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-bold text-white transition-transform duration-150 hover:bg-brand-dark active:scale-95"
 				>
 					Download App <ArrowRight class="h-4 w-4" />
@@ -517,12 +517,12 @@
 <!-- TRUST ROW -->
 <section class="border-t border-orange-100 bg-white">
 	<div class="mx-auto grid max-w-[1440px] grid-cols-2 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-4">
-		{#each [{ icon: Truck, title: 'Free Delivery', text: 'On orders over $20' }, { icon: MapPin, title: 'Live Tracking', text: 'Track every order' }, { icon: ShieldCheck, title: 'Secure Payment', text: '100% protected' }, { icon: Headphones, title: '24/7 Support', text: "We're here to help" }] as t, i (t.title)}
+		{#each [{ icon: Truck, title: 'Free Delivery', text: 'On orders over $20', href: '/offers' }, { icon: MapPin, title: 'Live Tracking', text: 'Track every order', href: '/track' }, { icon: ShieldCheck, title: 'Secure Payment', text: '100% protected', href: '/faq' }, { icon: Headphones, title: '24/7 Support', text: "We're here to help", href: '/help' }] as t, i (t.title)}
 			{@const Icon = t.icon}
-			<div class="flex items-start gap-3" use:reveal={{ delay: i * 80 }}>
+			<a href={t.href} class="flex items-start gap-3 rounded-2xl transition-colors hover:bg-cream" use:reveal={{ delay: i * 80 }}>
 				<Icon class="h-7 w-7 shrink-0 text-brand" />
 				<div><p class="font-bold">{t.title}</p><p class="text-sm text-muted">{t.text}</p></div>
-			</div>
+			</a>
 		{/each}
 	</div>
 </section>

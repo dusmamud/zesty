@@ -132,6 +132,12 @@
 					</div>
 
 					<div class="mt-5 flex flex-wrap gap-3">
+						<a
+							href="/track?order={order.id}"
+							class="flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-sm font-bold text-white hover:bg-stone-800"
+						>
+							Track live →
+						</a>
 						<button
 							type="button"
 							onclick={() => reorder(order)}
